@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireRequestSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ensureSalesSystemSeedData } from "@/lib/sales-system";
 
@@ -14,7 +15,13 @@ type CreateSalesOrderBody = {
   }>;
 };
 
-export async function GET() {
+export async function GET(request: NextRequest) {
+  const session = requireRequestSession(request);
+
+  if (session instanceof NextResponse) {
+    return session;
+  }
+
   try {
     await ensureSalesSystemSeedData();
 
@@ -51,6 +58,12 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const session = requireRequestSession(request);
+
+  if (session instanceof NextResponse) {
+    return session;
+  }
+
   try {
     await ensureSalesSystemSeedData();
 

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { requireRequestSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ensureSalesSystemSeedData } from "@/lib/sales-system";
 
@@ -16,6 +17,12 @@ type CreateSalesProductBody = {
 };
 
 export async function GET(request: NextRequest) {
+  const session = requireRequestSession(request);
+
+  if (session instanceof NextResponse) {
+    return session;
+  }
+
   try {
     await ensureSalesSystemSeedData();
 
@@ -46,6 +53,12 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const session = requireRequestSession(request);
+
+  if (session instanceof NextResponse) {
+    return session;
+  }
+
   try {
     const body = (await request.json()) as CreateSalesProductBody;
     const name = body.name?.trim();

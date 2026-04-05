@@ -299,6 +299,26 @@
   gap: 12px;
 }
 
+.shiftAlert {
+  background: rgba(255, 245, 230, 0.9);
+  border: 1px solid rgba(176, 108, 28, 0.22);
+  border-radius: 24px;
+  display: grid;
+  gap: 8px;
+  padding: 18px 20px;
+}
+
+.shiftAlert strong {
+  color: #8a4a14;
+  font-size: 1.2rem;
+}
+
+.shiftAlert p {
+  color: rgba(73, 46, 17, 0.82);
+  line-height: 1.6;
+  margin: 0;
+}
+
 .primaryCta,
 .secondaryCta,
 .ghostButton,
@@ -603,6 +623,12 @@
   transform: translateX(-2px);
 }
 
+.profileActionButton:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+  transform: none;
+}
+
 .modalOverlay {
   align-items: center;
   background: rgba(12, 18, 24, 0.46);
@@ -681,6 +707,48 @@
   resize: vertical;
 }
 
+.shiftSummaryGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.shiftSummaryCard {
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid var(--line);
+  border-radius: 22px;
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+}
+
+.shiftSummaryCard span {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.shiftSummaryCard strong {
+  color: var(--navy);
+  font-size: 1.3rem;
+  line-height: 1.1;
+}
+
+.shiftSummaryCard p {
+  color: rgba(22, 32, 42, 0.72);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.shiftActionRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
 @media (max-width: 1180px) {
   .hero,
   .mainGrid,
@@ -716,7 +784,8 @@
   .topbar,
   .summaryGrid,
   .quickActionGrid,
-  .saleItemRow {
+  .saleItemRow,
+  .shiftSummaryGrid {
     grid-template-columns: 1fr;
   }
 
@@ -727,6 +796,10 @@
   .primaryCta,
   .secondaryCta {
     width: 100%;
+  }
+
+  .shiftActionRow {
+    flex-direction: column-reverse;
   }
 
   .profileArea {

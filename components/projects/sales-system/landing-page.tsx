@@ -4,6 +4,8 @@ import { useEffect, useState, useTransition } from "react";
 import { useToast } from "@/components/shared/toast-provider";
 import styles from "./landing-page.module.css";
 
+const SHIFT_STATUS_STORAGE_KEY = "sales-system.shift-status";
+
 const menuItems = [
   "Painel",
   "Emitente",
@@ -101,6 +103,33 @@ type SalesOrder = {
   }>;
 };
 
+type ShiftStatus = {
+  closedAt: string | null;
+};
+
+function getInitialShiftStatus(): ShiftStatus {
+  if (typeof window === "undefined") {
+    return { closedAt: null };
+  }
+
+  const storedValue = window.localStorage.getItem(SHIFT_STATUS_STORAGE_KEY);
+
+  if (!storedValue) {
+    return { closedAt: null };
+  }
+
+  try {
+    const parsedValue = JSON.parse(storedValue) as Partial<ShiftStatus>;
+
+    return {
+      closedAt: typeof parsedValue.closedAt === "string" ? parsedValue.closedAt : null,
+    };
+  } catch {
+    window.localStorage.removeItem(SHIFT_STATUS_STORAGE_KEY);
+    return { closedAt: null };
+  }
+}
+
 const menuIcons: Record<MenuItem, string> = {
   Painel: "PA",
   Emitente: "EM",
@@ -121,6 +150,17 @@ function formatCurrency(valueInCents: number) {
 }
 
 function formatDate(value: string) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    dateStyle: "short",
+    timeStyle: "short",
+  }).format(new Date(value));
+}
+
+function formatDateTimeLabel(value: string | null) {
+  if (!value) {
+    return "Turno em andamento";
+  }
+
   return new Intl.DateTimeFormat("pt-BR", {
     dateStyle: "short",
     timeStyle: "short",
@@ -149,6 +189,8 @@ export function SalesSystemLandingPage() {
   const [orders, setOrders] = useState<SalesOrder[]>([]);
   const [isLoading, startLoadingTransition] = useTransition();
   const [isSubmitting, startSubmitTransition] = useTransition();
+  const [shiftStatus, setShiftStatus] = useState<ShiftStatus>(getInitialShiftStatus);
+  const [isCloseShiftModalOpen, setIsCloseShiftModalOpen] = useState(false);
 
   const [customerForm, setCustomerForm] = useState({
     name: "",
@@ -236,6 +278,7 @@ export function SalesSystemLandingPage() {
   }, [showToast]);
 
   const normalizedSearch = search.trim().toLowerCase();
+  const isShiftClosed = Boolean(shiftStatus.closedAt);
   const filteredCustomers = customers.filter((customer) =>
     normalizedSearch
       ? [customer.name, customer.email ?? "", customer.document ?? "", customer.city ?? ""].some(
@@ -276,6 +319,28 @@ export function SalesSystemLandingPage() {
   const monthRevenue = dashboard?.summary.monthRevenueInCents ?? 0;
   const todayRevenue = dashboard?.summary.todayRevenueInCents ?? 0;
   const lowStockCount = dashboard?.summary.lowStockCount ?? 0;
+  const closeShiftSummary = [
+    {
+      label: "Pedidos do dia",
+      value: `${dashboard?.summary.ordersToday ?? 0}`,
+      detail: "vendas registradas no turno atual",
+    },
+    {
+      label: "Receita do dia",
+      value: formatCurrency(todayRevenue),
+      detail: "faturamento consolidado até o fechamento",
+    },
+    {
+      label: "Produtos com alerta",
+      value: `${lowStockCount}`,
+      detail: "itens que exigem atenção no próximo turno",
+    },
+    {
+      label: "Última venda",
+      value: recentOrders[0] ? `#${recentOrders[0].orderNumber}` : "Sem vendas",
+      detail: recentOrders[0] ? formatDate(recentOrders[0].createdAt) : "nenhum pedido emitido hoje",
+    },
+  ];
 
   async function refreshAllData(message?: string) {
     startLoadingTransition(() => {
@@ -327,6 +392,14 @@ export function SalesSystemLandingPage() {
   }
 
   function handleShortcut(action: string) {
+    if (isShiftClosed && action !== "Atualizar dados") {
+      showToast({
+        variant: "warning",
+        message: "O turno está encerrado. Abra um novo turno para voltar a operar.",
+      });
+      return;
+    }
+
     if (action === "Novo cliente") {
       openModal("customer");
       return;
@@ -379,11 +452,8 @@ export function SalesSystemLandingPage() {
 
   function handleProfileAction(action: ProfileAction) {
     if (action === "Encerrar turno") {
-      showToast({
-        variant: "success",
-        message: "Turno encerrado na demonstração. Nenhuma sessão real foi finalizada.",
-      });
       setIsProfileOpen(false);
+      setIsCloseShiftModalOpen(true);
       return;
     }
 
@@ -392,6 +462,35 @@ export function SalesSystemLandingPage() {
       message: `${action} disponível como fluxo de perfil nesta versão.`,
     });
     setIsProfileOpen(false);
+  }
+
+  function closeShift() {
+    const nextStatus = {
+      closedAt: new Date().toISOString(),
+    };
+
+    setShiftStatus(nextStatus);
+    window.localStorage.setItem(SHIFT_STATUS_STORAGE_KEY, JSON.stringify(nextStatus));
+    setModalMode(null);
+    setIsProfileOpen(false);
+    setIsCloseShiftModalOpen(false);
+    setSelectedMenu("Painel");
+    resetForms();
+    showToast({
+      variant: "success",
+      message: "Turno encerrado. As ações operacionais ficaram bloqueadas até abrir um novo turno.",
+    });
+  }
+
+  function reopenShift() {
+    const nextStatus = { closedAt: null };
+
+    setShiftStatus(nextStatus);
+    window.localStorage.setItem(SHIFT_STATUS_STORAGE_KEY, JSON.stringify(nextStatus));
+    showToast({
+      variant: "success",
+      message: "Novo turno iniciado. A operação foi liberada novamente.",
+    });
   }
 
   function updateSaleItem(index: number, field: "productId" | "quantity", value: string) {
@@ -834,10 +933,28 @@ export function SalesSystemLandingPage() {
                 <h1>{content.title}</h1>
                 <p className={styles.lead}>{content.description}</p>
 
+                {isShiftClosed ? (
+                  <div className={styles.shiftAlert}>
+                    <span className={styles.eyebrow}>Turno encerrado</span>
+                    <strong>{formatDateTimeLabel(shiftStatus.closedAt)}</strong>
+                    <p>A operação comercial está bloqueada até a abertura de um novo turno.</p>
+                  </div>
+                ) : null}
+
                 <div className={styles.heroActions}>
-                  <button className={styles.primaryCta} onClick={() => handleShortcut(sideActions[0])} type="button">
+                  <button
+                    className={styles.primaryCta}
+                    disabled={isShiftClosed && sideActions[0] !== "Atualizar dados"}
+                    onClick={() => handleShortcut(sideActions[0])}
+                    type="button"
+                  >
                     {sideActions[0]}
                   </button>
+                  {isShiftClosed ? (
+                    <button className={styles.secondaryCta} onClick={reopenShift} type="button">
+                      Abrir novo turno
+                    </button>
+                  ) : null}
                   <button
                     className={styles.secondaryCta}
                     onClick={() => setIsProfileOpen(true)}
@@ -913,6 +1030,7 @@ export function SalesSystemLandingPage() {
                     <button
                       key={item}
                       className={styles.quickAction}
+                      disabled={isShiftClosed && item !== "Atualizar dados"}
                       onClick={() => handleShortcut(item)}
                       type="button"
                     >
@@ -1233,6 +1351,7 @@ export function SalesSystemLandingPage() {
                 <button
                   className={styles.profileActionButton}
                   key={action}
+                  disabled={action === "Encerrar turno" && isShiftClosed}
                   onClick={() => handleProfileAction(action)}
                   type="button"
                 >
@@ -1240,7 +1359,69 @@ export function SalesSystemLandingPage() {
                 </button>
               ))}
             </div>
+
+            {isShiftClosed ? (
+              <button className={styles.primaryCta} onClick={reopenShift} type="button">
+                Abrir novo turno
+              </button>
+            ) : null}
           </aside>
+        </div>
+      ) : null}
+
+      {isCloseShiftModalOpen ? (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setIsCloseShiftModalOpen(false)}
+          role="presentation"
+        >
+          <div
+            aria-label="Confirmar encerramento de turno"
+            className={styles.modalCard}
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+          >
+            <div className={styles.modalHeader}>
+              <div>
+                <span className={styles.eyebrow}>Encerrar turno</span>
+                <h2>Fechamento operacional</h2>
+                <p>
+                  Confirme o encerramento para bloquear novas ações de cadastro e venda até a
+                  abertura do próximo turno.
+                </p>
+              </div>
+              <button
+                className={styles.modalClose}
+                onClick={() => setIsCloseShiftModalOpen(false)}
+                type="button"
+              >
+                Fechar
+              </button>
+            </div>
+
+            <div className={styles.shiftSummaryGrid}>
+              {closeShiftSummary.map((item) => (
+                <div className={styles.shiftSummaryCard} key={item.label}>
+                  <span>{item.label}</span>
+                  <strong>{item.value}</strong>
+                  <p>{item.detail}</p>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.shiftActionRow}>
+              <button
+                className={styles.secondaryCta}
+                onClick={() => setIsCloseShiftModalOpen(false)}
+                type="button"
+              >
+                Cancelar
+              </button>
+              <button className={styles.primaryCta} onClick={closeShift} type="button">
+                Confirmar encerramento
+              </button>
+            </div>
+          </div>
         </div>
       ) : null}
     </main>
