@@ -198,6 +198,7 @@ function getInitials(name: string) {
 export function SalesSystemLandingPage({ currentUser }: { currentUser: CurrentUser }) {
   const { showToast } = useToast();
   const [selectedMenu, setSelectedMenu] = useState<MenuItem>("Vendas");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [modalMode, setModalMode] = useState<ModalMode>(null);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [search, setSearch] = useState("");
@@ -893,46 +894,65 @@ export function SalesSystemLandingPage({ currentUser }: { currentUser: CurrentUs
           : null;
 
   return (
-    <main className={styles.page}>
+    <main className={`${styles.page} ${isSidebarCollapsed ? styles.pageCollapsed : ""}`}>
       <div className={styles.shell}>
-        <aside className={styles.sidebar}>
-          <div className={styles.brandBlock}>
-            <span className={styles.brandEyebrow}>Sistema de vendas</span>
-            <strong>Atlas ERP</strong>
-            <p>Operação comercial, estoque e financeiro com persistência real em banco.</p>
+        <aside className={`${styles.sidebar} ${isSidebarCollapsed ? styles.sidebarCollapsed : ""}`}>
+          <div className={styles.sidebarHeader}>
+            <div className={styles.brandBlock}>
+              <span className={styles.brandEyebrow}>Sistema de vendas</span>
+              <strong>{isSidebarCollapsed ? "AE" : "Atlas ERP"}</strong>
+              {!isSidebarCollapsed ? (
+                <p>Operação comercial, estoque e financeiro com persistência real em banco.</p>
+              ) : null}
+            </div>
+
+            <button
+              aria-expanded={!isSidebarCollapsed}
+              aria-label={isSidebarCollapsed ? "Expandir menu lateral" : "Colapsar menu lateral"}
+              className={styles.sidebarToggle}
+              onClick={() => setIsSidebarCollapsed((current) => !current)}
+              title={isSidebarCollapsed ? "Expandir menu lateral" : "Colapsar menu lateral"}
+              type="button"
+            >
+              <span aria-hidden="true">{isSidebarCollapsed ? "→" : "←"}</span>
+            </button>
           </div>
 
           <nav className={styles.menu} aria-label="Módulos do sistema">
             {menuItems.map((item) => (
               <button
+                aria-label={item}
                 key={item}
                 className={item === selectedMenu ? styles.menuItemActive : styles.menuItem}
                 onClick={() => setSelectedMenu(item)}
+                title={isSidebarCollapsed ? item : undefined}
                 type="button"
               >
                 <span className={styles.menuIcon} aria-hidden="true">
                   {menuIcons[item]}
                 </span>
-                {item}
+                <span className={styles.menuItemLabel}>{item}</span>
               </button>
             ))}
           </nav>
 
-          <div className={styles.sidebarCard}>
-            <span className={styles.sidebarLabel}>Atalhos reais</span>
-            <div className={styles.shortcutList}>
-              {sideActions.map((item) => (
-                <button
-                  className={styles.shortcutButton}
-                  key={item}
-                  onClick={() => handleShortcut(item)}
-                  type="button"
-                >
-                  {item}
-                </button>
-              ))}
+          {!isSidebarCollapsed ? (
+            <div className={styles.sidebarCard}>
+              <span className={styles.sidebarLabel}>Atalhos reais</span>
+              <div className={styles.shortcutList}>
+                {sideActions.map((item) => (
+                  <button
+                    className={styles.shortcutButton}
+                    key={item}
+                    onClick={() => handleShortcut(item)}
+                    type="button"
+                  >
+                    {item}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
         </aside>
 
         <section className={styles.workspace}>
