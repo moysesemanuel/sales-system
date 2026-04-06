@@ -168,10 +168,13 @@
 }
 
 .searchWrap {
+  align-items: center;
   background: rgba(255, 255, 255, 0.74);
   border: 1px solid var(--line);
   border-radius: 22px;
-  padding: 8px;
+  display: flex;
+  gap: 12px;
+  padding: 8px 12px;
 }
 
 .searchInput {
@@ -181,8 +184,36 @@
   font: inherit;
   min-height: 46px;
   outline: none;
-  padding: 0 12px;
+  padding: 0 4px 0 12px;
   width: 100%;
+}
+
+.searchHint {
+  align-items: center;
+  color: var(--muted);
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.searchHintText {
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.searchIcon {
+  align-items: center;
+  background: rgba(34, 49, 63, 0.08);
+  border: 1px solid rgba(34, 49, 63, 0.1);
+  border-radius: 999px;
+  color: var(--navy);
+  display: inline-flex;
+  font-size: 1rem;
+  height: 28px;
+  justify-content: center;
+  width: 28px;
 }
 
 .profileArea {
@@ -325,6 +356,7 @@
 .quickAction {
   align-items: center;
   border-radius: 16px;
+  cursor: pointer;
   display: inline-flex;
   font-weight: 700;
   justify-content: center;
@@ -354,11 +386,6 @@
   background: rgba(255, 255, 255, 0.72);
   border: 1px solid var(--line);
   color: var(--ink);
-}
-
-.ghostButton,
-.quickAction {
-  cursor: default;
 }
 
 .primaryCta:disabled,
@@ -787,6 +814,16 @@
   .saleItemRow,
   .shiftSummaryGrid {
     grid-template-columns: 1fr;
+  }
+
+  .searchWrap {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .searchHint {
+    justify-content: flex-end;
   }
 
   .heroActions {

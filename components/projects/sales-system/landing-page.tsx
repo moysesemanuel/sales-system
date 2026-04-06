@@ -319,6 +319,10 @@ export function SalesSystemLandingPage() {
   const monthRevenue = dashboard?.summary.monthRevenueInCents ?? 0;
   const todayRevenue = dashboard?.summary.todayRevenueInCents ?? 0;
   const lowStockCount = dashboard?.summary.lowStockCount ?? 0;
+  const profileLabel = isShiftClosed ? "Sessão encerrada" : "Perfil";
+  const profileName = isShiftClosed ? "Turno encerrado" : "Mariana Costa";
+  const profileRole = isShiftClosed ? "Aguardando abertura de novo turno" : "Gestora comercial";
+  const profileAvatar = isShiftClosed ? "TE" : "MC";
   const closeShiftSummary = [
     {
       label: "Pedidos do dia",
@@ -909,6 +913,10 @@ export function SalesSystemLandingPage() {
                 type="search"
                 value={search}
               />
+              <span className={styles.searchHint} aria-hidden="true">
+                <span className={styles.searchHintText}>Buscar</span>
+                <span className={styles.searchIcon}>⌕</span>
+              </span>
             </div>
 
             <button
@@ -918,11 +926,11 @@ export function SalesSystemLandingPage() {
               type="button"
             >
               <div className={styles.profileMeta}>
-                <span>Perfil</span>
-                <strong>Mariana Costa</strong>
-                <small>Gestora comercial</small>
+                <span>{profileLabel}</span>
+                <strong>{profileName}</strong>
+                <small>{profileRole}</small>
               </div>
-              <div className={styles.avatar}>MC</div>
+              <div className={styles.avatar}>{profileAvatar}</div>
             </button>
           </header>
 
@@ -1323,9 +1331,15 @@ export function SalesSystemLandingPage() {
           >
             <div className={styles.profilePanelHeader}>
               <div>
-                <span className={styles.eyebrow}>Conta ativa</span>
-                <h2>Mariana Costa</h2>
-                <p>Gestora comercial com acesso operacional, financeiro e administrativo.</p>
+                <span className={styles.eyebrow}>
+                  {isShiftClosed ? "Turno encerrado" : "Conta ativa"}
+                </span>
+                <h2>{profileName}</h2>
+                <p>
+                  {isShiftClosed
+                    ? "O perfil operacional foi encerrado e o sistema está aguardando a abertura do próximo turno."
+                    : "Gestora comercial com acesso operacional, financeiro e administrativo."}
+                </p>
               </div>
               <button className={styles.modalClose} onClick={() => setIsProfileOpen(false)} type="button">
                 Fechar
@@ -1335,14 +1349,28 @@ export function SalesSystemLandingPage() {
             <div className={styles.profilePanelGrid}>
               <div className={styles.profilePanelCard}>
                 <span>Status da sessão</span>
-                <strong>{isLoading ? "Sincronizando dados" : "Sessão estável"}</strong>
-                <p>Última atualização refletida em todos os módulos do painel.</p>
+                <strong>
+                  {isShiftClosed
+                    ? `Encerrada em ${formatDateTimeLabel(shiftStatus.closedAt)}`
+                    : isLoading
+                      ? "Sincronizando dados"
+                      : "Sessão estável"}
+                </strong>
+                <p>
+                  {isShiftClosed
+                    ? "O operador atual foi desconectado visualmente e o painel está em modo de espera."
+                    : "Última atualização refletida em todos os módulos do painel."}
+                </p>
               </div>
 
               <div className={styles.profilePanelCard}>
                 <span>Escopo atual</span>
                 <strong>{selectedMenu}</strong>
-                <p>Módulo em foco para navegação, consulta e ações rápidas.</p>
+                <p>
+                  {isShiftClosed
+                    ? "A navegação segue disponível para consulta, mas novas ações operacionais ficam bloqueadas."
+                    : "Módulo em foco para navegação, consulta e ações rápidas."}
+                </p>
               </div>
             </div>
 
