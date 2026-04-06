@@ -20,7 +20,7 @@ const menuItems = [
 
 type MenuItem = (typeof menuItems)[number];
 type ModalMode = "customer" | "product" | "sale" | null;
-type ProfileAction = "Minha conta" | "Preferências" | "Segurança" | "Encerrar turno";
+type ProfileAction = "Minha conta" | "Preferências" | "Segurança" | "Encerrar turno" | "Sair";
 
 type DashboardData = {
   summary: {
@@ -107,6 +107,18 @@ type ShiftStatus = {
   closedAt: string | null;
 };
 
+type CurrentUser = {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  createdAt: string;
+  applications: Array<{
+    key: "erp" | "help-desk";
+    label: string;
+  }>;
+};
+
 function getInitialShiftStatus(): ShiftStatus {
   if (typeof window === "undefined") {
     return { closedAt: null };
@@ -177,7 +189,13 @@ function matchesSearch(value: string, search: string) {
   return value.toLowerCase().includes(search.toLowerCase());
 }
 
-export function SalesSystemLandingPage() {
+function getInitials(name: string) {
+  const parts = name.trim().split(/\s+/).filter(Boolean);
+
+  return parts.slice(0, 2).map((part) => part[0]?.toUpperCase() ?? "").join("") || "US";
+}
+
+export function SalesSystemLandingPage({ currentUser }: { currentUser: CurrentUser }) {
   const { showToast } = useToast();
   const [selectedMenu, setSelectedMenu] = useState<MenuItem>("Vendas");
   const [modalMode, setModalMode] = useState<ModalMode>(null);
@@ -191,6 +209,7 @@ export function SalesSystemLandingPage() {
   const [isSubmitting, startSubmitTransition] = useTransition();
   const [shiftStatus, setShiftStatus] = useState<ShiftStatus>(getInitialShiftStatus);
   const [isCloseShiftModalOpen, setIsCloseShiftModalOpen] = useState(false);
+  const [isAccountModalOpen, setIsAccountModalOpen] = useState(false);
 
   const [customerForm, setCustomerForm] = useState({
     name: "",
@@ -226,6 +245,7 @@ export function SalesSystemLandingPage() {
     "Preferências",
     "Segurança",
     "Encerrar turno",
+    "Sair",
   ];
 
   async function loadData() {
@@ -320,9 +340,9 @@ export function SalesSystemLandingPage() {
   const todayRevenue = dashboard?.summary.todayRevenueInCents ?? 0;
   const lowStockCount = dashboard?.summary.lowStockCount ?? 0;
   const profileLabel = isShiftClosed ? "Sessão encerrada" : "Perfil";
-  const profileName = isShiftClosed ? "Turno encerrado" : "Mariana Costa";
-  const profileRole = isShiftClosed ? "Aguardando abertura de novo turno" : "Gestora comercial";
-  const profileAvatar = isShiftClosed ? "TE" : "MC";
+  const profileName = isShiftClosed ? "Turno encerrado" : currentUser.name;
+  const profileRole = isShiftClosed ? "Aguardando abertura de novo turno" : currentUser.role;
+  const profileAvatar = isShiftClosed ? "TE" : getInitials(currentUser.name);
   const closeShiftSummary = [
     {
       label: "Pedidos do dia",
@@ -455,6 +475,18 @@ export function SalesSystemLandingPage() {
   }
 
   function handleProfileAction(action: ProfileAction) {
+    if (action === "Minha conta") {
+      setIsProfileOpen(false);
+      setIsAccountModalOpen(true);
+      return;
+    }
+
+    if (action === "Sair") {
+      window.localStorage.removeItem(SHIFT_STATUS_STORAGE_KEY);
+      window.location.assign("/auth/logout");
+      return;
+    }
+
     if (action === "Encerrar turno") {
       setIsProfileOpen(false);
       setIsCloseShiftModalOpen(true);
@@ -1338,7 +1370,7 @@ export function SalesSystemLandingPage() {
                 <p>
                   {isShiftClosed
                     ? "O perfil operacional foi encerrado e o sistema está aguardando a abertura do próximo turno."
-                    : "Gestora comercial com acesso operacional, financeiro e administrativo."}
+                    : `${currentUser.role} com acesso autenticado pela central de login.`}
                 </p>
               </div>
               <button className={styles.modalClose} onClick={() => setIsProfileOpen(false)} type="button">
@@ -1394,6 +1426,79 @@ export function SalesSystemLandingPage() {
               </button>
             ) : null}
           </aside>
+        </div>
+      ) : null}
+
+      {isAccountModalOpen ? (
+        <div
+          className={styles.modalOverlay}
+          onClick={() => setIsAccountModalOpen(false)}
+          role="presentation"
+        >
+          <div
+            aria-label="Dados da conta do usuário"
+            className={styles.modalCard}
+            onClick={(event) => event.stopPropagation()}
+            role="dialog"
+          >
+            <div className={styles.modalHeader}>
+              <div>
+                <span className={styles.eyebrow}>Minha conta</span>
+                <h2>{currentUser.name}</h2>
+                <p>Dados recebidos da central de login para a sessão atual.</p>
+              </div>
+              <button
+                className={styles.modalClose}
+                onClick={() => setIsAccountModalOpen(false)}
+                type="button"
+              >
+                Fechar
+              </button>
+            </div>
+
+            <div className={styles.shiftSummaryGrid}>
+              <div className={styles.shiftSummaryCard}>
+                <span>Nome</span>
+                <strong>{currentUser.name}</strong>
+                <p>Identidade exibida no sistema durante a sessão autenticada.</p>
+              </div>
+              <div className={styles.shiftSummaryCard}>
+                <span>E-mail</span>
+                <strong>{currentUser.email}</strong>
+                <p>Canal principal vinculado à autenticação externa.</p>
+              </div>
+              <div className={styles.shiftSummaryCard}>
+                <span>Cargo</span>
+                <strong>{currentUser.role}</strong>
+                <p>Papel informado pela central de login para este usuário.</p>
+              </div>
+              <div className={styles.shiftSummaryCard}>
+                <span>ID do usuário</span>
+                <strong>{currentUser.id}</strong>
+                <p>Identificador único recebido da aplicação de autenticação.</p>
+              </div>
+              <div className={styles.shiftSummaryCard}>
+                <span>Cadastro</span>
+                <strong>{formatDateTimeLabel(currentUser.createdAt)}</strong>
+                <p>Data de criação da conta na base central de usuários.</p>
+              </div>
+              <div className={styles.shiftSummaryCard}>
+                <span>Aplicações</span>
+                <strong>{currentUser.applications.map((application) => application.label).join(", ")}</strong>
+                <p>Produtos habilitados para este usuário na central de login.</p>
+              </div>
+            </div>
+
+            <div className={styles.shiftActionRow}>
+              <button
+                className={styles.primaryCta}
+                onClick={() => setIsAccountModalOpen(false)}
+                type="button"
+              >
+                Fechar conta
+              </button>
+            </div>
+          </div>
         </div>
       ) : null}
 

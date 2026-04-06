@@ -8,5 +8,5 @@ export default async function Page() {
     redirectToLogin();
   }
 
-  return <SalesSystemLandingPage />;
+  return <SalesSystemLandingPage currentUser={session.user} />;
 }
