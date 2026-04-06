@@ -3,8 +3,8 @@ import { ToastProvider } from "@/components/shared/toast-provider";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Atlas ERP",
-  description: "Sistema de vendas com clientes, produtos, pedidos, estoque e financeiro.",
+  title: "DaBi ERP",
+  description: "ERP comercial da DaBi Tech com clientes, produtos, pedidos, estoque e financeiro.",
 };
 
 export default function RootLayout({

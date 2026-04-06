@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
+import { DaBiTechLogo } from "@/components/shared/dabi-tech-logo";
 import { useToast } from "@/components/shared/toast-provider";
 import styles from "./landing-page.module.css";
 
@@ -899,10 +900,11 @@ export function SalesSystemLandingPage({ currentUser }: { currentUser: CurrentUs
         <aside className={`${styles.sidebar} ${isSidebarCollapsed ? styles.sidebarCollapsed : ""}`}>
           <div className={styles.sidebarHeader}>
             <div className={styles.brandBlock}>
-              <span className={styles.brandEyebrow}>Sistema de vendas</span>
-              <strong>{isSidebarCollapsed ? "AE" : "Atlas ERP"}</strong>
+              <DaBiTechLogo className={styles.brandLogo} />
+              <span className={styles.brandEyebrow}>ERP comercial</span>
+              <strong>{isSidebarCollapsed ? "DB" : "DaBi ERP"}</strong>
               {!isSidebarCollapsed ? (
-                <p>Operação comercial, estoque e financeiro com persistência real em banco.</p>
+                <p>Operação comercial, estoque e financeiro com a identidade da DaBi Tech.</p>
               ) : null}
             </div>
 
@@ -1170,6 +1172,14 @@ export function SalesSystemLandingPage({ currentUser }: { currentUser: CurrentUs
               </section>
             ) : null}
           </div>
+
+          <footer className={styles.footer}>
+            <div>
+              <strong>DaBi ERP</strong>
+              <p>Este ERP faz parte dos produtos da DaBi Tech | Digital Solutions.</p>
+            </div>
+            <span>Plataforma comercial com vendas, estoque e financeiro integrados.</span>
+          </footer>
         </section>
       </div>
 

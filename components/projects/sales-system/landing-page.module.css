@@ -3,19 +3,22 @@
   --sidebar-width-collapsed: 96px;
   --sidebar-width: var(--sidebar-width-expanded);
   --page-gap: 24px;
-  --bg: #eef2f5;
-  --surface: rgba(255, 255, 255, 0.82);
+  --bg: #eaf4fb;
+  --surface: rgba(255, 255, 255, 0.9);
   --surface-strong: #ffffff;
-  --ink: #16202a;
-  --muted: #647383;
-  --navy: #22313f;
-  --navy-soft: #31475c;
-  --line: rgba(22, 32, 42, 0.08);
-  --sidebar: #1d2731;
-  --sidebar-line: rgba(255, 255, 255, 0.08);
+  --ink: #0d2347;
+  --muted: #56708f;
+  --navy: #0b2a57;
+  --navy-soft: #11437f;
+  --accent: #00b6e6;
+  --accent-soft: rgba(0, 182, 230, 0.14);
+  --line: rgba(11, 42, 87, 0.1);
+  --sidebar: #0b2a57;
+  --sidebar-line: rgba(0, 182, 230, 0.18);
   background:
-    radial-gradient(circle at top left, rgba(49, 71, 92, 0.12), transparent 28%),
-    linear-gradient(180deg, #f7f9fb 0%, var(--bg) 100%);
+    radial-gradient(circle at top left, rgba(0, 182, 230, 0.14), transparent 24%),
+    radial-gradient(circle at top right, rgba(11, 42, 87, 0.1), transparent 26%),
+    linear-gradient(180deg, #f8fbfe 0%, var(--bg) 100%);
   color: var(--ink);
   min-height: 100vh;
   padding: var(--page-gap);
@@ -31,7 +34,9 @@
 }
 
 .sidebar {
-  background: linear-gradient(180deg, #202b35 0%, var(--sidebar) 100%);
+  background:
+    radial-gradient(circle at top, rgba(0, 182, 230, 0.18), transparent 26%),
+    linear-gradient(180deg, #0e376f 0%, var(--sidebar) 58%, #081b38 100%);
   border-right: 1px solid var(--sidebar-line);
   border-radius: 0;
   bottom: 0;
@@ -66,10 +71,17 @@
   min-width: 0;
 }
 
+.brandLogo {
+  display: block;
+  height: auto;
+  max-width: 178px;
+  width: 100%;
+}
+
 .brandEyebrow,
 .eyebrow,
 .sidebarLabel {
-  color: #9cb0c4;
+  color: #77d8f0;
   font-size: 0.76rem;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -82,7 +94,7 @@
 }
 
 .brandBlock p {
-  color: rgba(237, 243, 248, 0.72);
+  color: rgba(237, 243, 248, 0.8);
   line-height: 1.6;
   margin: 0;
 }
@@ -147,15 +159,15 @@
 }
 
 .menuItemActive {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.12);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  background: rgba(0, 182, 230, 0.12);
+  border-color: rgba(0, 182, 230, 0.28);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .menuIcon {
   align-items: center;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 182, 230, 0.2);
   border-radius: 12px;
   color: inherit;
   display: inline-flex;
@@ -173,8 +185,8 @@
 }
 
 .sidebarCard {
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(0, 182, 230, 0.18);
   border-radius: 24px;
   display: grid;
   gap: 14px;
@@ -187,8 +199,8 @@
 }
 
 .shortcutButton {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 182, 230, 0.16);
   border-radius: 14px;
   color: #edf3f8;
   cursor: pointer;
@@ -221,6 +233,10 @@
   justify-items: center;
 }
 
+.sidebarCollapsed .brandLogo {
+  max-width: 56px;
+}
+
 .sidebarCollapsed .brandEyebrow {
   display: none;
 }
@@ -248,7 +264,7 @@
 
 .searchWrap {
   align-items: center;
-  background: rgba(255, 255, 255, 0.74);
+  background: rgba(255, 255, 255, 0.84);
   border: 1px solid var(--line);
   border-radius: 22px;
   display: flex;
@@ -284,8 +300,8 @@
 
 .searchIcon {
   align-items: center;
-  background: rgba(34, 49, 63, 0.08);
-  border: 1px solid rgba(34, 49, 63, 0.1);
+  background: var(--accent-soft);
+  border: 1px solid rgba(0, 182, 230, 0.18);
   border-radius: 999px;
   color: var(--navy);
   display: inline-flex;
@@ -297,7 +313,7 @@
 
 .profileArea {
   align-items: center;
-  background: rgba(255, 255, 255, 0.76);
+  background: rgba(255, 255, 255, 0.84);
   border: 1px solid var(--line);
   border-radius: 22px;
   display: flex;
@@ -333,7 +349,7 @@
 
 .avatar {
   align-items: center;
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--accent) 100%);
   border-radius: 16px;
   color: #f4f8fb;
   display: inline-flex;
@@ -377,6 +393,7 @@
   border-radius: 30px;
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 18px 48px rgba(11, 42, 87, 0.08);
 }
 
 .heroCopy {
@@ -410,8 +427,8 @@
 }
 
 .shiftAlert {
-  background: rgba(255, 245, 230, 0.9);
-  border: 1px solid rgba(176, 108, 28, 0.22);
+  background: rgba(0, 182, 230, 0.1);
+  border: 1px solid rgba(0, 182, 230, 0.22);
   border-radius: 24px;
   display: grid;
   gap: 8px;
@@ -419,12 +436,12 @@
 }
 
 .shiftAlert strong {
-  color: #8a4a14;
+  color: var(--navy);
   font-size: 1.2rem;
 }
 
 .shiftAlert p {
-  color: rgba(73, 46, 17, 0.82);
+  color: rgba(13, 35, 71, 0.8);
   line-height: 1.6;
   margin: 0;
 }
@@ -454,15 +471,15 @@
 }
 
 .primaryCta {
-  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-soft) 100%);
-  box-shadow: 0 18px 36px rgba(34, 49, 63, 0.18);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--accent) 100%);
+  box-shadow: 0 18px 36px rgba(11, 42, 87, 0.22);
   color: #f5f9fc;
 }
 
 .secondaryCta,
 .ghostButton,
 .quickAction {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.82);
   border: 1px solid var(--line);
   color: var(--ink);
 }
@@ -494,7 +511,7 @@
 }
 
 .summaryGrid div {
-  background: rgba(255, 255, 255, 0.74);
+  background: rgba(245, 250, 255, 0.9);
   border: 1px solid var(--line);
   border-radius: 22px;
   display: grid;
@@ -570,7 +587,7 @@
 }
 
 .pipelineCard {
-  background: rgba(255, 255, 255, 0.76);
+  background: rgba(248, 252, 255, 0.92);
   border: 1px solid var(--line);
   border-radius: 24px;
   display: grid;
@@ -596,7 +613,7 @@
 
 .productRow {
   align-items: center;
-  background: rgba(255, 255, 255, 0.74);
+  background: rgba(248, 252, 255, 0.92);
   border: 1px solid var(--line);
   border-radius: 20px;
   display: flex;
@@ -646,7 +663,7 @@
 }
 
 .profilePanel {
-  background: #f9fbfc;
+  background: #f7fbfe;
   border-left: 1px solid var(--line);
   box-shadow: -24px 0 64px rgba(12, 18, 24, 0.18);
   display: grid;
@@ -685,7 +702,7 @@
 }
 
 .profilePanelCard {
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--line);
   border-radius: 24px;
   display: grid;
@@ -708,7 +725,7 @@
 }
 
 .profileActionButton {
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--line);
   border-radius: 18px;
   color: var(--ink);
@@ -747,7 +764,7 @@
 }
 
 .modalCard {
-  background: #f9fbfc;
+  background: #f7fbfe;
   border: 1px solid var(--line);
   border-radius: 28px;
   box-shadow: 0 28px 80px rgba(12, 18, 24, 0.22);
@@ -794,7 +811,7 @@
 
 .formInput,
 .formTextarea {
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--line);
   border-radius: 16px;
   color: var(--ink);
@@ -820,7 +837,7 @@
 }
 
 .shiftSummaryCard {
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.92);
   border: 1px solid var(--line);
   border-radius: 22px;
   display: grid;
@@ -853,6 +870,32 @@
   flex-wrap: wrap;
   gap: 12px;
   justify-content: flex-end;
+}
+
+.footer {
+  align-items: center;
+  background: linear-gradient(135deg, rgba(11, 42, 87, 0.98) 0%, rgba(17, 67, 127, 0.96) 62%, rgba(0, 182, 230, 0.9) 100%);
+  border: 1px solid rgba(0, 182, 230, 0.2);
+  border-radius: 28px;
+  color: #eef8ff;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  margin-top: 4px;
+  padding: 20px 24px;
+}
+
+.footer strong {
+  display: block;
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.footer p,
+.footer span {
+  color: rgba(238, 248, 255, 0.84);
+  line-height: 1.6;
+  margin: 0;
 }
 
 @media (max-width: 1180px) {
@@ -955,6 +998,12 @@
 
   .profilePanel {
     width: 100%;
+  }
+
+  .footer {
+    align-items: start;
+    display: grid;
+    justify-content: stretch;
   }
 
   .modalOverlay {
