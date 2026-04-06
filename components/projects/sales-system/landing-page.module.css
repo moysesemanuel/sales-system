@@ -74,7 +74,7 @@
 .brandLogo {
   display: block;
   height: auto;
-  max-width: 178px;
+  max-width: 210px;
   width: 100%;
 }
 
@@ -234,7 +234,7 @@
 }
 
 .sidebarCollapsed .brandLogo {
-  max-width: 56px;
+  max-width: 68px;
 }
 
 .sidebarCollapsed .brandEyebrow {
@@ -449,13 +449,17 @@
 .primaryCta,
 .secondaryCta,
 .ghostButton,
-.quickAction {
+.quickAction,
+.shortcutButton {
+  appearance: none;
   align-items: center;
+  border: none;
   border-radius: 16px;
   cursor: pointer;
   display: inline-flex;
   font-weight: 700;
   justify-content: center;
+  outline: none;
   min-height: 46px;
   padding: 0 16px;
   text-decoration: none;
@@ -490,6 +494,13 @@
 .quickAction:disabled {
   cursor: not-allowed;
   opacity: 0.64;
+}
+
+.primaryCta:focus-visible,
+.secondaryCta:focus-visible,
+.quickAction:focus-visible,
+.shortcutButton:focus-visible {
+  box-shadow: 0 0 0 3px rgba(0, 182, 230, 0.22);
 }
 
 .summaryCard {

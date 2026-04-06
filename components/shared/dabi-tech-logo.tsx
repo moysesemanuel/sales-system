@@ -8,7 +8,7 @@ export function DaBiTechLogo({ className }: DaBiTechLogoProps) {
       aria-label="DaBi Tech Digital Solutions"
       className={className}
       role="img"
-      viewBox="0 0 800 320"
+      viewBox="120 85 520 120"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g transform="translate(120,85)">
@@ -23,9 +23,9 @@ export function DaBiTechLogo({ className }: DaBiTechLogoProps) {
       <text
         x="285"
         y="145"
-        fill="#0B2A57"
+        fill="#ffffff"
         fontFamily="Inter, system-ui, Arial, sans-serif"
-        fontSize="64"
+        fontSize="68"
         fontWeight="700"
       >
         DaBi Tech
