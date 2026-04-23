@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import { ToastProvider } from "@/components/shared/toast-provider";
 import "./globals.css";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "DaBi ERP",
@@ -14,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body suppressHydrationWarning>
+      <body className={plusJakartaSans.className} suppressHydrationWarning>
         <ToastProvider>{children}</ToastProvider>
       </body>
     </html>

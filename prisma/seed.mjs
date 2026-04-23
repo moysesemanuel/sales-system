@@ -1,3 +1,4 @@
+import { randomBytes, scryptSync } from "node:crypto";
 import { PrismaClient } from "../generated/prisma/index.js";
 
 const prisma = new PrismaClient();
@@ -5,6 +6,13 @@ const prisma = new PrismaClient();
 const SALES_MOVEMENT_IN = "IN";
 const SALES_MOVEMENT_OUT = "OUT";
 const SALES_ORDER_STATUS_PAID = "PAID";
+
+function hashPassword(password) {
+  const salt = randomBytes(16).toString("hex");
+  const derivedKey = scryptSync(password, salt, 64);
+
+  return `scrypt$${salt}$${derivedKey.toString("hex")}`;
+}
 
 async function resetDatabase() {
   await prisma.salesStockMovement.deleteMany();
@@ -256,12 +264,32 @@ async function seedStockMovements(products) {
   });
 }
 
+async function seedAdminUser() {
+  const passwordHash = hashPassword("123456");
+
+  await prisma.user.upsert({
+    where: { email: "admin@dabi.com" },
+    update: {
+      name: "Administrador",
+      passwordHash,
+      role: "ADMIN",
+    },
+    create: {
+      name: "Administrador",
+      email: "admin@dabi.com",
+      passwordHash,
+      role: "ADMIN",
+    },
+  });
+}
+
 async function main() {
   await resetDatabase();
   const customers = await seedCustomers();
   const products = await seedProducts();
   await seedOrders(customers, products);
   await seedStockMovements(products);
+  await seedAdminUser();
 
   console.log("Seed do sistema de vendas concluido com sucesso.");
 }

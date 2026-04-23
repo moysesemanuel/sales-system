@@ -92,3 +92,13 @@ model SalesStockMovement {
   @@index([productId, createdAt])
   @@index([referenceOrderId])
 }
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         String   @default("ADMIN")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
