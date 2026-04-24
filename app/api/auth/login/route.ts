@@ -3,6 +3,7 @@ import { Prisma } from "@/generated/prisma";
 import { createAppSessionToken, createAppUser, setSessionCookie } from "@/lib/auth";
 import { verifyPassword } from "@/lib/password";
 import { prisma } from "@/lib/prisma";
+import { toPrismaHttpError } from "@/lib/prisma-http";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => null);
@@ -48,6 +49,14 @@ export async function POST(request: Request) {
 
     return response;
   } catch (error) {
+    const prismaError = toPrismaHttpError(error);
+    if (prismaError) {
+      return NextResponse.json(
+        { error: prismaError.message },
+        { status: prismaError.status },
+      );
+    }
+
     if (
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2021"

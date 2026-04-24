@@ -21,7 +21,9 @@ export async function getNextSalesOrderNumber() {
   return (result._max.orderNumber ?? 1000) + 1;
 }
 
-export async function ensureSalesSystemSeedData() {
+let seedPromise: Promise<void> | null = null;
+
+async function ensureSalesSystemSeedDataInternal() {
   await Promise.all([
     prisma.salesCustomer.upsert({
       where: { email: "compras@atlasengenharia.com.br" },
@@ -280,6 +282,21 @@ export async function ensureSalesSystemSeedData() {
       ],
     });
   });
+}
+
+export async function ensureSalesSystemSeedData() {
+  if (process.env.SALES_SYSTEM_DISABLE_AUTO_SEED === "true") {
+    return;
+  }
+
+  if (!seedPromise) {
+    seedPromise = ensureSalesSystemSeedDataInternal().catch((error) => {
+      seedPromise = null;
+      throw error;
+    });
+  }
+
+  return seedPromise;
 }
 
 export async function getSalesDashboardData() {

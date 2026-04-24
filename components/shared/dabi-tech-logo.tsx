@@ -1,8 +1,10 @@
 type DaBiTechLogoProps = {
   className?: string;
+  variant?: "light" | "dark";
 };
 
-export function DaBiTechLogo({ className }: DaBiTechLogoProps) {
+export function DaBiTechLogo({ className, variant = "light" }: DaBiTechLogoProps) {
+  const wordmarkFill = variant === "dark" ? "#000000" : "#ffffff";
   return (
     <svg
       aria-label="DaBi Tech Digital Solutions"
@@ -23,7 +25,7 @@ export function DaBiTechLogo({ className }: DaBiTechLogoProps) {
       <text
         x="285"
         y="145"
-        fill="#ffffff"
+        fill={wordmarkFill}
         fontFamily="Inter, system-ui, Arial, sans-serif"
         fontSize="68"
         fontWeight="700"

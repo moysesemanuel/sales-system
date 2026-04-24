@@ -19,7 +19,14 @@ body {
 body {
   background: #08101d;
   color: #f3f7fb;
-  font-family: inherit;
+  font-family:
+    "Plus Jakarta Sans",
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Arial,
+    sans-serif;
   text-rendering: optimizeLegibility;
 }
 

@@ -26,6 +26,48 @@
   grid-template-columns: 236px 236px minmax(0, 1fr);
 }
 
+.dashCard,
+.dashCardWide,
+.accountCard,
+.accountRightPanel,
+.agendaCalendarCard,
+.agendaDayStrip,
+.agendaPanel,
+.indiceOnboardingCard,
+.indiceAccountCard,
+.indiceHelpCard {
+  transition:
+    border-color 180ms ease,
+    box-shadow 200ms ease,
+    background-color 200ms ease;
+}
+
+.dashCard:hover,
+.dashCardWide:hover,
+.accountCard:hover,
+.accountRightPanel:hover,
+.agendaCalendarCard:hover,
+.agendaDayStrip:hover,
+.agendaPanel:hover,
+.indiceOnboardingCard:hover,
+.indiceAccountCard:hover,
+.indiceHelpCard:hover,
+.dashCard:focus-within,
+.dashCardWide:focus-within,
+.accountCard:focus-within,
+.accountRightPanel:focus-within,
+.agendaCalendarCard:focus-within,
+.agendaDayStrip:focus-within,
+.agendaPanel:focus-within,
+.indiceOnboardingCard:focus-within,
+.indiceAccountCard:focus-within,
+.indiceHelpCard:focus-within {
+  border-color: rgba(90, 209, 255, 0.32);
+  box-shadow:
+    0 0 0 1px rgba(90, 209, 255, 0.12),
+    0 16px 46px rgba(0, 0, 0, 0.22);
+}
+
 .primaryRailShell,
 .primaryRail,
 .secondarySidebar,
@@ -99,6 +141,49 @@
   display: block;
   height: 2px;
   width: 18px;
+}
+
+.profileDockButton,
+.profileDockButtonActive {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  height: 50px;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  bottom: 14px;
+  width: 50px;
+  z-index: 3;
+}
+
+.profileDockAvatar {
+  align-items: center;
+  background: linear-gradient(135deg, #5ad1ff, #66e0b6);
+  border-radius: 999px;
+  color: #08101d;
+  display: inline-flex;
+  font-size: 0.92rem;
+  font-weight: 800;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.profileDockButtonActive .profileDockAvatar {
+  box-shadow:
+    0 0 0 2px rgba(90, 209, 255, 0.38),
+    0 0 0 6px rgba(90, 209, 255, 0.14);
+}
+
+.profileDockButton:hover .profileDockAvatar,
+.profileDockButtonActive:hover .profileDockAvatar {
+  box-shadow:
+    0 0 0 2px rgba(90, 209, 255, 0.42),
+    0 0 0 6px rgba(90, 209, 255, 0.18);
 }
 
 .primaryRailTop {
@@ -291,6 +376,91 @@
   overflow: auto;
   padding: 22px 18px 22px 0;
   transition: transform 220ms ease, width 220ms ease;
+}
+
+.secondarySidebarProfileMode {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.secondarySidebarSpacer {
+  flex: 1;
+  min-height: 0;
+}
+
+.profileMenu {
+  display: grid;
+  gap: 6px;
+  padding: 18px 0 12px;
+}
+
+.profileMenuItem,
+.profileMenuItemAccent {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 12px;
+  justify-content: flex-start;
+  min-height: 42px;
+  padding: 0 14px;
+  text-align: left;
+  font: inherit;
+}
+
+.profileMenuItem:hover,
+.profileMenuItemAccent:hover {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(243, 247, 251, 0.95);
+}
+
+.profileMenuItemAccent {
+  color: var(--blue);
+}
+
+.profileMenuIcon {
+  align-items: center;
+  color: rgba(243, 247, 251, 0.7);
+  display: inline-flex;
+  height: 22px;
+  justify-content: center;
+  width: 22px;
+}
+
+.profileMenuItemAccent .profileMenuIcon {
+  color: var(--blue);
+}
+
+.profileMenuText {
+  text-transform: none;
+}
+
+.profileLogoutButton {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 1px solid rgba(243, 247, 251, 0.22);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.92);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 34px;
+  justify-content: center;
+  margin: 0 14px 6px;
+  padding: 0 18px;
+  text-transform: lowercase;
+  width: fit-content;
+}
+
+.profileLogoutButton:hover {
+  border-color: rgba(90, 209, 255, 0.35);
 }
 
 .secondarySidebarHeader {
@@ -548,6 +718,1361 @@
   margin-bottom: 4px;
 }
 
+.indiceRoot {
+  display: grid;
+  gap: 22px;
+  padding: 28px;
+}
+
+.indiceHeaderRow {
+  align-items: start;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+.indiceGreetingBlock {
+  display: grid;
+  gap: 6px;
+}
+
+.indiceTitle {
+  font-size: clamp(2rem, 2.4vw, 2.8rem);
+  letter-spacing: -0.04em;
+  line-height: 1.02;
+  margin: 0;
+}
+
+.indiceTrialLink {
+  color: var(--blue);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.indiceTrialLink:hover {
+  text-decoration: underline;
+}
+
+.indiceProgressCard {
+  align-self: start;
+  display: grid;
+  gap: 10px;
+  min-width: min(520px, 100%);
+}
+
+.indiceProgressTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.indiceProgressBarRow {
+  align-items: end;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  gap: 14px;
+}
+
+.indiceProgressItem {
+  display: grid;
+  gap: 10px;
+}
+
+.indiceProgressTrack {
+  background: rgba(243, 247, 251, 0.14);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.indiceProgressFill {
+  background: linear-gradient(90deg, var(--blue), rgba(90, 209, 255, 0.18));
+  height: 100%;
+}
+
+.indiceProgressLabel {
+  color: rgba(243, 247, 251, 0.86);
+  font-size: 0.95rem;
+}
+
+.indiceProgressPercent {
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 0.95rem;
+  padding-bottom: 22px;
+}
+
+.indiceOnboardingCard {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(149, 177, 214, 0.12);
+  border-radius: 18px;
+  display: grid;
+  grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.indiceOnboardingIntro {
+  background: rgba(149, 177, 214, 0.22);
+  display: flex;
+  flex-direction: column;
+  padding: 22px 22px 18px;
+}
+
+.indiceOnboardingIntroTop {
+  display: grid;
+  gap: 10px;
+}
+
+.indiceOnboardingTitle {
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.indiceOnboardingDescription {
+  color: rgba(243, 247, 251, 0.82);
+  margin: 0;
+  max-width: 44ch;
+}
+
+.indiceOnboardingFooter {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.indiceOnboardingCount {
+  color: rgba(243, 247, 251, 0.86);
+  font-size: 0.95rem;
+}
+
+.indiceOnboardingPager {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.indicePagerButton {
+  align-items: center;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.26);
+  border: 0;
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.92);
+  cursor: pointer;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.indicePagerButton:disabled {
+  cursor: default;
+  opacity: 0.4;
+}
+
+.indiceOnboardingTasks {
+  background: rgba(0, 0, 0, 0.14);
+  display: grid;
+  gap: 10px;
+  padding: 18px 18px 18px 20px;
+}
+
+.indiceTaskBlocks {
+  display: grid;
+  gap: 14px;
+}
+
+.indiceTaskBlock {
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(149, 177, 214, 0.12);
+  border-radius: 16px;
+  padding: 14px 14px 12px;
+}
+
+.indiceTaskBlockClickable {
+  padding: 0;
+}
+
+.indiceTaskBlockButton {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.92);
+  cursor: pointer;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+  padding: 14px 14px 12px;
+  text-align: left;
+  width: 100%;
+  transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.indiceTaskBlockButton:hover {
+  background: rgba(90, 209, 255, 0.08);
+  transform: translateX(2px);
+}
+
+.indiceTaskBlockChevron {
+  color: rgba(243, 247, 251, 0.7);
+}
+
+.indiceTaskBlockHeader {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 38px minmax(0, 1fr) auto;
+}
+
+.indiceTaskBlockOrder {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.84);
+  display: inline-flex;
+  font-size: 0.9rem;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.indiceTaskBlockTitle {
+  color: rgba(243, 247, 251, 0.94);
+  font-size: 1.05rem;
+  line-height: 1.25;
+}
+
+.indiceTaskToggle {
+  align-items: center;
+  appearance: none;
+  background: rgba(90, 209, 255, 0.16);
+  border: 0;
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.92);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: 10px;
+  height: 34px;
+  padding: 0 12px 0 14px;
+  white-space: nowrap;
+}
+
+.indiceTaskToggle:hover {
+  background: rgba(90, 209, 255, 0.22);
+}
+
+.indiceTaskToggle svg {
+  color: rgba(243, 247, 251, 0.92);
+}
+
+.indiceTaskSteps {
+  display: grid;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.indiceTaskStepRow {
+  align-items: center;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(149, 177, 214, 0.1);
+  border-radius: 14px;
+  color: rgba(243, 247, 251, 0.9);
+  cursor: pointer;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 36px minmax(0, 1fr) auto;
+  min-height: 52px;
+  padding: 10px 12px;
+  text-align: left;
+  transition: background-color 180ms ease, transform 180ms ease, border-color 180ms ease;
+}
+
+.indiceTaskStepRow:hover {
+  background: rgba(90, 209, 255, 0.1);
+  border-color: rgba(90, 209, 255, 0.22);
+  transform: translateX(2px);
+}
+
+.indiceTaskStepDot {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.78);
+  display: inline-flex;
+  font-size: 1.1rem;
+  height: 34px;
+  justify-content: center;
+  line-height: 1;
+  width: 34px;
+}
+
+.indiceTaskStepText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.indiceTaskStepChevron {
+  color: rgba(243, 247, 251, 0.7);
+}
+
+.indiceTaskRow {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 16px;
+  color: rgba(243, 247, 251, 0.92);
+  cursor: pointer;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 52px minmax(0, 1fr) auto;
+  min-height: 58px;
+  padding: 8px 12px;
+  text-align: left;
+  transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
+}
+
+.indiceTaskRow:hover {
+  background: rgba(90, 209, 255, 0.1);
+  transform: translateX(2px);
+}
+
+.indiceTaskIconNumber,
+.indiceTaskIconDone {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.indiceTaskIconNumber {
+  background: rgba(0, 0, 0, 0.22);
+  color: rgba(243, 247, 251, 0.84);
+  font-size: 0.95rem;
+}
+
+.indiceTaskIconDone {
+  background: var(--blue);
+  color: #06101f;
+}
+
+.indiceTaskTitle {
+  font-size: 1.05rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.indiceTaskChevron {
+  color: rgba(243, 247, 251, 0.72);
+}
+
+.indiceTrialBar {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(149, 177, 214, 0.12);
+  border-radius: 16px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  padding: 12px 14px;
+}
+
+.indiceTrialPlus {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.24);
+  border-radius: 999px;
+  color: var(--blue);
+  display: inline-flex;
+  height: 36px;
+  justify-content: center;
+  width: 36px;
+}
+
+.indiceTrialPill {
+  background: rgba(90, 209, 255, 0.16);
+  border-radius: 10px;
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 0.9rem;
+  padding: 4px 10px;
+}
+
+.indiceTrialText {
+  color: rgba(243, 247, 251, 0.84);
+  margin: 0;
+}
+
+.indiceTrialAction {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.indiceTrialAction:hover {
+  text-decoration: underline;
+}
+
+.indiceAccountCard {
+  align-items: center;
+  background: rgba(149, 177, 214, 0.18);
+  border: 1px solid rgba(149, 177, 214, 0.14);
+  border-radius: 18px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 260px minmax(0, 1fr) auto;
+  padding: 18px;
+}
+
+.indiceAccountIllustration {
+  background:
+    radial-gradient(circle at 24% 40%, rgba(90, 209, 255, 0.35), transparent 46%),
+    radial-gradient(circle at 68% 52%, rgba(102, 224, 182, 0.28), transparent 52%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.04));
+  border-radius: 14px;
+  height: 160px;
+  width: 100%;
+}
+
+.indiceAccountContent {
+  display: grid;
+  gap: 10px;
+}
+
+.indiceAccountTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.indiceAccountSubtitle {
+  color: rgba(243, 247, 251, 0.88);
+  margin: 0;
+}
+
+.indiceAccountList {
+  color: rgba(243, 247, 251, 0.88);
+  display: grid;
+  gap: 6px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.indiceAccountList li {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+}
+
+.indiceAccountList li::before {
+  color: var(--blue);
+  content: "→";
+  line-height: 1.2;
+}
+
+.indiceAccountButton {
+  appearance: none;
+  background: transparent;
+  border: 1px solid rgba(243, 247, 251, 0.48);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.92);
+  cursor: pointer;
+  font: inherit;
+  min-height: 44px;
+  padding: 0 18px;
+  white-space: nowrap;
+}
+
+.indiceAccountButton:hover {
+  border-color: rgba(90, 209, 255, 0.8);
+  color: #ffffff;
+}
+
+.indiceHelpSection {
+  display: grid;
+  gap: 18px;
+  padding-top: 10px;
+}
+
+.indiceHelpTitle {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.indiceHelpGrid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.indiceHelpCard {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(149, 177, 214, 0.12);
+  border-radius: 16px;
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 120px minmax(0, 1fr);
+  padding: 14px;
+}
+
+.indiceHelpThumb,
+.indiceHelpThumbAlt {
+  border-radius: 12px;
+  height: 86px;
+  width: 120px;
+}
+
+.indiceHelpThumb {
+  background:
+    radial-gradient(circle at 30% 50%, rgba(90, 209, 255, 0.28), transparent 62%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.06));
+}
+
+.indiceHelpThumbAlt {
+  background:
+    radial-gradient(circle at 60% 44%, rgba(102, 224, 182, 0.26), transparent 62%),
+    linear-gradient(135deg, rgba(0, 0, 0, 0.24), rgba(0, 0, 0, 0.06));
+}
+
+.indiceHelpCopy {
+  display: grid;
+  gap: 6px;
+}
+
+.indiceHelpCopy h3 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.indiceHelpCopy p {
+  color: rgba(243, 247, 251, 0.72);
+  margin: 0;
+}
+
+.dashRoot {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: 22px 0 28px;
+}
+
+.dashBody {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+}
+
+.dashHeader {
+  border-bottom: 1px solid rgba(243, 247, 251, 0.12);
+  display: grid;
+  gap: clamp(10px, 1.2vw, 14px);
+  padding: 0 28px clamp(10px, 1.2vw, 14px);
+}
+
+.dashTitle {
+  font-size: clamp(1.35rem, 1.8vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.12;
+  margin: 0;
+}
+
+.dashTabs {
+  display: flex;
+  gap: 18px;
+}
+
+.dashTab,
+.dashTabActive {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.6);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  padding: 10px 6px;
+  position: relative;
+  text-transform: lowercase;
+}
+
+.dashTabActive {
+  color: rgba(243, 247, 251, 0.92);
+}
+
+.dashTabActive::after {
+  background: rgba(243, 247, 251, 0.9);
+  border-radius: 999px;
+  bottom: 0;
+  content: "";
+  height: 2px;
+  left: 6px;
+  position: absolute;
+  right: 6px;
+}
+
+.dashControls {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 28px;
+}
+
+.dashControlsFinance {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0 28px;
+  margin-bottom: 0;
+}
+
+.dashChipUpdated {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(90, 209, 255, 0.55);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.86);
+  display: inline-flex;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px;
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+}
+
+.dashChipUpdated svg {
+  color: rgba(243, 247, 251, 0.72);
+}
+
+.dashChipUpdated:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.dashChipUpdated:hover:not(:disabled) {
+  border-color: rgba(90, 209, 255, 0.85);
+}
+
+.dashChips {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.dashPeriodWrap {
+  display: inline-block;
+  position: relative;
+}
+
+.dashFiltersWrap {
+  display: inline-block;
+  position: relative;
+}
+
+.dashDropdown {
+  background: rgba(8, 16, 29, 0.98);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: 10px;
+  left: 0;
+  margin-top: 10px;
+  min-width: 280px;
+  padding: 12px;
+  position: absolute;
+  top: 100%;
+  width: min(340px, 92vw);
+  z-index: 30;
+}
+
+.dashDropdownFilters {
+  background: rgba(8, 16, 29, 0.98);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 16px;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.45);
+  display: grid;
+  gap: 8px;
+  left: 0;
+  margin-top: 10px;
+  min-width: 320px;
+  padding: 10px;
+  position: absolute;
+  top: 100%;
+  width: min(440px, 92vw);
+  z-index: 30;
+}
+
+.dashDropdownSectionToggle {
+  align-items: center;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 14px;
+  color: rgba(243, 247, 251, 0.9);
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  justify-content: space-between;
+  min-height: 38px;
+  padding: 0 10px;
+  text-align: left;
+  width: 100%;
+}
+
+.dashDropdownSectionToggle:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.dashDropdownChevron {
+  color: rgba(243, 247, 251, 0.56);
+  font-size: 0.9rem;
+}
+
+.dashDropdownPanel {
+  border: 1px solid rgba(243, 247, 251, 0.1);
+  border-radius: 14px;
+  display: grid;
+  gap: 6px;
+  padding: 8px;
+}
+
+.dashCheckboxRow {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 12px;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  display: grid;
+  font: inherit;
+  gap: 10px;
+  grid-template-columns: 18px minmax(0, 1fr);
+  min-height: 32px;
+  padding: 5px 6px;
+  text-align: left;
+  width: 100%;
+}
+
+.dashCheckboxRow:hover {
+  background: rgba(90, 209, 255, 0.08);
+}
+
+.dashCheckboxLabel {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dashCheckboxBox,
+.dashCheckboxBoxChecked,
+.dashCheckboxBoxIndeterminate {
+  border: 1px solid rgba(243, 247, 251, 0.26);
+  border-radius: 4px;
+  height: 14px;
+  width: 14px;
+}
+
+.dashCheckboxBoxChecked {
+  background: rgba(90, 209, 255, 0.85);
+  border-color: rgba(90, 209, 255, 0.85);
+  box-shadow: 0 0 0 1px rgba(90, 209, 255, 0.22) inset;
+}
+
+.dashCheckboxBoxIndeterminate {
+  background: rgba(243, 247, 251, 0.14);
+  border-color: rgba(243, 247, 251, 0.32);
+  position: relative;
+}
+
+.dashCheckboxBoxIndeterminate::after {
+  background: rgba(243, 247, 251, 0.64);
+  border-radius: 2px;
+  content: "";
+  height: 2px;
+  left: 2px;
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.dashDropdownHeader {
+  color: rgba(243, 247, 251, 0.86);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+}
+
+.dashDropdownChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.dashDropdownChip,
+.dashDropdownChipActive {
+  align-items: center;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 34px;
+  justify-content: center;
+  padding: 0 12px;
+  text-transform: lowercase;
+}
+
+.dashDropdownChip:hover,
+.dashDropdownChipActive:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+  color: rgba(243, 247, 251, 0.92);
+}
+
+.dashDropdownChipActive {
+  border-color: rgba(90, 209, 255, 0.78);
+  color: var(--blue);
+  box-shadow: 0 0 0 1px rgba(90, 209, 255, 0.22) inset;
+}
+
+.dashDropdownChipActive:hover {
+  border-color: rgba(90, 209, 255, 0.78);
+  color: var(--blue);
+}
+
+.dashDropdownRange {
+  border-top: 1px solid rgba(243, 247, 251, 0.1);
+  display: grid;
+  gap: 10px;
+  padding-top: 12px;
+}
+
+.dashDateRow {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 14px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto 1fr;
+  height: 46px;
+  padding: 0 12px 0 10px;
+}
+
+.dashDatePill {
+  align-items: center;
+  background: rgba(243, 247, 251, 0.1);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.84);
+  display: inline-flex;
+  font-size: 0.85rem;
+  height: 30px;
+  justify-content: center;
+  padding: 0 10px;
+}
+
+.dashDateInput {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.9);
+  height: 100%;
+  outline: none;
+  padding: 0;
+}
+
+.dashDropdownFooter {
+  align-items: center;
+  border-top: 1px solid rgba(243, 247, 251, 0.1);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  padding-top: 12px;
+}
+
+.dashDropdownApply {
+  align-items: center;
+  appearance: none;
+  background: rgba(41, 111, 255, 0.92);
+  border: 1px solid rgba(41, 111, 255, 0.92);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.94);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 34px;
+  padding: 0 16px;
+  text-transform: lowercase;
+}
+
+.dashDropdownApply:hover {
+  background: rgba(41, 111, 255, 1);
+  border-color: rgba(41, 111, 255, 1);
+}
+
+.dashDropdownCancel {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.78);
+  cursor: pointer;
+  font: inherit;
+  height: 34px;
+  padding: 0 10px;
+  text-transform: lowercase;
+}
+
+.dashDropdownCancel:hover {
+  color: rgba(243, 247, 251, 0.92);
+}
+
+.dashChip,
+.dashChipGhost {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.16);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.86);
+  display: inline-flex;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px;
+}
+
+.dashChip {
+  cursor: pointer;
+}
+
+.dashChip:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+  color: #ffffff;
+}
+
+.dashChip svg {
+  color: var(--blue);
+}
+
+.dashChipGhost {
+  border-color: rgba(243, 247, 251, 0.1);
+  color: rgba(243, 247, 251, 0.74);
+}
+
+.dashChipGhostButton {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.1);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.74);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px;
+  appearance: none;
+  font: inherit;
+}
+
+.dashChipGhostButton:disabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.dashChipGhostButton svg {
+  color: rgba(243, 247, 251, 0.6);
+}
+
+.dashChipGhostButton:hover:not(:disabled) {
+  border-color: rgba(90, 209, 255, 0.35);
+  color: rgba(243, 247, 251, 0.9);
+}
+
+.dashChipGhost svg {
+  color: rgba(243, 247, 251, 0.6);
+}
+
+.dashControlIcon {
+  align-items: center;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.8);
+  cursor: pointer;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.dashControlIcon:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.dashGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding: 0 28px;
+}
+
+.dashCard,
+.dashCardWide {
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 6px;
+  display: grid;
+  gap: 14px;
+  min-height: 280px;
+  padding: 18px;
+}
+
+.dashCardLoading {
+  overflow: hidden;
+  position: relative;
+}
+
+.dashCardLoading::after {
+  animation: dashShimmer 1100ms linear infinite;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.06),
+    rgba(90, 209, 255, 0.08),
+    rgba(255, 255, 255, 0.06),
+    transparent
+  );
+  content: "";
+  inset: 0;
+  position: absolute;
+  transform: translateX(-35%);
+}
+
+@keyframes dashShimmer {
+  0% {
+    transform: translateX(-35%);
+  }
+  100% {
+    transform: translateX(35%);
+  }
+}
+
+.dashCardMap {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.dashCardMap > header {
+  padding: 0 18px;
+}
+
+.dashCardMap .dashCardLink {
+  margin-left: 18px;
+}
+
+.dashCardWide {
+  grid-column: 1 / -1;
+  min-height: auto;
+}
+
+.dashCardHeader h2,
+.dashCardHeaderSimple h2,
+.dashCardHeaderWide h2 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.dashCardHeader {
+  display: grid;
+  gap: 4px;
+}
+
+.dashCardHeader p {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.dashCardHeaderSimple {
+  display: grid;
+  gap: 4px;
+}
+
+.dashCardSubtitle {
+  color: rgba(243, 247, 251, 0.56);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.dashCardStack {
+  grid-template-rows: auto 1fr auto;
+}
+
+.dashCardBody {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+}
+
+.dashGhostArt {
+  background:
+    radial-gradient(circle at 30% 60%, rgba(90, 209, 255, 0.22), transparent 58%),
+    radial-gradient(circle at 70% 40%, rgba(102, 224, 182, 0.16), transparent 62%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+  border-radius: 14px;
+  height: 96px;
+  opacity: 0.35;
+  width: 160px;
+}
+
+.dashCardHeaderWide {
+  display: grid;
+}
+
+.dashEmpty {
+  color: rgba(243, 247, 251, 0.72);
+  margin: 0;
+  max-width: 46ch;
+}
+
+.dashCardLink {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.6);
+  cursor: pointer;
+  font: inherit;
+  justify-self: start;
+  padding: 0;
+  text-transform: lowercase;
+}
+
+.dashCardLink:hover {
+  color: rgba(243, 247, 251, 0.86);
+  text-decoration: underline;
+}
+
+.dashChart {
+  display: grid;
+  gap: 10px;
+}
+
+.dashChartValueRow {
+  display: flex;
+  gap: 16px;
+}
+
+.dashChartYLabel {
+  color: rgba(243, 247, 251, 0.5);
+  font-size: 0.9rem;
+}
+
+.dashChartPlot {
+  border-bottom: 1px solid rgba(243, 247, 251, 0.14);
+  height: 120px;
+  position: relative;
+}
+
+.dashChartLine {
+  background: linear-gradient(90deg, transparent, rgba(90, 209, 255, 0.95), transparent);
+  bottom: 0;
+  height: 2px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.dashChartXRow {
+  color: rgba(243, 247, 251, 0.48);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  font-size: 0.9rem;
+}
+
+.dashFinanceOverviewRow {
+  align-items: end;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  padding-top: 10px;
+}
+
+.dashFinanceKpi {
+  display: grid;
+  gap: 4px;
+}
+
+.dashFinanceKpiValue {
+  color: rgba(243, 247, 251, 0.9);
+  font-size: 1.15rem;
+}
+
+.dashFinanceKpiLabel {
+  color: rgba(243, 247, 251, 0.56);
+  font-size: 0.85rem;
+}
+
+.dashFinanceCashflow {
+  display: grid;
+  gap: 14px;
+}
+
+.dashFinanceCashflowPlot {
+  height: 140px;
+  position: relative;
+}
+
+.dashFinanceCashflowAxisLabel {
+  color: rgba(243, 247, 251, 0.48);
+  font-size: 0.9rem;
+  left: 0;
+  position: absolute;
+  top: 46px;
+}
+
+.dashFinanceCashflowLine {
+  background: rgba(243, 247, 251, 0.26);
+  bottom: 42px;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.dashFinanceCashflowX {
+  color: rgba(243, 247, 251, 0.48);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  font-size: 0.9rem;
+}
+
+.dashFinanceTimeline {
+  display: grid;
+  gap: 12px;
+}
+
+.dashFinanceTimelineTop {
+  color: rgba(243, 247, 251, 0.56);
+  font-size: 0.95rem;
+}
+
+.dashFinanceTimelinePlot {
+  height: 170px;
+  position: relative;
+}
+
+.dashFinanceTimelineX {
+  color: rgba(243, 247, 251, 0.48);
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  font-size: 0.85rem;
+}
+
+.dashMiniBars {
+  display: grid;
+  gap: 10px;
+}
+
+.dashMiniBarsTop {
+  color: rgba(243, 247, 251, 0.84);
+  display: flex;
+  gap: 36px;
+  font-size: 1.1rem;
+}
+
+.dashMiniBarsPlot {
+  height: 120px;
+  position: relative;
+}
+
+.dashMiniBarsBaseline {
+  background: rgba(243, 247, 251, 0.14);
+  bottom: 24px;
+  height: 1px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.dashMiniBarsX {
+  color: rgba(243, 247, 251, 0.48);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  font-size: 0.9rem;
+}
+
+.dashSummaryRow {
+  align-items: center;
+  border-top: 1px solid rgba(243, 247, 251, 0.1);
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  padding-top: 14px;
+}
+
+.dashKpi {
+  display: grid;
+  gap: 2px;
+}
+
+.dashKpiValue {
+  color: rgba(243, 247, 251, 0.9);
+  font-size: 1.1rem;
+}
+
+.dashKpiLabel {
+  color: rgba(243, 247, 251, 0.56);
+  font-size: 0.85rem;
+}
+
+.dashMapWrap {
+  align-items: center;
+  display: grid;
+  justify-items: center;
+  padding: 6px 12px 0;
+  gap: 10px;
+}
+
+.dashBrazilComponent {
+  display: block;
+  height: clamp(300px, 28vw, 520px);
+  width: 100%;
+  --brazil-bg-color: rgba(90, 209, 255, 0.14);
+  --brazil-bg-hover-color: rgba(90, 209, 255, 0.26);
+  --brazil-stroke-color: rgba(90, 209, 255, 0.55);
+  --brazil-stroke-hover-color: rgba(90, 209, 255, 0.95);
+  --brazil-acronym-color: rgba(243, 247, 251, 0.66);
+  --brazil-acronym-hover-color: rgba(243, 247, 251, 0.92);
+  --brazil-acronym-font-family: inherit;
+}
+
+.dashMapHint {
+  color: rgba(243, 247, 251, 0.62);
+  font-size: 0.9rem;
+}
+
+.dashMapHint strong {
+  color: rgb(53, 151, 255);
+  font-weight: 600;
+}
+
 @media (max-width: 1380px) {
   .page {
     grid-template-columns: 50px 236px minmax(0, 1fr);
@@ -561,8 +2086,38 @@
   .summaryGrid,
   .storyGrid,
   .contentGrid,
-  .hero {
+  .hero,
+  .indiceOnboardingCard,
+  .indiceAccountCard {
     grid-template-columns: 1fr;
+  }
+
+  .indiceProgressBarRow {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .indiceProgressPercent {
+    padding-bottom: 0;
+  }
+
+  .indiceAccountButton {
+    justify-self: start;
+  }
+
+  .dashGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .dashSummaryRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashFinanceOverviewRow {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .dashFinanceTimelineX {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -631,5 +2186,4527 @@
   .listRow,
   .profileCard {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Agenda */
+
+.agendaRoot {
+  display: grid;
+  gap: 14px;
+  overflow-x: hidden;
+  padding: 22px 28px;
+}
+
+.agendaHeader {
+  display: grid;
+  gap: 10px;
+}
+
+.agendaHeaderTop {
+  align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+}
+
+.agendaTitle {
+  font-size: clamp(1.7rem, 2.4vw, 2.2rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.agendaSubtitle {
+  color: rgba(243, 247, 251, 0.62);
+  margin: 0;
+}
+
+.agendaTabs {
+  display: flex;
+  gap: 28px;
+  margin: 0;
+  padding: 0;
+}
+
+.agendaTab,
+.agendaTabActive {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.62);
+  cursor: pointer;
+  font: inherit;
+  padding: 8px 0;
+  position: relative;
+  text-transform: lowercase;
+}
+
+.agendaTab:hover {
+  color: rgba(243, 247, 251, 0.86);
+}
+
+.agendaTabActive {
+  color: var(--blue);
+}
+
+.agendaTabActive::after {
+  background: rgba(243, 247, 251, 0.86);
+  border-radius: 999px;
+  bottom: -6px;
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  width: 60px;
+}
+
+.agendaDivider {
+  background: rgba(243, 247, 251, 0.12);
+  height: 1px;
+  width: 100%;
+}
+
+.agendaToolbar {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr auto 1fr;
+  padding: 6px 0 0;
+}
+
+.agendaNavGroup {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+}
+
+.agendaMonthButton {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  font: inherit;
+  height: 34px;
+  width: 34px;
+}
+
+.agendaMonthButton:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.agendaTodayButton {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.62);
+  cursor: pointer;
+  font: inherit;
+  height: 34px;
+  padding: 0 14px;
+  text-transform: lowercase;
+}
+
+.agendaTodayButton:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+  color: rgba(243, 247, 251, 0.86);
+}
+
+.agendaToolbarTitle {
+  color: rgba(243, 247, 251, 0.78);
+  font-size: 1.2rem;
+  text-align: center;
+  text-transform: capitalize;
+}
+
+.agendaViewModes {
+  align-items: center;
+  display: inline-flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.agendaViewMode,
+.agendaViewModeActive {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.62);
+  cursor: pointer;
+  font: inherit;
+  padding: 8px 12px;
+  text-transform: lowercase;
+}
+
+.agendaViewMode:hover {
+  color: rgba(243, 247, 251, 0.86);
+}
+
+.agendaViewModeActive {
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  color: var(--blue);
+}
+
+.agendaLayout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.agendaLayoutWithPanel {
+  grid-template-columns: minmax(0, 1fr) 340px;
+}
+
+.agendaCalendarCard {
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.agendaWeekdays {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  background: rgba(0, 0, 0, 0.18);
+  border-bottom: 1px solid rgba(243, 247, 251, 0.08);
+}
+
+.agendaWeekday {
+  color: rgba(243, 247, 251, 0.58);
+  font-size: 0.85rem;
+  padding: 10px 12px;
+  text-transform: lowercase;
+}
+
+.agendaGrid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+.agendaWeekWrap {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.agendaWeekHeaderRow {
+  display: grid;
+  grid-template-columns: 56px repeat(7, minmax(0, 1fr));
+  background: rgba(0, 0, 0, 0.18);
+  border-bottom: 1px solid rgba(243, 247, 251, 0.1);
+}
+
+.agendaWeekCorner {
+  border-right: 1px solid rgba(243, 247, 251, 0.08);
+}
+
+.agendaWeekHeader,
+.agendaWeekHeaderActive {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid rgba(243, 247, 251, 0.08);
+  color: rgba(243, 247, 251, 0.72);
+  cursor: pointer;
+  font: inherit;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.agendaWeekHeaderActive {
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(243, 247, 251, 0.88);
+}
+
+.agendaWeekHeader:hover {
+  color: rgba(243, 247, 251, 0.9);
+}
+
+.agendaWeekGrid {
+  display: grid;
+  grid-auto-rows: var(--agendaHourHeight, 48px);
+  max-height: 520px;
+  overflow: auto;
+  position: relative;
+}
+
+.agendaWeekRow {
+  display: grid;
+  grid-template-columns: 56px repeat(7, minmax(0, 1fr));
+}
+
+.agendaWeekTime {
+  border-right: 1px solid rgba(243, 247, 251, 0.08);
+  border-bottom: 1px solid rgba(243, 247, 251, 0.06);
+  color: rgba(243, 247, 251, 0.62);
+  font-size: 0.9rem;
+  padding: 10px 10px;
+  text-align: center;
+}
+
+.agendaWeekCell,
+.agendaWeekCellToday {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid rgba(243, 247, 251, 0.06);
+  border-bottom: 1px dashed rgba(243, 247, 251, 0.12);
+  cursor: pointer;
+  display: grid;
+  gap: 6px;
+  padding: 8px 10px;
+  text-align: left;
+  align-content: start;
+}
+
+.agendaWeekCellToday {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.agendaWeekCell:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.agendaNowLine {
+  border-top: 2px solid rgba(90, 209, 255, 0.92);
+  left: 56px;
+  pointer-events: none;
+  position: absolute;
+  right: 0;
+  z-index: 5;
+}
+
+.agendaNowLine::before {
+  background: rgba(90, 209, 255, 0.92);
+  border-radius: 999px;
+  content: "";
+  height: 8px;
+  left: -4px;
+  position: absolute;
+  top: -5px;
+  width: 8px;
+}
+
+.agendaWeekPill {
+  background: rgba(90, 209, 255, 0.12);
+  border: 1px solid rgba(90, 209, 255, 0.2);
+  border-radius: 10px;
+  color: rgba(243, 247, 251, 0.92);
+  display: block;
+  font-size: 0.88rem;
+  overflow: hidden;
+  padding: 6px 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agendaWeekPillTime {
+  color: rgba(243, 247, 251, 0.74);
+  font-size: 0.82rem;
+}
+
+.agendaDayWrap {
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.agendaDayHeaderRow {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  background: rgba(0, 0, 0, 0.18);
+  border-bottom: 1px solid rgba(243, 247, 251, 0.1);
+}
+
+.agendaDayHeader {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.88);
+  cursor: pointer;
+  font: inherit;
+  padding: 8px 10px;
+  text-align: center;
+}
+
+.agendaDayGrid {
+  display: grid;
+  grid-auto-rows: var(--agendaHourHeight, 48px);
+  max-height: 520px;
+  overflow: auto;
+  position: relative;
+}
+
+.agendaDayRow {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+}
+
+.agendaDayCell {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px dashed rgba(243, 247, 251, 0.12);
+  cursor: pointer;
+  display: grid;
+  gap: 6px;
+  padding: 8px 10px;
+  text-align: left;
+  align-content: start;
+}
+
+.agendaDayCell:hover {
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.agendaCell {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-right: 1px solid rgba(243, 247, 251, 0.06);
+  border-bottom: 1px solid rgba(243, 247, 251, 0.06);
+  color: rgba(243, 247, 251, 0.9);
+  cursor: pointer;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 8px;
+  min-height: 118px;
+  padding: 10px 10px 8px;
+  text-align: left;
+}
+
+.agendaCell:nth-child(7n) {
+  border-right: 0;
+}
+
+.agendaCellOutside {
+  color: rgba(243, 247, 251, 0.35);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.agendaCell:hover {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.agendaCellSelected {
+  background: rgba(90, 209, 255, 0.07);
+  box-shadow: inset 0 0 0 1px rgba(90, 209, 255, 0.22);
+}
+
+.agendaCellToday .agendaCellDay {
+  color: rgba(90, 209, 255, 0.92);
+}
+
+.agendaCellTop {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.agendaCellDay {
+  font-weight: 500;
+}
+
+.agendaCellDot {
+  background: rgba(90, 209, 255, 0.85);
+  border-radius: 999px;
+  height: 6px;
+  width: 6px;
+}
+
+.agendaCellBody {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.agendaApptRow {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.08);
+  border-radius: 10px;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 8px;
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.agendaApptRow:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.agendaApptTime {
+  color: rgba(243, 247, 251, 0.64);
+  font-size: 0.82rem;
+}
+
+.agendaApptText {
+  font-size: 0.88rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agendaApptUser {
+  color: rgba(243, 247, 251, 0.5);
+}
+
+.agendaMore {
+  color: rgba(243, 247, 251, 0.52);
+  font-size: 0.85rem;
+  padding-left: 2px;
+}
+
+.agendaPanel {
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 10px;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 540px;
+  overflow: hidden;
+  position: sticky;
+  top: 18px;
+}
+
+.agendaPanelHeader {
+  align-items: center;
+  border-bottom: 1px solid rgba(243, 247, 251, 0.08);
+  display: flex;
+  justify-content: space-between;
+  padding: 14px 14px 12px;
+}
+
+.agendaPanelTitle {
+  font-size: 1.02rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.agendaPanelClose {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.78);
+  cursor: pointer;
+  font: inherit;
+  height: 30px;
+  width: 30px;
+}
+
+.agendaPanelClose:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.agendaPanelBody {
+  display: grid;
+  gap: 12px;
+  overflow-x: hidden;
+  padding: 14px;
+  align-content: start;
+}
+
+.agendaFieldGroup {
+  display: grid;
+  gap: 6px;
+}
+
+.agendaLabel {
+  color: rgba(243, 247, 251, 0.6);
+  font-size: 0.85rem;
+}
+
+.agendaInput,
+.agendaSelect,
+.agendaTextarea {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 12px;
+  box-sizing: border-box;
+  color: rgba(243, 247, 251, 0.9);
+  font: inherit;
+  min-width: 0;
+  padding: 10px 12px;
+  width: 100%;
+}
+
+.agendaSelect {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5 10 12l4.5-4.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.68' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  padding-right: 42px;
+}
+
+.agendaTextarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.agendaInput:focus,
+.agendaSelect:focus,
+.agendaTextarea:focus {
+  outline: none;
+  border-color: rgba(90, 209, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(90, 209, 255, 0.12);
+}
+
+.agendaTimeRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.agendaHint {
+  color: rgba(243, 247, 251, 0.48);
+  font-size: 0.82rem;
+}
+
+.agendaPanelFooter {
+  border-top: 1px solid rgba(243, 247, 251, 0.08);
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  padding: 14px;
+}
+
+.agendaPrimary {
+  appearance: none;
+  background: rgba(90, 209, 255, 0.92);
+  border: 0;
+  border-radius: 999px;
+  color: #06101d;
+  cursor: pointer;
+  font: inherit;
+  height: 38px;
+  padding: 0 16px;
+}
+
+.agendaPrimary:hover {
+  background: rgba(90, 209, 255, 1);
+}
+
+.agendaSecondary {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.72);
+  cursor: pointer;
+  font: inherit;
+  height: 38px;
+  padding: 0 8px;
+}
+
+.agendaSecondary:hover {
+  color: rgba(243, 247, 251, 0.92);
+  text-decoration: underline;
+}
+
+.agendaDayStrip {
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 10px;
+  padding: 12px 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.agendaDayStripTitle {
+  color: rgba(243, 247, 251, 0.82);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.agendaDayStripList {
+  display: grid;
+  gap: 10px;
+}
+
+.agendaDayStripEmpty {
+  color: rgba(243, 247, 251, 0.58);
+}
+
+.agendaDayStripItem {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 12px;
+  color: rgba(243, 247, 251, 0.9);
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 10px;
+  padding: 10px 12px;
+  text-align: left;
+}
+
+.agendaDayStripItem:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.agendaDayStripTime {
+  color: rgba(243, 247, 251, 0.64);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.agendaDayStripText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.agendaDayStripUser {
+  color: rgba(243, 247, 251, 0.5);
+}
+
+.agendaDayStripChevron {
+  color: rgba(243, 247, 251, 0.45);
+  font-size: 1.2rem;
+}
+
+@media (max-width: 980px) {
+  .agendaLayoutWithPanel {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .agendaPanel {
+    position: fixed;
+    inset: auto 14px 14px 64px;
+    top: auto;
+    max-height: calc(100vh - 28px);
+    z-index: 20;
+    backdrop-filter: blur(18px);
+  }
+}
+
+/* Minha Conta */
+
+.accountRoot {
+  align-content: start;
+  display: grid;
+  gap: 14px;
+  overflow-x: hidden;
+  padding: 22px 28px;
+}
+
+.accountHeader {
+  border-bottom: 1px solid rgba(243, 247, 251, 0.12);
+  padding-bottom: 10px;
+}
+
+.accountPageTitle {
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin: 0;
+  padding: 8px 0 2px;
+}
+
+.accountTopbar {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  padding: 2px 0 6px;
+}
+
+.accountTopbarLeft {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  min-width: 0;
+}
+
+.accountBackButton {
+  align-items: center;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.9);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px 1px 10px;
+  text-transform: lowercase;
+  font: inherit;
+}
+
+.accountBackButton:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.accountBackIcon {
+  align-items: center;
+  background: rgba(90, 209, 255, 0.16);
+  border: 1px solid rgba(90, 209, 255, 0.25);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.92);
+  display: inline-flex;
+  height: 22px;
+  justify-content: center;
+  width: 22px;
+  font-size: 0.95rem;
+  line-height: 1;
+}
+
+.accountBreadcrumb {
+  align-items: center;
+  color: rgba(243, 247, 251, 0.55);
+  display: inline-flex;
+  gap: 10px;
+  min-width: 0;
+  text-transform: lowercase;
+}
+
+.accountBreadcrumbDim {
+  color: rgba(243, 247, 251, 0.55);
+}
+
+.accountBreadcrumbStrong {
+  color: rgba(243, 247, 251, 0.82);
+}
+
+.accountBreadcrumbSep {
+  color: rgba(243, 247, 251, 0.25);
+}
+
+.accountTopbarRight {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+}
+
+.accountActionChip,
+.accountActionChipPrimary {
+  align-items: center;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 34px;
+  padding: 0 12px 1px;
+  text-transform: lowercase;
+}
+
+.accountActionChip:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.accountActionChipPrimary {
+  border-color: rgba(90, 209, 255, 0.42);
+  background: rgba(90, 209, 255, 0.12);
+  color: rgba(243, 247, 251, 0.92);
+}
+
+.accountActionChipPrimary:hover {
+  border-color: rgba(90, 209, 255, 0.55);
+}
+
+.accountEllipsis {
+  color: rgba(243, 247, 251, 0.62);
+  letter-spacing: 0.12em;
+  margin-left: 6px;
+}
+
+.accountTabs {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+
+.accountTab {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.6);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  padding: 10px 6px;
+  position: relative;
+  text-transform: lowercase;
+}
+
+.accountTab:hover {
+  color: rgba(243, 247, 251, 0.86);
+}
+
+.accountTabActive,
+.accountTabDisabled {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.6);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  padding: 10px 6px;
+  position: relative;
+  text-transform: lowercase;
+}
+
+.accountTabActive {
+  color: rgba(243, 247, 251, 0.92);
+}
+
+.accountTabActive::after {
+  background: rgba(243, 247, 251, 0.9);
+  border-radius: 999px;
+  bottom: 0;
+  content: "";
+  height: 2px;
+  left: 6px;
+  position: absolute;
+  right: 6px;
+}
+
+.accountTabDisabled {
+  cursor: default;
+  opacity: 0.55;
+}
+
+.accountTabDisabled:disabled {
+  cursor: default;
+}
+
+.accountStack {
+  display: grid;
+  gap: 14px;
+}
+
+.accountPaymentRoot {
+  display: grid;
+  gap: 14px;
+  max-width: 1040px;
+}
+
+.accountKpiRow {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 180px));
+  gap: 18px;
+  padding-top: 6px;
+}
+
+.accountKpi {
+  display: grid;
+  gap: 4px;
+}
+
+.accountKpiLabel {
+  color: rgba(243, 247, 251, 0.62);
+  font-size: 0.92rem;
+}
+
+.accountKpiValue {
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.accountSectionDivider {
+  background: rgba(243, 247, 251, 0.12);
+  height: 1px;
+  width: 100%;
+  margin: 4px 0;
+}
+
+.accountPaymentIntro {
+  display: grid;
+  gap: 2px;
+  padding-top: 2px;
+}
+
+.accountPaymentIntro h2 {
+  font-size: 1.35rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.accountPaymentIntro p {
+  color: rgba(243, 247, 251, 0.92);
+  margin: 0;
+}
+
+.accountPaymentParagraph {
+  color: rgba(243, 247, 251, 0.86);
+  margin: 0;
+  max-width: 100ch;
+}
+
+.accountPlanCta {
+  align-items: center;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.12);
+  border: 0;
+  border-radius: 10px;
+  color: rgba(243, 247, 251, 0.92);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 12px;
+  height: 74px;
+  padding: 0 18px;
+  text-transform: lowercase;
+  font: inherit;
+  width: min(360px, 100%);
+}
+
+.accountPlanCtaIcon {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.22);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.9);
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.accountPlanCta:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.accountPaymentHelp {
+  color: rgba(243, 247, 251, 0.92);
+  margin-top: -6px;
+}
+
+.accountPaymentSectionTitle {
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.accountPayMethod {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 10px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 96px minmax(0, 1fr);
+  padding: 14px;
+  width: min(440px, 100%);
+}
+
+.accountPayIconBox {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: rgba(243, 247, 251, 0.92);
+  display: flex;
+  height: 86px;
+  justify-content: center;
+  width: 96px;
+}
+
+.accountPayText {
+  display: grid;
+  gap: 4px;
+}
+
+.accountPayTitle {
+  color: rgba(243, 247, 251, 0.92);
+  font-weight: 600;
+}
+
+.accountPaySubtitle {
+  color: rgba(243, 247, 251, 0.86);
+}
+
+.accountPayOptionRow {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+}
+
+.accountPayOptionIcon {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.82);
+  display: inline-flex;
+  height: 26px;
+  justify-content: center;
+  width: 26px;
+}
+
+.accountPayOptionLabel {
+  color: rgba(243, 247, 251, 0.86);
+  text-transform: lowercase;
+}
+
+.accountPayOptionBadge {
+  background: rgba(90, 209, 255, 0.92);
+  border-radius: 999px;
+  color: #06101d;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 4px 10px 5px;
+  text-transform: lowercase;
+}
+
+.accountPayOptionButton {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 10px;
+  padding: 8px 0;
+  text-transform: lowercase;
+  font: inherit;
+}
+
+.accountPayOptionButton:hover .accountPayOptionLabel {
+  color: rgba(90, 209, 255, 0.92);
+}
+
+.accountPaymentLayout {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: start;
+}
+
+.accountPaymentLayoutOpen {
+  grid-template-columns: minmax(0, 1fr) clamp(320px, 28vw, 420px);
+}
+
+.accountPaymentMain {
+  min-width: 0;
+}
+
+.accountRightPanel {
+  align-self: start;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+  padding: 18px;
+  position: sticky;
+  top: 18px;
+  max-height: calc(100vh - 60px);
+}
+
+.accountRightHeader {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.accountRightHeaderCopy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.accountRightHeaderCopy h2 {
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.accountRightHeaderCopy p {
+  color: rgba(243, 247, 251, 0.68);
+  margin: 0;
+}
+
+.accountRightClose {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.72);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  font: inherit;
+  padding: 2px 0;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.accountRightClose:hover {
+  color: rgba(243, 247, 251, 0.9);
+}
+
+.accountRightCloseX {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  display: inline-flex;
+  height: 26px;
+  justify-content: center;
+  line-height: 1;
+  width: 26px;
+  font-size: 1.05rem;
+  transform: translateY(-1px);
+}
+
+.accountRightBody {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.accountSecureField {
+  position: relative;
+  min-width: 0;
+}
+
+.accountSecureField .accountInput {
+  padding-right: 44px;
+}
+
+.accountSecureIcon {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.78);
+  display: inline-flex;
+  height: 30px;
+  justify-content: center;
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  pointer-events: none;
+}
+
+.accountRightFooter {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  margin-top: auto;
+  padding-top: 6px;
+}
+
+.accountRightFooter .accountSaveButton {
+  height: 38px;
+}
+
+.accountRightFooter .accountCancelButton {
+  height: 38px;
+}
+
+.accountBillingIntro {
+  display: grid;
+  gap: 6px;
+}
+
+.accountBillingIntro h2 {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.accountBillingIntro p {
+  color: rgba(243, 247, 251, 0.72);
+  margin: 0;
+  max-width: 90ch;
+}
+
+.accountBillingForm {
+  display: grid;
+  gap: 14px;
+}
+
+.accountSectionTitle {
+  color: rgba(243, 247, 251, 0.9);
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin-top: 6px;
+}
+
+.accountField {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.accountLabel {
+  color: rgba(243, 247, 251, 0.62);
+  font-size: 0.92rem;
+}
+
+.accountInput,
+.accountSelect {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: rgba(243, 247, 251, 0.92);
+  font: inherit;
+  height: 44px;
+  padding: 0 14px 1px;
+  width: 100%;
+  min-width: 0;
+}
+
+.accountSelect {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5 10 12l4.5-4.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.68' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  padding-right: 42px;
+}
+
+.accountInput:focus,
+.accountSelect:focus {
+  outline: none;
+  border-color: rgba(90, 209, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(90, 209, 255, 0.12);
+}
+
+.accountInput:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.accountHint {
+  color: rgba(243, 247, 251, 0.48);
+  font-size: 0.85rem;
+}
+
+.accountGrid2 {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.accountGrid2Wide {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) 180px;
+}
+
+.accountGrid3 {
+  align-items: end;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+}
+
+.accountGrid3Address {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 240px minmax(0, 1fr) 120px;
+}
+
+.accountCheckbox {
+  align-items: center;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 10px;
+  padding-bottom: 10px;
+  user-select: none;
+}
+
+.accountCheckbox input {
+  accent-color: var(--blue);
+  height: 16px;
+  width: 16px;
+}
+
+.accountFooterBar {
+  align-items: center;
+  backdrop-filter: blur(12px);
+  background: rgba(9, 17, 31, 0.88);
+  border-top: 1px solid rgba(243, 247, 251, 0.12);
+  bottom: 0;
+  display: flex;
+  gap: 12px;
+  left: 0;
+  padding: 16px 28px;
+  position: sticky;
+  z-index: 15;
+}
+
+.accountSaveButton {
+  appearance: none;
+  background: rgba(90, 209, 255, 0.92);
+  border: 0;
+  border-radius: 999px;
+  color: #06101d;
+  cursor: pointer;
+  font: inherit;
+  height: 38px;
+  padding: 0 18px 1px;
+  text-transform: lowercase;
+}
+
+.accountSaveButton:hover {
+  background: rgba(90, 209, 255, 1);
+}
+
+.accountCancelButton {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.78);
+  cursor: pointer;
+  font: inherit;
+  height: 38px;
+  padding: 0 8px 1px;
+  text-transform: lowercase;
+}
+
+.accountCancelButton:hover {
+  color: rgba(243, 247, 251, 0.92);
+  text-decoration: underline;
+}
+
+.accountCard {
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 6px;
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
+
+.accountCardHeader h2,
+.accountCardHeaderRow h2 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.accountCardHeader {
+  display: grid;
+}
+
+.accountCardHeaderRow {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.accountLink {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.accountLink:hover {
+  text-decoration: underline;
+}
+
+.accountGrid4 {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.accountMetric {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.accountMetricLabel {
+  align-items: center;
+  color: rgba(243, 247, 251, 0.62);
+  display: inline-flex;
+  gap: 6px;
+  font-size: 0.92rem;
+  min-width: 0;
+}
+
+.accountMetricLabel span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountMetricValue {
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 1.2rem;
+  letter-spacing: -0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountInfoIcon {
+  color: rgba(243, 247, 251, 0.52);
+}
+
+.accountProgress {
+  display: grid;
+  gap: 8px;
+  min-width: 0;
+}
+
+.accountProgressTop {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  min-width: 0;
+}
+
+.accountProgressLabel {
+  color: rgba(243, 247, 251, 0.62);
+  font-size: 0.92rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountProgressValue {
+  color: rgba(243, 247, 251, 0.62);
+  font-size: 0.92rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.accountProgressTrack {
+  background: rgba(0, 0, 0, 0.22);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  height: 10px;
+  overflow: hidden;
+}
+
+.accountProgressFill {
+  background: linear-gradient(90deg, var(--blue), rgba(90, 209, 255, 0.18));
+  height: 100%;
+  width: 0;
+}
+
+.accountNote {
+  color: rgba(243, 247, 251, 0.62);
+  margin: 0;
+  max-width: 90ch;
+}
+
+.accountLinkInline {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.accountLinkInline:hover {
+  text-decoration: underline;
+}
+
+.accountInlineBlock {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+}
+
+.accountInlineMuted {
+  color: rgba(243, 247, 251, 0.62);
+  font-size: 0.92rem;
+}
+
+.accountInlineLink {
+  align-items: center;
+  color: var(--blue);
+  display: inline-flex;
+  gap: 6px;
+  text-decoration: none;
+}
+
+.accountInlineLink:hover {
+  text-decoration: underline;
+}
+
+.accountInlineIcon {
+  color: rgba(243, 247, 251, 0.62);
+}
+
+.accountInlineValue {
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 1.1rem;
+}
+
+.accountSpacer {
+  display: block;
+}
+
+@media (max-width: 1080px) {
+  .accountGrid4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .accountGrid3Address {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 720px) {
+  .accountRoot {
+    padding: 18px;
+  }
+
+  .accountGrid4 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .accountGrid2,
+  .accountGrid2Wide,
+  .accountGrid3,
+  .accountGrid3Address {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .accountTopbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .accountTopbarRight {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .accountFooterBar {
+    padding: 14px 18px;
+  }
+}
+
+@media (max-width: 980px) {
+  .accountPaymentLayoutOpen {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .accountRightPanel {
+    position: fixed;
+    inset: 84px 14px 14px 64px;
+    top: 84px;
+    max-height: calc(100vh - 98px);
+    z-index: 30;
+    backdrop-filter: blur(18px);
+  }
+}
+
+/* Integrações */
+
+.integrationsRoot {
+  align-content: start;
+  display: grid;
+  gap: 18px;
+  overflow-x: hidden;
+  padding: 22px 28px 28px;
+}
+
+.integrationsHeader {
+  border-bottom: 1px solid rgba(243, 247, 251, 0.12);
+  display: grid;
+  gap: 12px;
+  padding-bottom: 14px;
+}
+
+.integrationsTitle {
+  font-size: 1.35rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.integrationsHeaderRow {
+  align-items: center;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(280px, 440px) minmax(0, 1fr);
+}
+
+.integrationsSearchWrap {
+  position: relative;
+  min-width: 0;
+}
+
+.integrationsSearch {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 12px;
+  color: rgba(243, 247, 251, 0.88);
+  font: inherit;
+  height: 40px;
+  padding: 0 44px 1px 14px;
+  width: 100%;
+  min-width: 0;
+}
+
+.integrationsSearch:focus {
+  outline: none;
+  border-color: rgba(90, 209, 255, 0.55);
+  box-shadow: 0 0 0 3px rgba(90, 209, 255, 0.12);
+}
+
+.integrationsSearchIcon {
+  align-items: center;
+  color: rgba(243, 247, 251, 0.55);
+  display: inline-flex;
+  height: 100%;
+  justify-content: center;
+  position: absolute;
+  right: 12px;
+  top: 0;
+  width: 28px;
+  pointer-events: none;
+}
+
+.integrationsChips {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.integrationsChipActive {
+  background: rgba(90, 209, 255, 0.1);
+  border-color: rgba(90, 209, 255, 0.55);
+  color: rgba(243, 247, 251, 0.94);
+}
+
+.integrationsIntro {
+  display: grid;
+  gap: 6px;
+  max-width: 88ch;
+  padding-top: 6px;
+}
+
+.integrationsIntro h2 {
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.integrationsIntro p {
+  color: rgba(243, 247, 251, 0.72);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.integrationsGrid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.integrationCard {
+  align-items: center;
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 6px;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 56px minmax(0, 1fr) auto;
+  min-width: 0;
+  padding: 14px 16px;
+}
+
+.integrationCard:hover {
+  border-color: rgba(90, 209, 255, 0.24);
+}
+
+.integrationLogo {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  color: rgba(9, 17, 31, 0.92);
+  display: inline-flex;
+  height: 46px;
+  justify-content: center;
+  width: 46px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+
+.integrationLogo img {
+  display: block;
+  height: 28px;
+  width: 28px;
+  object-fit: contain;
+}
+
+.integrationLogo span {
+  font-size: 1.05rem;
+}
+
+.integrationMeta {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.integrationNameRow {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  min-width: 0;
+}
+
+.integrationName {
+  color: rgba(243, 247, 251, 0.92);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.integrationKind {
+  color: rgba(243, 247, 251, 0.6);
+  font-size: 0.92rem;
+  text-transform: lowercase;
+}
+
+.integrationBadge {
+  background: rgba(41, 111, 255, 0.92);
+  border-radius: 6px;
+  color: rgba(243, 247, 251, 0.94);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px 4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.integrationInstall {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.42);
+  cursor: pointer;
+  font: inherit;
+  padding: 8px 6px;
+  text-transform: lowercase;
+}
+
+.integrationInstall:hover {
+  color: rgba(243, 247, 251, 0.78);
+}
+
+.integrationsFooterHint {
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+
+@media (max-width: 980px) {
+  .integrationsHeaderRow {
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+  }
+
+  .integrationsChips {
+    justify-content: flex-start;
+  }
+}
+
+/* Upgrade de plano */
+
+.upgradeRoot {
+  align-content: start;
+  display: grid;
+  gap: 18px;
+  overflow-x: hidden;
+  padding: 22px 28px 28px;
+}
+
+.upgradeHeader {
+  display: grid;
+  gap: 14px;
+}
+
+.upgradeHeaderTop {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.upgradeBreadcrumbWrap {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  min-width: 0;
+}
+
+.upgradeBackButton {
+  align-items: center;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.88);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  height: 34px;
+  padding: 0 12px 1px 10px;
+  text-transform: lowercase;
+  font: inherit;
+}
+
+.upgradeBackButton:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.upgradeBackIcon {
+  align-items: center;
+  background: rgba(90, 209, 255, 0.16);
+  border: 1px solid rgba(90, 209, 255, 0.25);
+  border-radius: 999px;
+  display: inline-flex;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+}
+
+.upgradeBreadcrumb {
+  align-items: center;
+  color: rgba(243, 247, 251, 0.56);
+  display: inline-flex;
+  gap: 10px;
+  min-width: 0;
+  text-transform: lowercase;
+}
+
+.upgradeBreadcrumbDim {
+  color: rgba(243, 247, 251, 0.56);
+}
+
+.upgradeBreadcrumbStrong {
+  color: rgba(243, 247, 251, 0.82);
+}
+
+.upgradeBreadcrumbSep {
+  color: rgba(243, 247, 251, 0.25);
+}
+
+.upgradeHeaderAction {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  font: inherit;
+  height: 34px;
+  padding: 0 14px 1px;
+  text-transform: lowercase;
+}
+
+.upgradeHeaderAction:hover {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.upgradeStageBar {
+  align-items: center;
+  background: rgba(90, 109, 150, 0.34);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 42px;
+  padding: 0 18px;
+}
+
+.upgradeStageTitle {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+  min-width: 0;
+}
+
+.upgradeStageTitle span {
+  color: rgba(243, 247, 251, 0.82);
+}
+
+.upgradeStageTitle strong {
+  font-weight: 500;
+}
+
+.upgradeStageMarker {
+  align-items: center;
+  color: var(--blue);
+  display: inline-flex;
+  justify-content: center;
+}
+
+.upgradeStageProgress {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+  min-width: 0;
+}
+
+.upgradeStageProgress span {
+  color: rgba(243, 247, 251, 0.72);
+  white-space: nowrap;
+}
+
+.upgradeStageTrack {
+  background: rgba(255, 255, 255, 0.82);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+  width: 60px;
+}
+
+.upgradeStageFill {
+  background: linear-gradient(90deg, var(--blue), rgba(90, 209, 255, 0.35));
+  height: 100%;
+  width: 0;
+}
+
+.upgradeStageLink {
+  color: var(--blue);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.upgradeStageLink:hover {
+  text-decoration: underline;
+}
+
+.upgradeOverview {
+  display: grid;
+  gap: 14px;
+}
+
+.upgradeTitle {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.upgradeSummaryGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(4, max-content);
+  justify-content: start;
+  column-gap: clamp(28px, 4vw, 56px);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.upgradeSummaryGrid div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.upgradeSummaryGrid span {
+  color: rgba(243, 247, 251, 0.62);
+  font-size: 0.92rem;
+}
+
+.upgradeSummaryGrid strong {
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.upgradePeriodSwitch {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.upgradePeriodChip,
+.upgradePeriodChipActive {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.16);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.82);
+  cursor: pointer;
+  font: inherit;
+  height: 32px;
+  padding: 0 12px 1px;
+  text-transform: lowercase;
+}
+
+.upgradePeriodChipActive {
+  background: rgba(41, 111, 255, 0.96);
+  border-color: rgba(41, 111, 255, 0.96);
+  color: rgba(243, 247, 251, 0.96);
+}
+
+.upgradePlansGrid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 300px));
+  align-items: start;
+  justify-content: center;
+}
+
+.upgradePlanCard {
+  background: rgba(0, 0, 0, 0.12);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 8px;
+  display: grid;
+  gap: 12px;
+  height: fit-content;
+  padding: 16px;
+  align-content: start;
+}
+
+.upgradePlanCardCurrent {
+  border-color: rgba(90, 209, 255, 0.35);
+  box-shadow: 0 0 0 1px rgba(90, 209, 255, 0.08);
+}
+
+.upgradePlanCardHighlight {
+  position: relative;
+}
+
+.upgradePlanCardHighlight::before {
+  content: none;
+}
+
+.upgradePlanHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.upgradePlanName {
+  color: rgba(243, 247, 251, 0.96);
+  font-weight: 500;
+}
+
+.upgradePlanStar {
+  color: var(--blue);
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upgradePlanPriceBlock {
+  display: grid;
+  gap: 2px;
+}
+
+.upgradePlanPriceTop {
+  color: rgba(243, 247, 251, 0.74);
+  font-size: 0.92rem;
+}
+
+.upgradePlanPrice {
+  color: rgba(243, 247, 251, 0.96);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.upgradePlanPriceCurrency {
+  color: rgba(243, 247, 251, 0.82);
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.upgradePlanButton,
+.upgradePlanButtonCurrent {
+  appearance: none;
+  background: rgba(0, 0, 0, 0.16);
+  border: 1px solid rgba(243, 247, 251, 0.14);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.86);
+  cursor: pointer;
+  font: inherit;
+  height: 32px;
+  margin-inline: auto;
+  padding: 0 14px 1px;
+  text-transform: lowercase;
+  width: fit-content;
+}
+
+.upgradePlanButtonCurrent {
+  background: rgba(90, 209, 255, 0.08);
+  border-color: rgba(90, 209, 255, 0.18);
+  color: rgba(243, 247, 251, 0.5);
+  cursor: default;
+}
+
+.upgradePlanButton:hover:not(:disabled) {
+  border-color: rgba(90, 209, 255, 0.35);
+}
+
+.upgradePlanButton:disabled {
+  cursor: default;
+}
+
+.upgradePlanDivider {
+  background: rgba(149, 177, 214, 0.12);
+  height: 1px;
+  width: 100%;
+}
+
+.upgradePlanSection {
+  display: grid;
+  gap: 10px;
+}
+
+.upgradePlanSectionTitle {
+  color: rgba(243, 247, 251, 0.82);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.upgradeFeatureList {
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.upgradeFeatureList li {
+  align-items: start;
+  color: rgba(243, 247, 251, 0.82);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 16px minmax(0, 1fr);
+  font-size: 0.92rem;
+  line-height: 1.3;
+}
+
+.upgradeFeatureIcon {
+  color: var(--blue);
+  display: inline-flex;
+  justify-content: center;
+  padding-top: 1px;
+}
+
+.upgradePlanCardHighlight .upgradeFeatureList {
+  gap: 12px;
+}
+
+.upgradePlanCardHighlight .upgradePlanSection:last-of-type .upgradeFeatureList {
+  gap: 12px;
+}
+
+.upgradeFooterLinks {
+  border-top: 1px solid rgba(149, 177, 214, 0.12);
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  padding-top: 18px;
+}
+
+.upgradeFooterLinkBlock {
+  display: grid;
+  gap: 6px;
+}
+
+.upgradeFooterLink {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.upgradeFooterLink:hover {
+  text-decoration: underline;
+}
+
+.upgradeFooterLinkBlock p {
+  color: rgba(243, 247, 251, 0.72);
+  margin: 0;
+}
+
+.upgradePromoCard {
+  align-items: stretch;
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 8px;
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 240px minmax(0, 1fr) auto;
+  padding: 18px;
+}
+
+.upgradePromoBadge {
+  align-content: center;
+  background: radial-gradient(circle at 38% 50%, rgba(90, 209, 255, 0.26), rgba(90, 209, 255, 0.08) 34%, rgba(102, 224, 182, 0.06) 60%, transparent 76%), linear-gradient(135deg, rgba(41, 111, 255, 0.4), rgba(90, 209, 255, 0.05));
+  border-radius: 10px;
+  display: grid;
+  justify-items: center;
+  min-height: 220px;
+  padding: 24px 18px;
+  text-align: center;
+}
+
+.upgradePromoBadgeLabel {
+  color: rgba(243, 247, 251, 0.82);
+  font-size: 1.05rem;
+}
+
+.upgradePromoBadgeName {
+  color: rgba(243, 247, 251, 0.96);
+  font-size: 1.4rem;
+  font-weight: 700;
+}
+
+.upgradePromoContent {
+  display: grid;
+  gap: 6px;
+  align-content: start;
+}
+
+.upgradePromoContent h2 {
+  font-size: 1.15rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.upgradePromoContent p {
+  color: rgba(243, 247, 251, 0.82);
+  margin: 0;
+}
+
+.upgradePromoColumns {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-top: 4px;
+}
+
+.upgradePromoList {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0 0 0 18px;
+}
+
+.upgradePromoList li {
+  color: rgba(243, 247, 251, 0.82);
+  line-height: 1.35;
+}
+
+.upgradePromoButton {
+  align-self: end;
+  appearance: none;
+  background: rgba(41, 111, 255, 0.96);
+  border: 0;
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.96);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font: inherit;
+  height: 34px;
+  padding: 0 16px;
+  line-height: 1;
+  text-transform: lowercase;
+  white-space: nowrap;
+}
+
+.upgradePromoButton:hover {
+  background: rgba(41, 111, 255, 1);
+}
+
+.upgradeActivationNote {
+  display: grid;
+  gap: 8px;
+  padding-bottom: 4px;
+}
+
+.upgradeActivationNote h3 {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.upgradeActivationNote p {
+  color: rgba(243, 247, 251, 0.82);
+  margin: 0;
+  max-width: 110ch;
+}
+
+.upgradeActivationNote a {
+  color: var(--blue);
+}
+
+.upgradeUserAnchor {
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+
+@media (max-width: 1280px) {
+  .upgradePromoCard {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .upgradePromoButton {
+    grid-column: 1 / -1;
+    justify-self: end;
+  }
+}
+
+@media (max-width: 980px) {
+  .upgradeSummaryGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    column-gap: 18px;
+  }
+
+  .upgradeFooterLinks,
+  .upgradePromoColumns {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .upgradePromoCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .upgradeHeaderTop,
+  .upgradeStageBar {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .upgradePeriodSwitch {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 720px) {
+  .upgradeRoot {
+    padding: 18px;
+  }
+
+  .upgradePlansGrid {
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: stretch;
+  }
+
+  .upgradeBreadcrumbWrap {
+    flex-wrap: wrap;
+  }
+}
+
+/* Sobre a versão */
+
+.versionRoot {
+  align-content: start;
+  display: grid;
+  gap: 18px;
+  justify-items: center;
+  overflow-x: hidden;
+  padding: 22px 28px 32px;
+}
+
+.versionHero,
+.versionLeadCard,
+.versionSection,
+.versionFooter {
+  width: min(980px, 100%);
+}
+
+.versionHero {
+  align-items: start;
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(260px, 320px);
+  padding-top: 10px;
+}
+
+.versionHeroCopy {
+  display: grid;
+  gap: 12px;
+  padding-top: 38px;
+}
+
+.versionSparkRow {
+  align-items: center;
+  display: inline-flex;
+  gap: 8px;
+}
+
+.versionSpark {
+  color: var(--blue);
+  display: inline-flex;
+}
+
+.versionSparkText {
+  color: rgba(243, 247, 251, 0.72);
+  font-size: 0.92rem;
+}
+
+.versionHeroCopy h1 {
+  color: rgba(41, 111, 255, 0.98);
+  font-size: clamp(2rem, 3vw, 3.5rem);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 0.98;
+  margin: 0;
+  max-width: 10ch;
+}
+
+.versionHeroCopy p {
+  color: rgba(243, 247, 251, 0.82);
+  line-height: 1.5;
+  margin: 0;
+  max-width: 68ch;
+}
+
+.versionMetaRow {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.versionMetaRow div {
+  display: grid;
+  gap: 2px;
+}
+
+.versionMetaRow span {
+  color: rgba(243, 247, 251, 0.56);
+  font-size: 0.82rem;
+  text-transform: lowercase;
+}
+
+.versionMetaRow strong {
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.versionArt {
+  align-self: start;
+  height: 240px;
+  position: relative;
+}
+
+.versionArtCloud {
+  background: radial-gradient(circle at 40% 40%, rgba(90, 209, 255, 0.32), rgba(90, 209, 255, 0.08) 40%, transparent 70%);
+  border-radius: 50%;
+  height: 140px;
+  left: 50px;
+  position: absolute;
+  top: 10px;
+  width: 140px;
+}
+
+.versionArtLaptop {
+  background: linear-gradient(135deg, rgba(243, 247, 251, 0.92), rgba(220, 228, 242, 0.82));
+  clip-path: polygon(12% 28%, 78% 28%, 100% 74%, 25% 74%);
+  height: 140px;
+  left: 34px;
+  position: absolute;
+  top: 58px;
+  width: 176px;
+}
+
+.versionArtLaptop::before {
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.18));
+  clip-path: polygon(18% 32%, 70% 32%, 84% 60%, 30% 60%);
+  content: "";
+  inset: 12px 18px 28px;
+  position: absolute;
+}
+
+.versionArtPlant {
+  background: linear-gradient(180deg, rgba(102, 224, 182, 0.8), rgba(102, 224, 182, 0.28));
+  border-radius: 48% 52% 58% 42% / 55% 41% 59% 45%;
+  height: 82px;
+  position: absolute;
+  right: 10px;
+  top: 100px;
+  width: 56px;
+}
+
+.versionArtRing {
+  border: 2px dashed rgba(90, 209, 255, 0.5);
+  border-radius: 50%;
+  height: 64px;
+  position: absolute;
+  right: 34px;
+  top: 2px;
+  width: 64px;
+}
+
+.versionArtDot {
+  background: rgba(255, 185, 105, 0.9);
+  border-radius: 50%;
+  height: 14px;
+  position: absolute;
+  right: 18px;
+  top: 26px;
+  width: 14px;
+}
+
+.versionArtDrop {
+  background: rgba(90, 209, 255, 0.85);
+  border-radius: 50% 50% 50% 0;
+  height: 18px;
+  left: 26px;
+  position: absolute;
+  top: 0;
+  transform: rotate(-25deg);
+  width: 18px;
+}
+
+.versionLeadCard {
+  background: rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 10px;
+  display: grid;
+  gap: 12px;
+  padding: 18px;
+}
+
+.versionLeadBadge {
+  align-items: center;
+  color: var(--blue);
+  display: inline-flex;
+  font-size: 0.76rem;
+  font-weight: 700;
+  gap: 8px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.versionLeadCard h2 {
+  color: rgba(243, 247, 251, 0.96);
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.versionLeadCard p {
+  color: rgba(243, 247, 251, 0.78);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.versionTimeline {
+  display: grid;
+  gap: 18px;
+  justify-items: stretch;
+}
+
+.versionSection {
+  display: grid;
+  gap: 10px;
+}
+
+.versionSectionHeader {
+  display: grid;
+  gap: 10px;
+}
+
+.versionSectionTitleRow {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.versionSectionTitleRow h2 {
+  color: rgba(243, 247, 251, 0.96);
+  font-size: 1.05rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.versionSectionMarker {
+  color: var(--blue);
+  display: inline-flex;
+}
+
+.versionChips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.versionChip {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(243, 247, 251, 0.12);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.74);
+  font-size: 0.78rem;
+  padding: 4px 10px 5px;
+}
+
+.versionSummary {
+  color: rgba(243, 247, 251, 0.84);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.versionBulletList {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0 0 0 18px;
+}
+
+.versionBulletList li {
+  color: rgba(243, 247, 251, 0.82);
+  line-height: 1.45;
+}
+
+.versionCallout {
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 6px;
+  color: #121212;
+  line-height: 1.45;
+  padding: 12px 16px;
+}
+
+.versionFooter {
+  border-top: 1px solid rgba(149, 177, 214, 0.12);
+  display: grid;
+  gap: 30px;
+  padding-top: 26px;
+}
+
+.versionFooterIntro {
+  color: rgba(243, 247, 251, 0.72);
+  font-size: 1.05rem;
+  line-height: 1.45;
+  margin: 0;
+  text-align: center;
+}
+
+.versionFooterLinks {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(6, minmax(0, max-content));
+  justify-content: center;
+  text-align: center;
+}
+
+.versionFooterLinks a {
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.versionFooterLinks a:hover {
+  color: var(--blue);
+}
+
+.versionFooterColumns {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.versionFooterBlock {
+  display: grid;
+  gap: 8px;
+}
+
+.versionFooterBlock h3 {
+  color: rgba(243, 247, 251, 0.96);
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  text-transform: lowercase;
+}
+
+.versionFooterBlock p {
+  color: rgba(243, 247, 251, 0.68);
+  margin: 0;
+  line-height: 1.45;
+}
+
+.versionFooterBlock a {
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.versionFooterBlock a:hover {
+  text-decoration: underline;
+}
+
+.versionFooterBrand {
+  padding-top: 12px;
+}
+
+.versionFooterLogo {
+  height: 48px;
+  width: auto;
+}
+
+.versionUserAnchor {
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+}
+
+@media (max-width: 980px) {
+  .versionRoot {
+    padding: 18px;
+  }
+
+  .versionHero {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .versionHeroCopy {
+    padding-top: 0;
+  }
+
+  .versionArt {
+    height: 200px;
+    justify-self: center;
+  }
+
+  .versionFooterLinks,
+  .versionFooterColumns {
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: start;
+    text-align: left;
+    gap: 22px;
+  }
+}
+
+/* Ajuda do ERP */
+
+.helpRoot {
+  background:
+    linear-gradient(180deg, #071f5b 0 180px, #fafaf7 180px 100%, #fafaf7 100%);
+  color: #10214a;
+  min-height: 100vh;
+  overflow-x: hidden;
+  padding-bottom: 0;
+  padding-top: 76px;
+}
+
+.helpTopBar {
+  backdrop-filter: blur(10px);
+  background: #071f5b;
+  color: #f3f7fb;
+  font-family: "Plus Jakarta Sans", "Muli", sans-serif;
+  inset: 0 0 auto 0;
+  padding: 12px 24px;
+  position: fixed;
+  z-index: 40;
+}
+
+.helpTopBarInner {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1180px;
+  min-height: 52px;
+}
+
+.helpTopBrand {
+  align-items: center;
+  display: inline-flex;
+  gap: 10px;
+  min-width: 0;
+}
+
+.helpTopLogo {
+  height: 42px;
+  max-width: none;
+  width: auto;
+}
+
+.helpTopNav {
+  align-items: center;
+  display: inline-flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.helpTopNav a {
+  color: rgba(243, 247, 251, 0.9);
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.helpTopNav > a:first-child {
+  font-size: 20px;
+}
+
+.helpTopNav a:hover {
+  color: #ffffff;
+}
+
+.helpTopDivider {
+  background-color: #0a4ee4;
+  display: block;
+  flex: 0 0 1px;
+  height: 40px;
+  margin: 0 18px 0 8px;
+  min-width: 1px;
+}
+
+.helpTopButton {
+  align-items: center;
+  appearance: none;
+  background: rgba(41, 111, 255, 0.98);
+  border: 0;
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.96);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 38px;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.helpProductsMenu {
+  position: relative;
+}
+
+.helpProductsTrigger {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: 6px;
+  padding: 0;
+}
+
+.helpProductsTrigger span {
+  font-size: 0.78rem;
+}
+
+.helpProductsDropdown {
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(16, 33, 74, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 18px 50px rgba(16, 33, 74, 0.18);
+  color: #10214a;
+  left: 0;
+  min-width: 290px;
+  padding: 10px 0 6px;
+  position: absolute;
+  top: calc(100% + 10px);
+  z-index: 60;
+}
+
+.helpProductsDropdownTitle {
+  color: rgba(16, 33, 74, 0.58);
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin: 0 18px 8px;
+}
+
+.helpProductsDropdown ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.helpProductsDropdown li {
+  position: relative;
+}
+
+.helpProductsDropdown li:not(:last-child)::after {
+  background: rgba(16, 33, 74, 0.08);
+  bottom: 0;
+  content: "";
+  height: 1px;
+  left: 18px;
+  position: absolute;
+  right: 18px;
+}
+
+.helpProductsDropdownItem {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 12px;
+  padding: 12px 18px;
+  text-align: left;
+  width: 100%;
+}
+
+.helpProductsDropdownItem:hover {
+  background: rgba(42, 102, 217, 0.06);
+}
+
+.helpHero {
+  background: #071f5b;
+  border-bottom-left-radius: 48px;
+  border-bottom-right-radius: 48px;
+  color: #f3f7fb;
+  margin: 0 auto;
+  max-width: 100%;
+  padding: 34px 24px 36px;
+}
+
+.helpCardsSection {
+  background: #fafaf7;
+  border-bottom-left-radius: 48px;
+  border-bottom-right-radius: 48px;
+  overflow: hidden;
+  padding: 48px 0 80px;
+}
+
+.helpSectionInner {
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 24px;
+}
+
+.helpHeroCopy {
+  display: grid;
+  gap: 16px;
+  justify-items: center;
+  margin: 0 auto;
+  max-width: 1180px;
+  text-align: center;
+}
+
+.helpHeroCopy h1 {
+  color: #58a0ff;
+  font-size: clamp(2.2rem, 4vw, 4.2rem);
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  line-height: 0.95;
+  margin: 10px 0 0;
+}
+
+.helpSearchWrap {
+  position: relative;
+  width: min(720px, 100%);
+}
+
+.helpSearchInput {
+  appearance: none;
+  background: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 9999px;
+  color: #10214a;
+  font: inherit;
+  height: 46px;
+  padding: 0 52px 0 18px;
+  width: 100%;
+}
+
+.helpSearchInput::placeholder {
+  color: #7181a8;
+}
+
+.helpSearchIcon {
+  align-items: center;
+  color: #7181a8;
+  display: inline-flex;
+  height: 20px;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  transition: color 160ms ease, transform 160ms ease;
+}
+
+.helpSearchIcon svg {
+  display: block;
+  height: 20px;
+  width: 20px;
+}
+
+.helpSearchWrap:hover .helpSearchIcon {
+  color: #2a66d9;
+  transform: translateY(-50%) scale(1.06);
+}
+
+.helpHotRow {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  color: rgba(243, 247, 251, 0.72);
+  font-size: 0.92rem;
+}
+
+.helpHotRow a {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.92);
+  padding: 6px 12px;
+  text-decoration: none;
+}
+
+.helpCategories {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+}
+
+.helpCategoryCard {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(16, 33, 74, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgba(16, 33, 74, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 260px;
+  padding: 18px;
+}
+
+.helpCategoryCard h2 {
+  color: #10214a;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.helpCategoryRule {
+  background: rgba(16, 33, 74, 0.12);
+  display: block;
+  height: 1px;
+  margin-top: 2px;
+  width: 100%;
+}
+
+.helpCategoryCard ul {
+  flex: 1;
+  display: grid;
+  gap: 10px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.helpCategoryCard li a {
+  color: rgba(16, 33, 74, 0.82);
+  font-size: 0.92rem;
+  text-decoration: none;
+}
+
+.helpCategoryCard li a:hover {
+  color: #2a66d9;
+}
+
+.helpCategoryFooter {
+  align-self: end;
+  color: #2a66d9;
+  font-size: 0.92rem;
+  font-weight: 600;
+  justify-self: end;
+  margin-top: auto;
+  text-decoration: none;
+}
+
+.helpCategoryIcon {
+  align-items: center;
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  height: 42px;
+  justify-content: center;
+  width: 42px;
+}
+
+.helpCategoryIcon span {
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.helpAccentRed {
+  background: linear-gradient(135deg, #ff7d7d, #ef5c5c);
+}
+
+.helpAccentBlue {
+  background: linear-gradient(135deg, #4f8dff, #2a66d9);
+}
+
+.helpAccentSky {
+  background: linear-gradient(135deg, #7dc8ff, #5aa7ff);
+}
+
+.helpAccentViolet {
+  background: linear-gradient(135deg, #8f7dff, #6b58ff);
+}
+
+.helpAccentGreen {
+  background: linear-gradient(135deg, #8bcf9b, #5ca86e);
+}
+
+.helpAccentOrange {
+  background: linear-gradient(135deg, #ff9a54, #f06e2f);
+}
+
+.helpAccentGold {
+  background: linear-gradient(135deg, #d1b24c, #b98a16);
+}
+
+.helpVideoSection {
+  background: #f5f0e1;
+  padding: 58px 0 40px;
+}
+
+.helpFooterSection {
+  background: #ffffff;
+  padding: 42px 0 24px;
+}
+
+.helpFooterSection .helpSectionInner {
+  max-width: 1360px;
+}
+
+.helpVideoSectionHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.helpVideoSectionHeader h2 {
+  color: #10214a;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.helpVideoArrows {
+  display: inline-flex;
+  gap: 10px;
+}
+
+.helpVideoArrows button {
+  align-items: center;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(16, 33, 74, 0.12);
+  border-radius: 999px;
+  color: #10214a;
+  cursor: pointer;
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  width: 32px;
+}
+
+.helpVideoGrid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.helpVideoCard {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(16, 33, 74, 0.08);
+  border-radius: 18px;
+  box-shadow: 0 10px 28px rgba(16, 33, 74, 0.08);
+  display: grid;
+  gap: 0;
+  overflow: hidden;
+}
+
+.helpVideoThumb {
+  background:
+    radial-gradient(circle at 18% 26%, rgba(255, 255, 255, 0.34), transparent 18%),
+    radial-gradient(circle at 82% 18%, rgba(255, 255, 255, 0.18), transparent 20%),
+    linear-gradient(135deg, #1f4bb8, #7d5ec8 56%, #d8c19f);
+  color: #ffffff;
+  height: 150px;
+  position: relative;
+}
+
+.helpVideoThumbTag {
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 999px;
+  color: #10214a;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.helpVideoThumbPlay {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 999px;
+  color: #10214a;
+  display: inline-flex;
+  height: 38px;
+  justify-content: center;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 38px;
+}
+
+.helpVideoThumbTitle {
+  bottom: 12px;
+  left: 14px;
+  max-width: 70%;
+  position: absolute;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.24);
+}
+
+.helpVideoCopy {
+  display: grid;
+  gap: 6px;
+  padding: 14px;
+}
+
+.helpVideoCopy h3 {
+  color: #10214a;
+  font-size: 0.98rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.helpVideoCopy p {
+  color: rgba(16, 33, 74, 0.72);
+  margin: 0;
+}
+
+.helpFooter {
+  display: grid;
+  gap: 22px;
+  padding: 42px 0 24px;
+}
+
+.helpFooterBrandBlock {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  text-align: center;
+}
+
+.helpFooterLogo {
+  height: 48px;
+  max-width: none;
+  width: auto;
+}
+
+.helpFooterBrandBlock p {
+  color: rgba(16, 33, 74, 0.66);
+  margin: 0;
+  max-width: 56ch;
+}
+
+.helpFooterLinksGrid {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.helpFooterLinksGrid div {
+  display: grid;
+  gap: 8px;
+}
+
+.helpFooterLinksGrid strong {
+  color: #10214a;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.helpFooterLinksGrid a {
+  color: rgba(16, 33, 74, 0.74);
+  text-decoration: none;
+}
+
+.helpFooterLinksGrid a:hover {
+  color: #2a66d9;
+}
+
+.helpFooterMeta {
+  border-top: 1px solid rgba(16, 33, 74, 0.12);
+  color: rgba(16, 33, 74, 0.58);
+  display: grid;
+  gap: 12px;
+  padding-top: 18px;
+}
+
+.helpFooterMetaLine {
+  align-items: center;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+}
+
+.helpFooterSocialRow {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+}
+
+.helpFooterSocialRow a {
+  align-items: center;
+  border: 1px solid rgba(16, 33, 74, 0.14);
+  border-radius: 999px;
+  color: #10214a;
+  display: inline-flex;
+  font-size: 0.72rem;
+  height: 30px;
+  justify-content: center;
+  text-decoration: none;
+  width: 30px;
+}
+
+.helpFooterLegalRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  justify-content: flex-end;
+}
+
+.helpFooterLegalRow a {
+  color: rgba(16, 33, 74, 0.58);
+  text-decoration: none;
+}
+
+.helpFooterLegalRow a:hover {
+  color: #2a66d9;
+}
+
+.helpFooterAddress {
+  color: rgba(16, 33, 74, 0.58);
+  text-align: right;
+}
+
+.helpFooterUser {
+  height: 1px;
+  overflow: hidden;
+  width: 1px;
+}
+
+/* Ferramentas */
+
+.toolsRoot {
+  color: var(--text);
+  min-height: 100%;
+  padding: 28px 0 48px;
+}
+
+.toolsPage {
+  display: grid;
+  gap: 22px;
+  margin: 0 auto;
+  max-width: 980px;
+  padding: 0 28px;
+}
+
+.toolsHeader {
+  display: grid;
+  gap: 18px;
+}
+
+.toolsHeader h1 {
+  color: var(--text);
+  font-size: 1.45rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.toolsTabs {
+  align-items: end;
+  border-bottom: 1px solid rgba(149, 177, 214, 0.14);
+  display: flex;
+  gap: 28px;
+}
+
+.toolsTab,
+.toolsTabActive {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.62);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1;
+  padding: 0 0 10px;
+  position: relative;
+}
+
+.toolsTabActive {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.toolsTabActive::after {
+  background: rgba(243, 247, 251, 0.92);
+  bottom: -1px;
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.toolsList {
+  display: grid;
+  gap: 0;
+}
+
+.toolsGroupHeading {
+  color: rgba(243, 247, 251, 0.92);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 14px 0 8px;
+}
+
+.toolsListItem {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid rgba(149, 177, 214, 0.14);
+  color: var(--text);
+  cursor: pointer;
+  font: inherit;
+  font-size: 1rem;
+  padding: 12px 0;
+  text-align: left;
+}
+
+.toolsListItem:hover {
+  color: #5ad1ff;
+}
+
+.toolsListItem:last-child {
+  border-bottom-color: transparent;
+}
+
+.toolsFooterNote {
+  height: 1px;
+  overflow: hidden;
+  width: 1px;
+}
+
+/* Loja de extensões */
+
+.extensionsRoot {
+  color: var(--text);
+  min-height: 100%;
+  padding: 20px 0 56px;
+}
+
+.extensionsPage {
+  display: grid;
+  gap: 18px;
+  margin: 0 auto;
+  max-width: 1180px;
+  padding: 0 28px;
+}
+
+.extensionsHeaderRow {
+  align-items: center;
+  display: flex;
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.extensionsHeaderRow h1 {
+  color: var(--text);
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.extensionsMyButton {
+  align-items: center;
+  appearance: none;
+  background: #0f5cff;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.9rem;
+  height: 34px;
+  justify-content: center;
+  padding: 0 18px;
+  text-transform: lowercase;
+}
+
+.extensionsMyButton:hover {
+  background: #2a6dff;
+}
+
+.extensionsSearchRow {
+  position: relative;
+  width: min(100%, 340px);
+}
+
+.extensionsSearchInput {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(149, 177, 214, 0.16);
+  border-radius: 10px;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.92rem;
+  height: 36px;
+  outline: none;
+  padding: 0 42px 0 14px;
+  width: 100%;
+}
+
+.extensionsSearchInput::placeholder {
+  color: rgba(243, 247, 251, 0.38);
+}
+
+.extensionsSearchInput:focus {
+  border-color: rgba(90, 209, 255, 0.4);
+  box-shadow: 0 0 0 3px rgba(90, 209, 255, 0.08);
+}
+
+.extensionsSearchIcon {
+  color: rgba(243, 247, 251, 0.62);
+  height: 16px;
+  pointer-events: none;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+}
+
+.extensionsSearchIcon svg {
+  display: block;
+  height: 100%;
+  width: 100%;
+}
+
+.extensionsFeatureCard {
+  align-items: center;
+  background:
+    linear-gradient(180deg, rgba(255, 243, 217, 0.98), rgba(248, 231, 196, 0.98));
+  border: 1px solid rgba(161, 131, 72, 0.18);
+  border-radius: 12px;
+  color: #231f16;
+  display: flex;
+  gap: 14px;
+  padding: 14px 16px;
+  position: relative;
+}
+
+.extensionsFeatureCard h2 {
+  color: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 2px;
+}
+
+.extensionsFeatureCard p {
+  color: rgba(35, 31, 22, 0.72);
+  margin: 0;
+}
+
+.extensionsFeatureBadge {
+  align-items: center;
+  background: rgba(16, 16, 16, 0.92);
+  border-radius: 999px;
+  color: #ffffff;
+  display: inline-flex;
+  font-size: 0.66rem;
+  font-weight: 700;
+  height: 22px;
+  justify-content: center;
+  min-width: 56px;
+  padding: 0 8px;
+  text-transform: uppercase;
+}
+
+.extensionsFeatureCard button {
+  align-items: center;
+  appearance: none;
+  background: #0f5cff;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 32px;
+  justify-content: center;
+  margin-left: auto;
+  padding: 0 16px;
+  text-transform: lowercase;
+}
+
+.extensionsFeatureCard button:hover {
+  background: #2a6dff;
+}
+
+.extensionsFiltersRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.extensionsFiltersRow > span {
+  color: rgba(243, 247, 251, 0.72);
+  font-size: 0.9rem;
+}
+
+.extensionsFilter,
+.extensionsFilterActive {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 1px solid rgba(149, 177, 214, 0.16);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.8);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.82rem;
+  height: 28px;
+  justify-content: center;
+  padding: 0 12px;
+}
+
+.extensionsFilterActive {
+  background: rgba(90, 209, 255, 0.12);
+  border-color: rgba(90, 209, 255, 0.48);
+  color: var(--text);
+}
+
+.extensionsIntro {
+  display: grid;
+  gap: 8px;
+  max-width: 760px;
+  padding-top: 6px;
+}
+
+.extensionsIntro h2,
+.extensionsUpsell h2 {
+  color: var(--text);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.extensionsIntro p,
+.extensionsUpsell p {
+  color: rgba(243, 247, 251, 0.8);
+  margin: 0;
+}
+
+.extensionsGrid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.extensionCard {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(149, 177, 214, 0.16);
+  border-radius: 8px;
+  display: grid;
+  gap: 10px;
+  min-height: 170px;
+  padding: 12px 12px 30px;
+  position: relative;
+}
+
+.extensionCardIcon {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.78);
+  display: inline-flex;
+  height: 40px;
+  justify-content: center;
+  margin: 0 auto;
+  width: 40px;
+}
+
+.extensionCardIcon span {
+  font-size: 0.67rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.extensionCardBody {
+  display: grid;
+  gap: 8px;
+  justify-items: center;
+  text-align: center;
+}
+
+.extensionCardBody h3 {
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin: 0;
+}
+
+.extensionCardBody p {
+  color: rgba(243, 247, 251, 0.6);
+  font-size: 0.8rem;
+  margin: 0;
+}
+
+.extensionCardBody button {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 1px solid rgba(149, 177, 214, 0.18);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.88);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  font-size: 0.82rem;
+  height: 28px;
+  justify-content: center;
+  padding: 0 14px;
+}
+
+.extensionCardBody button:hover {
+  border-color: rgba(90, 209, 255, 0.42);
+  color: var(--blue);
+}
+
+.extensionPrice,
+.extensionPriceFree {
+  bottom: 8px;
+  color: rgba(243, 247, 251, 0.58);
+  font-size: 0.66rem;
+  left: 12px;
+  position: absolute;
+}
+
+.extensionPriceFree {
+  color: rgba(243, 247, 251, 0.78);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.extensionsUpsell {
+  display: grid;
+  gap: 12px;
+  padding-top: 18px;
+}
+
+.extensionsUpsellCard {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(149, 177, 214, 0.16);
+  border-radius: 16px;
+  display: grid;
+  grid-template-columns: minmax(180px, 260px) minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.extensionsUpsellPreview {
+  align-items: center;
+  background:
+    radial-gradient(circle at 35% 35%, rgba(90, 209, 255, 0.28), transparent 46%),
+    linear-gradient(135deg, rgba(26, 47, 116, 0.96), rgba(46, 32, 92, 0.96));
+  color: rgba(243, 247, 251, 0.92);
+  display: flex;
+  justify-content: center;
+  min-height: 150px;
+}
+
+.extensionsUpsellPreview span {
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.extensionsUpsellContent {
+  display: grid;
+  gap: 10px;
+  padding: 18px 18px 18px 20px;
+  align-content: center;
+}
+
+.extensionsUpsellContent h3 {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.extensionsUpsellContent p {
+  color: rgba(243, 247, 251, 0.72);
+  margin: 0;
+}
+
+.extensionsUpsellContent button {
+  align-items: center;
+  appearance: none;
+  background: #0f5cff;
+  border: 0;
+  border-radius: 999px;
+  color: #ffffff;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 34px;
+  justify-content: center;
+  justify-self: end;
+  padding: 0 18px;
+  text-transform: lowercase;
+}
+
+.extensionsUpsellContent button:hover {
+  background: #2a6dff;
+}
+
+/* Clientes e Fornecedores */
+
+.customersSuppliersRoot {
+  color: var(--text);
+  min-height: 100%;
+  padding: 12px 0 18px;
+}
+
+.customersSuppliersPage {
+  display: grid;
+  gap: 14px;
+  margin: 0 auto;
+  max-width: 1360px;
+  padding: 0 18px;
+}
+
+.customersSuppliersTopBar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 34px;
+}
+
+.customersSuppliersCrumbs {
+  align-items: center;
+  color: rgba(243, 247, 251, 0.72);
+  display: flex;
+  gap: 10px;
+  font-size: 0.92rem;
+  text-transform: lowercase;
+}
+
+.customersSuppliersCrumbs strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.customersSuppliersCrumbs span + span::before {
+  color: rgba(243, 247, 251, 0.3);
+  content: "≡";
+  margin-right: 10px;
+}
+
+.customersSuppliersActions {
+  align-items: center;
+  display: flex;
+  gap: 8px;
+}
+
+.customersSuppliersGhostButton,
+.customersSuppliersPrimaryButton {
+  align-items: center;
+  appearance: none;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 34px;
+  justify-content: center;
+  padding: 0 14px;
+}
+
+.customersSuppliersGhostButton {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(149, 177, 214, 0.12);
+  color: rgba(243, 247, 251, 0.88);
+}
+
+.customersSuppliersGhostButton:hover {
+  border-color: rgba(90, 209, 255, 0.32);
+  color: var(--text);
+}
+
+.customersSuppliersPrimaryButton {
+  background: #0f5cff;
+  border: 0;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.customersSuppliersPrimaryButton:hover {
+  background: #2a6dff;
+}
+
+.customersSuppliersToolbar {
+  display: grid;
+  gap: 10px;
+}
+
+.customersSuppliersToolbar h1 {
+  color: var(--text);
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.customersSuppliersSearchRow {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.customersSuppliersSearchInput {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(149, 177, 214, 0.14);
+  border-radius: 8px;
+  color: var(--text);
+  font: inherit;
+  height: 34px;
+  min-width: min(100%, 380px);
+  padding: 0 14px;
+  width: 380px;
+}
+
+.customersSuppliersSearchInput::placeholder {
+  color: rgba(243, 247, 251, 0.4);
+}
+
+.customersSuppliersToolButton,
+.customersSuppliersPillButton,
+.customersSuppliersTab,
+.customersSuppliersTabActive {
+  align-items: center;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(149, 177, 214, 0.16);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.82);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  justify-content: center;
+}
+
+.customersSuppliersToolButton {
+  height: 34px;
+  width: 34px;
+}
+
+.customersSuppliersToolButton svg {
+  color: rgba(243, 247, 251, 0.78);
+  height: 16px;
+  width: 16px;
+}
+
+.customersSuppliersPillButton {
+  height: 30px;
+  padding: 0 12px;
+}
+
+.customersSuppliersTabs {
+  border-bottom: 1px solid rgba(149, 177, 214, 0.14);
+  display: flex;
+  gap: 18px;
+  padding-bottom: 0;
+}
+
+.customersSuppliersTab,
+.customersSuppliersTabActive {
+  background: transparent;
+  border-color: transparent;
+  border-radius: 0;
+  color: rgba(243, 247, 251, 0.5);
+  font-size: 0.92rem;
+  min-height: 36px;
+  padding: 0 8px 10px;
+  position: relative;
+  text-transform: lowercase;
+}
+
+.customersSuppliersTabActive {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.customersSuppliersTabActive::after {
+  background: rgba(243, 247, 251, 0.95);
+  bottom: -1px;
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.customersSuppliersEmptyState {
+  display: grid;
+  min-height: 440px;
+  place-items: center;
+  padding: 26px 0 8px;
+}
+
+.customersSuppliersEmptyCard {
+  background: rgba(16, 16, 16, 0.28);
+  border: 1px solid rgba(90, 121, 196, 0.75);
+  border-radius: 6px;
+  display: grid;
+  gap: 8px;
+  min-height: 210px;
+  overflow: hidden;
+  padding: 36px 18px 18px 18px;
+  position: relative;
+  width: min(100%, 410px);
+}
+
+.customersSuppliersEmptyText {
+  display: grid;
+  gap: 12px;
+  max-width: 240px;
+}
+
+.customersSuppliersEmptyText h2 {
+  color: var(--text);
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.customersSuppliersEmptyText p {
+  color: rgba(243, 247, 251, 0.72);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.customersSuppliersCatWrap {
+  bottom: -18px;
+  color: #d9dde8;
+  height: 156px;
+  position: absolute;
+  right: -10px;
+  width: 206px;
+}
+
+.customersSuppliersCatWrap svg {
+  height: 100%;
+  width: 100%;
+}
+
+.customersSuppliersBackButton,
+.customersSuppliersTextButton {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.84);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: 6px;
+  text-transform: lowercase;
+}
+
+.customersSuppliersBackButton {
+  border: 1px solid rgba(149, 177, 214, 0.16);
+  border-radius: 999px;
+  height: 30px;
+  padding: 0 10px 0 8px;
+}
+
+.customersSuppliersBackButton svg {
+  color: #0f5cff;
+  height: 16px;
+  width: 16px;
+}
+
+.customersSuppliersTextButton {
+  color: rgba(243, 247, 251, 0.82);
+}
+
+.customersSuppliersTextButton:hover,
+.customersSuppliersBackButton:hover {
+  color: var(--text);
+}
+
+.customersSuppliersFormCard {
+  display: grid;
+  gap: 18px;
+  max-width: 980px;
+  padding-top: 6px;
+}
+
+.customersSuppliersFormTabs {
+  border-bottom: 1px solid rgba(149, 177, 214, 0.14);
+  display: flex;
+  gap: 18px;
+}
+
+.customersSuppliersFormTab,
+.customersSuppliersFormTabActive {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.48);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.92rem;
+  min-height: 36px;
+  padding: 0 8px 10px;
+  position: relative;
+  text-transform: lowercase;
+}
+
+.customersSuppliersFormTabActive {
+  color: var(--text);
+  font-weight: 600;
+}
+
+.customersSuppliersFormTabActive::after {
+  background: rgba(243, 247, 251, 0.95);
+  bottom: -1px;
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.customersSuppliersFormSection {
+  display: grid;
+  gap: 18px;
+}
+
+.customersSuppliersFormGrid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.customersSuppliersField {
+  display: grid;
+  gap: 6px;
+}
+
+.customersSuppliersFieldLabel {
+  color: rgba(243, 247, 251, 0.56);
+  font-size: 0.9rem;
+}
+
+.customersSuppliersField .field,
+.customersSuppliersField select.field {
+  min-height: 40px;
+}
+
+.customersSuppliersField select.field,
+.customersSuppliersField select.field:focus {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5 10 12l4.5-4.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.68' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px 16px;
+  padding-right: 42px;
+}
+
+.customersSuppliersTextarea {
+  appearance: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  color: var(--text);
+  font: inherit;
+  min-height: 160px;
+  outline: none;
+  padding: 12px 14px;
+  resize: vertical;
+  width: 100%;
+}
+
+.customersSuppliersTextarea::placeholder {
+  color: #7990ad;
+}
+
+.customersSuppliersUploadButton {
+  align-items: center;
+  appearance: none;
+  background: rgba(15, 92, 255, 0.12);
+  border: 1px solid rgba(15, 92, 255, 0.48);
+  border-radius: 999px;
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  height: 34px;
+  padding: 0 14px;
+  width: fit-content;
+}
+
+.customersSuppliersUploadButton svg {
+  color: #0f5cff;
+  height: 16px;
+  width: 16px;
+}
+
+.customersSuppliersHelperText {
+  color: rgba(243, 247, 251, 0.5);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+.customersSuppliersFormActions {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  padding-top: 6px;
+}
+
+.customersSuppliersFormSectionBlock {
+  display: grid;
+  gap: 14px;
+}
+
+.customersSuppliersSectionTitle {
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.customersSuppliersFormSectionDivider {
+  border-bottom: 1px solid rgba(149, 177, 214, 0.14);
+  margin: 4px 0;
+}
+
+.customersSuppliersAddressGrid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.customersSuppliersCheckboxRow {
+  align-items: center;
+  color: rgba(243, 247, 251, 0.88);
+  display: inline-flex;
+  gap: 8px;
+}
+
+.customersSuppliersCheckboxRow input {
+  accent-color: #0f5cff;
+}
+
+.customersSuppliersPeopleHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.customersSuppliersAddLink {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: var(--blue);
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  gap: 6px;
+}
+
+.customersSuppliersAddLink svg {
+  height: 16px;
+  width: 16px;
+}
+
+.customersSuppliersPeopleTable {
+  border-top: 1px solid rgba(149, 177, 214, 0.1);
+  padding-top: 10px;
+}
+
+.customersSuppliersPeopleColumns {
+  color: rgba(243, 247, 251, 0.52);
+  display: grid;
+  gap: 18px;
+  grid-template-columns: 1.2fr 0.8fr 1fr 0.8fr 0.6fr;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 980px) {
+  .helpTopBarInner,
+  .helpVideoSectionHeader,
+  .helpFooterMeta {
+    gap: 10px;
+  }
+
+  .helpCategories,
+  .helpVideoGrid,
+  .helpFooterLinksGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .helpHero {
+    border-bottom-left-radius: 32px;
+    border-bottom-right-radius: 32px;
+  }
+
+  .helpTopBar {
+    padding: 10px 18px;
+  }
+
+  .helpRoot {
+    padding-top: 104px;
+  }
+
+  .helpSectionInner {
+    padding: 0 18px;
+  }
+
+  .helpProductsDropdown {
+    left: 0;
+    right: auto;
+  }
+
+  .helpFooterMetaLine {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .helpFooterLegalRow,
+  .helpFooterAddress {
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .helpCardsSection {
+    padding-top: 38px;
+  }
+
+  .toolsPage {
+    padding: 0 18px;
+  }
+
+  .extensionsPage {
+    padding: 0 18px;
+  }
+
+  .extensionsHeaderRow {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .extensionsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .extensionsUpsellCard {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .customersSuppliersPage {
+    padding: 0 18px;
+  }
+
+  .customersSuppliersTopBar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .customersSuppliersActions {
+    flex-wrap: wrap;
+  }
+
+  .customersSuppliersSearchInput {
+    min-width: 0;
+    width: min(100%, 100%);
+  }
+
+  .customersSuppliersEmptyCard {
+    width: min(100%, 360px);
+  }
+
+  .customersSuppliersFormGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .customersSuppliersAddressGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .customersSuppliersSearchRow {
+    width: 100%;
+  }
+
+  .customersSuppliersSearchInput {
+    width: 100%;
+  }
+
+  .customersSuppliersEmptyCard {
+    width: 100%;
+  }
+
+  .customersSuppliersTopBar {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 640px) {
+  .extensionsGrid {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

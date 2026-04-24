@@ -1,9 +1,20 @@
 "use client";
 
 import { FormEvent, useEffect, useMemo, useState, useTransition } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { DaBiTechLogo } from "@/components/shared/dabi-tech-logo";
 import { useToast } from "@/components/shared/toast-provider";
 import { MenuSelectionShape } from "./menu-selection-shape";
+import { IndiceContent } from "./indice-content";
+import { DashboardContent } from "./dashboard-content";
+import { AgendaContent } from "./agenda-content";
+import { MyAccountContent } from "./my-account-content";
+import { IntegrationsContent } from "./integrations-content";
+import { UpgradePlanContent } from "./upgrade-plan-content";
+import { VersionContent } from "./version-content";
+import { ToolsContent } from "./tools-content";
+import { ExtensionsStoreContent } from "./extensions-store-content";
+import { CustomersSuppliersContent } from "./customers-suppliers-content";
 import type {
   CurrentUser,
   DashboardData,
@@ -30,7 +41,6 @@ const navigationGroups = [
       "Ajuda do ERP",
       "Ferramentas",
       "Loja de extensões",
-      "Shopping de Serviços",
     ],
   },
   {
@@ -130,6 +140,33 @@ const supportLinks = [
 
 type NavigationGroupId = (typeof navigationGroups)[number]["id"];
 
+const menuRoutes = {
+  "Clientes e Fornecedores": "/clientes-e-fornecedores",
+  Índice: "/indice",
+  Dashboard: "/dashboard",
+  Agenda: "/agenda",
+  "Minha conta": "/minha-conta",
+  Integrações: "/integracoes",
+  "Upgrade de plano": "/upgrade-plano",
+  "Sobre a versão": "/sobre-versao",
+  Ferramentas: "/ferramentas",
+  "Loja de extensões": "/loja-de-extensoes",
+} as const;
+
+const menuItemByPath: Record<string, keyof typeof menuRoutes> = {
+  "/clientes-e-fornecedores": "Clientes e Fornecedores",
+  "/indice": "Índice",
+  "/dashboard": "Dashboard",
+  "/agenda": "Agenda",
+  "/minha-conta": "Minha conta",
+  "/integracoes": "Integrações",
+  "/upgrade-plano": "Upgrade de plano",
+  "/sobre-versao": "Sobre a versão",
+  "/ferramentas": "Ferramentas",
+  "/loja-de-extensoes": "Loja de extensões",
+  "/": "Índice",
+};
+
 function formatCurrency(valueInCents: number) {
   return new Intl.NumberFormat("pt-BR", {
     style: "currency",
@@ -159,10 +196,19 @@ function getInitials(name: string) {
     .join("");
 }
 
-export function SalesSystemDashboard({ currentUser }: { currentUser: CurrentUser }) {
+export function SalesSystemDashboard({
+  currentUser,
+  initialMenuItem = "Índice",
+}: {
+  currentUser: CurrentUser;
+  initialMenuItem?: string;
+}) {
   const { showToast } = useToast();
+  const pathname = usePathname();
+  const router = useRouter();
   const [activeGroupId, setActiveGroupId] = useState<NavigationGroupId>("inicio");
-  const [activeMenuItem, setActiveMenuItem] = useState("Dashboard");
+  const [activeMenuItem, setActiveMenuItem] = useState<string>(initialMenuItem);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [customers, setCustomers] = useState<SalesCustomer[]>([]);
@@ -194,6 +240,182 @@ export function SalesSystemDashboard({ currentUser }: { currentUser: CurrentUser
 
   const activeGroup = navigationGroups.find((group) => group.id === activeGroupId) ?? navigationGroups[0];
 
+  useEffect(() => {
+    const nextMenuItem = menuItemByPath[pathname] ?? initialMenuItem;
+    setActiveMenuItem(nextMenuItem);
+    if (menuItemByPath[pathname]) {
+      setActiveGroupId("inicio");
+    }
+  }, [initialMenuItem, pathname]);
+
+  const profileItems = useMemo(
+    () => [
+      { id: "company", label: "Dados da empresa", icon: "briefcase" as const },
+      { id: "user", label: "Dados do usuário", icon: "user" as const },
+      { id: "support_user", label: "Usuário de suporte", icon: "support" as const },
+      { id: "extensions", label: "Extensões", icon: "puzzle" as const },
+      { id: "blog", label: "Blog", icon: "rss" as const },
+      { id: "refer", label: "Indique e ganhe", icon: "gift" as const, accent: true as const },
+    ],
+    [],
+  );
+
+  function ProfileIcon({ kind }: { kind: (typeof profileItems)[number]["icon"] }) {
+    switch (kind) {
+      case "briefcase":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M7 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            <path
+              d="M4 6h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
+            <path
+              d="M2.5 11h15"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.4"
+            />
+          </svg>
+        );
+      case "user":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M10 10.4a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
+            <path
+              d="M3.2 17a6.8 6.8 0 0 1 13.6 0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "support":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4.8 10.2V9a5.2 5.2 0 1 1 10.4 0v1.2"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            <path
+              d="M4.6 10.2h-.2A2.4 2.4 0 0 0 2 12.6v.8A2.4 2.4 0 0 0 4.4 15.8h.2"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            <path
+              d="M15.4 10.2h.2A2.4 2.4 0 0 1 18 12.6v.8a2.4 2.4 0 0 1-2.4 2.4h-.2"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "puzzle":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M7.2 3.6h2.2a1.6 1.6 0 1 1 3.2 0h2.2V7a1.6 1.6 0 1 0 0 3.2v3.2h-3.2a1.6 1.6 0 1 1-3.2 0H7.2V10.2a1.6 1.6 0 1 0 0-3.2V3.6Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "rss":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4 4.5c6.6 0 11.5 4.9 11.5 11.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            <path
+              d="M4 8.7c4.2 0 7.3 3.1 7.3 7.3"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            <path
+              d="M5.1 16.4a1.1 1.1 0 1 0 0-2.2 1.1 1.1 0 0 0 0 2.2Z"
+              fill="currentColor"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "gift":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M3.5 8h13v9a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2V8Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
+            <path
+              d="M2.5 8h15"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.4"
+            />
+            <path
+              d="M10 8v11"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.6"
+            />
+            <path
+              d="M6.2 5.9c-.9-.9-1-2.2-.2-2.9.8-.7 2.1-.5 3 .4L10 4.5l1-1.1c.9-.9 2.2-1.1 3-.4.8.7.7 2-.2 2.9L12.5 7H7.5L6.2 5.9Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      default:
+        return null;
+    }
+  }
+
   async function loadData() {
     const [dashboardResponse, customersResponse, productsResponse, ordersResponse] =
       await Promise.all([
@@ -203,8 +425,16 @@ export function SalesSystemDashboard({ currentUser }: { currentUser: CurrentUser
         fetch("/api/sales-system/orders", { cache: "no-store" }),
       ]);
 
-    if (!dashboardResponse.ok || !customersResponse.ok || !productsResponse.ok || !ordersResponse.ok) {
-      throw new Error("Não foi possível carregar os dados principais do ERP.");
+    const firstFailure = [
+      { response: dashboardResponse, label: "dashboard" },
+      { response: customersResponse, label: "clientes" },
+      { response: productsResponse, label: "produtos" },
+      { response: ordersResponse, label: "pedidos" },
+    ].find((item) => !item.response.ok);
+
+    if (firstFailure) {
+      const payload = (await firstFailure.response.json().catch(() => null)) as { error?: string } | null;
+      throw new Error(payload?.error ?? `Não foi possível carregar ${firstFailure.label} do ERP.`);
     }
 
     const [dashboardPayload, customersPayload, productsPayload, ordersPayload] = await Promise.all([
@@ -413,6 +643,16 @@ export function SalesSystemDashboard({ currentUser }: { currentUser: CurrentUser
           <span />
         </div>
 
+        <button
+          className={isProfileMenuOpen ? styles.profileDockButtonActive : styles.profileDockButton}
+          onClick={() => setIsProfileMenuOpen((current) => !current)}
+          type="button"
+          aria-label="Perfil"
+          aria-pressed={isProfileMenuOpen}
+        >
+          <span className={styles.profileDockAvatar}>{getInitials(currentUser.name)}</span>
+        </button>
+
         <div className={styles.primaryRail}>
           <div className={styles.primaryRailTop}>
             <div className={styles.logoBadge}>
@@ -424,6 +664,7 @@ export function SalesSystemDashboard({ currentUser }: { currentUser: CurrentUser
                   key={group.id}
                   className={group.id === activeGroupId ? styles.primaryNavItemActive : styles.primaryNavItem}
                   onClick={() => {
+                    setIsProfileMenuOpen(false);
                     setActiveGroupId(group.id);
                     setActiveMenuItem(group.items[0]);
                   }}
@@ -443,7 +684,10 @@ export function SalesSystemDashboard({ currentUser }: { currentUser: CurrentUser
                 <button
                   key={item}
                   className={item === activeMenuItem ? styles.primaryQuickLinkActive : styles.primaryQuickLink}
-                  onClick={() => setActiveMenuItem(item)}
+                  onClick={() => {
+                    setIsProfileMenuOpen(false);
+                    setActiveMenuItem(item);
+                  }}
                   title={item}
                   type="button"
                 >
@@ -463,35 +707,104 @@ export function SalesSystemDashboard({ currentUser }: { currentUser: CurrentUser
         </div>
       </aside>
 
-      <aside className={styles.secondarySidebar}>
-        <div className={styles.secondarySidebarHeader}>
-          <span className={styles.brandEyebrow}>{activeGroup.eyebrow}</span>
-          <h2>{activeGroup.label}</h2>
-          <p>{activeGroup.description}</p>
-        </div>
-
-        <div className={styles.secondaryMenu}>
-          {activeGroup.items.map((item) => (
+      <aside className={`${styles.secondarySidebar} ${isProfileMenuOpen ? styles.secondarySidebarProfileMode : ""}`}>
+        {isProfileMenuOpen ? (
+          <>
+            <div className={styles.secondarySidebarSpacer} aria-hidden="true" />
+            <nav className={styles.profileMenu} aria-label="Menu do perfil">
+              {profileItems.map((item) => (
+                <button
+                  key={item.id}
+                  className={item.accent ? styles.profileMenuItemAccent : styles.profileMenuItem}
+                  onClick={() => {
+                    // TODO: conectar navegação real.
+                    showToast({ message: `Abrir: ${item.label}` });
+                    setIsProfileMenuOpen(false);
+                  }}
+                  type="button"
+                >
+                  <span className={styles.profileMenuIcon} aria-hidden="true">
+                    <ProfileIcon kind={item.icon} />
+                  </span>
+                  <span className={styles.profileMenuText}>{item.label}</span>
+                </button>
+              ))}
+            </nav>
             <button
-              key={item}
-              className={item === activeMenuItem ? styles.secondaryMenuItemActive : styles.secondaryMenuItem}
-              onClick={() => setActiveMenuItem(item)}
+              className={styles.profileLogoutButton}
+              onClick={() => window.location.assign("/api/auth/logout")}
               type="button"
             >
-              {item}
+              sair
             </button>
-          ))}
-        </div>
-        <section className={styles.profileCard}>
-          <div className={styles.avatar}>{getInitials(currentUser.name)}</div>
-          <div>
-            <strong>{currentUser.name}</strong>
-            <p>{currentUser.role}</p>
-          </div>
-        </section>
+          </>
+        ) : (
+          <>
+            <div className={styles.secondarySidebarHeader}>
+              <span className={styles.brandEyebrow}>{activeGroup.eyebrow}</span>
+              <h2>{activeGroup.label}</h2>
+              <p>{activeGroup.description}</p>
+            </div>
+
+            <div className={styles.secondaryMenu}>
+              {activeGroup.items.map((item) => (
+                <button
+                  key={item}
+                  className={item === activeMenuItem ? styles.secondaryMenuItemActive : styles.secondaryMenuItem}
+                  onClick={() => {
+                    setIsProfileMenuOpen(false);
+                    if (item === "Ajuda do ERP") {
+                      window.open("/ajuda-do-erp", "_blank", "noopener,noreferrer");
+                      return;
+                    }
+                    const route = menuRoutes[item as keyof typeof menuRoutes];
+                    if (route) {
+                      setActiveGroupId("inicio");
+                      router.push(route);
+                      return;
+                    }
+                    setActiveMenuItem(item);
+                  }}
+                  type="button"
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          </>
+        )}
       </aside>
 
       <section className={styles.workspace}>
+        {activeMenuItem === "Índice" ? (
+          <IndiceContent currentUser={currentUser} />
+        ) : activeMenuItem === "Dashboard" ? (
+          <DashboardContent isRefreshing={isLoading} onRefresh={() => void refreshData()} />
+        ) : activeMenuItem === "Agenda" ? (
+          <AgendaContent currentUser={currentUser} />
+        ) : activeMenuItem === "Minha conta" ? (
+          <MyAccountContent
+            currentUser={currentUser}
+            onBack={() => {
+              setActiveGroupId("inicio");
+              setActiveMenuItem("Índice");
+              router.push("/indice");
+            }}
+          />
+        ) : activeMenuItem === "Integrações" ? (
+          <IntegrationsContent currentUser={currentUser} />
+        ) : activeMenuItem === "Upgrade de plano" ? (
+          <UpgradePlanContent currentUser={currentUser} />
+        ) : activeMenuItem === "Sobre a versão" ? (
+          <VersionContent currentUser={currentUser} />
+        ) : activeMenuItem === "Ferramentas" ? (
+          <ToolsContent currentUser={currentUser} />
+        ) : activeMenuItem === "Loja de extensões" ? (
+          <ExtensionsStoreContent currentUser={currentUser} />
+        ) : activeMenuItem === "Clientes e Fornecedores" ? (
+          <CustomersSuppliersContent currentUser={currentUser} />
+        ) : (
+          <>
         <header className={styles.hero}>
           <div className={styles.heroContent}>
             <span className={styles.panelEyebrow}>{activeGroup.label}</span>
@@ -765,6 +1078,8 @@ export function SalesSystemDashboard({ currentUser }: { currentUser: CurrentUser
             </article>
           </aside>
         </section>
+          </>
+        )}
       </section>
     </main>
   );

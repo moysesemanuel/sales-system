@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireRequestSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ensureSalesSystemSeedData } from "@/lib/sales-system";
+import { toPrismaHttpError } from "@/lib/prisma-http";
 
 type CreateSalesCustomerBody = {
   name?: string;
@@ -58,6 +59,14 @@ export async function GET(request: NextRequest) {
       })),
     });
   } catch (error) {
+    const prismaError = toPrismaHttpError(error);
+    if (prismaError) {
+      return NextResponse.json(
+        { error: prismaError.message },
+        { status: prismaError.status },
+      );
+    }
+
     return NextResponse.json(
       {
         error:
@@ -102,6 +111,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ customer });
   } catch (error) {
+    const prismaError = toPrismaHttpError(error);
+    if (prismaError) {
+      return NextResponse.json(
+        { error: prismaError.message },
+        { status: prismaError.status },
+      );
+    }
+
     return NextResponse.json(
       {
         error:

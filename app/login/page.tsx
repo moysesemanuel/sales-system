@@ -95,7 +95,7 @@ export default function LoginPage() {
               maxWidth: "58ch",
             }}
           >
-            O ERP foi reorganizado com referência em plataformas como a Olist:
+            O ERP foi reorganizado com referência em plataformas como o DaBi Tech ERP:
             menos tela improvisada, mais visão de receita, catálogo, clientes e pedidos.
           </p>
         </article>

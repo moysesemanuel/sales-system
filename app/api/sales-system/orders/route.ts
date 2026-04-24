@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireRequestSession } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { ensureSalesSystemSeedData } from "@/lib/sales-system";
+import { toPrismaHttpError } from "@/lib/prisma-http";
 
 const SALES_MOVEMENT_OUT = "OUT";
 const SALES_ORDER_STATUS_PAID = "PAID";
@@ -48,6 +49,14 @@ export async function GET(request: NextRequest) {
       })),
     });
   } catch (error) {
+    const prismaError = toPrismaHttpError(error);
+    if (prismaError) {
+      return NextResponse.json(
+        { error: prismaError.message },
+        { status: prismaError.status },
+      );
+    }
+
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : "Não foi possível carregar as vendas.",
@@ -179,6 +188,14 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ order });
   } catch (error) {
+    const prismaError = toPrismaHttpError(error);
+    if (prismaError) {
+      return NextResponse.json(
+        { error: prismaError.message },
+        { status: prismaError.status },
+      );
+    }
+
     return NextResponse.json(
       {
         error: error instanceof Error ? error.message : "Não foi possível registrar a venda.",
