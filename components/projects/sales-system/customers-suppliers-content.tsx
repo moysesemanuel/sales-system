@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
 import type { CurrentUser } from "./types";
 import styles from "./landing-page.module.css";
 
@@ -11,7 +11,7 @@ const contactTypeOptions = [
   "Fornecedor",
   "Transportador",
   "Outro",
-  "Criar novo tipo de contato",
+  "+ Criar novo tipo de contato",
 ];
 
 const ufOptions = [
@@ -53,9 +53,9 @@ const tributaryRegimeOptions = [
 
 const crmStatusOptions = ["Cliente", "Inativo", "Lead", "Prospect"];
 const contributorOptions = [
-  "9 - Não Contribuinte, que",
   "1 - Contribuinte ICMS",
-  "2 - Contribuinte isento",
+  "2 - Contribuinte isento de Inscrição no cadastro de Contribuintes do ICMS",
+  "9 - Não Contribuinte, que pode ou não possuir Inscrição Estadual no Cadastro de Contribuintes do ICMS",
 ];
 
 function SearchIcon() {
@@ -157,11 +157,32 @@ function SelectField({
 export function CustomersSuppliersContent({ currentUser }: { currentUser: CurrentUser }) {
   const [view, setView] = useState<"list" | "form">("list");
   const [activeTab, setActiveTab] = useState<ContactFormTab>("dados gerais");
+  const [isNewContactTypePanelOpen, setIsNewContactTypePanelOpen] = useState(false);
+  const [selectedContactType, setSelectedContactType] = useState("Cliente");
+  const [lastContactType, setLastContactType] = useState("Cliente");
+  const [contactTypeTags, setContactTypeTags] = useState<string[]>(["Cliente"]);
 
   const tabs = useMemo(
     () => ["dados gerais", "dados complementares", "anexos", "observações"] as ContactFormTab[],
     [],
   );
+
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsNewContactTypePanelOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (view !== "form") {
+      setIsNewContactTypePanelOpen(false);
+    }
+  }, [view]);
 
   const formBody = (
     <section className={styles.customersSuppliersFormCard}>
@@ -182,37 +203,7 @@ export function CustomersSuppliersContent({ currentUser }: { currentUser: Curren
         <div className={styles.customersSuppliersFormSection}>
           <div className={styles.customersSuppliersFormSectionBlock}>
             <h2 className={styles.customersSuppliersSectionTitle}>Dados gerais</h2>
-            <div className={styles.customersSuppliersFormGrid}>
-              <SelectField label="Tipo de contato">
-                <select className={styles.field} defaultValue="Cliente">
-                  {contactTypeOptions.map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </select>
-              </SelectField>
-              <SelectField label="UF">
-                <select className={styles.field} defaultValue="PR">
-                  {ufOptions.map((option) => (
-                    <option key={option}>{option}</option>
-                  ))}
-                </select>
-              </SelectField>
-            </div>
-
-            <div className={styles.customersSuppliersFormGrid}>
-              <SelectField label="Tipo de pessoa">
-                <select className={styles.field} defaultValue="Pessoa Jurídica">
-                  <option>Pessoa Jurídica</option>
-                  <option>Pessoa Física</option>
-                </select>
-              </SelectField>
-              <label className={styles.customersSuppliersField}>
-                <span className={styles.customersSuppliersFieldLabel}>CNPJ</span>
-                <input className={styles.field} placeholder="00.000.000/0000-00" />
-              </label>
-            </div>
-
-            <div className={styles.customersSuppliersFormGrid}>
+            <div className={styles.customersSuppliersFormGridName}>
               <label className={styles.customersSuppliersField}>
                 <span className={styles.customersSuppliersFieldLabel}>Nome</span>
                 <input className={styles.field} placeholder="Nome ou Razão Social do contato" />
@@ -221,31 +212,86 @@ export function CustomersSuppliersContent({ currentUser }: { currentUser: Curren
                 <span className={styles.customersSuppliersFieldLabel}>Fantasia</span>
                 <input className={styles.field} placeholder="Nome fantasia" />
               </label>
-            </div>
-
-            <div className={styles.customersSuppliersFormGrid}>
               <label className={styles.customersSuppliersField}>
                 <span className={styles.customersSuppliersFieldLabel}>Código</span>
                 <input className={styles.field} placeholder="Opcional" />
               </label>
-              <label className={styles.customersSuppliersField}>
-                <span className={styles.customersSuppliersFieldLabel}>Inscrição Estadual</span>
-                <input className={styles.field} placeholder="Inscrição Estadual" />
-              </label>
             </div>
 
-            <div className={styles.customersSuppliersFormGrid}>
+            <div className={styles.customersSuppliersFormGridFour}>
+              <SelectField label="Tipo de pessoa">
+                <select className={styles.field} defaultValue="Pessoa Jurídica">
+                  <option>Pessoa Jurídica</option>
+                  <option>Pessoa Física</option>
+                  <option>Estrangeiro</option>
+                  <option>Estrangeiro no Brasil</option>
+                </select>
+              </SelectField>
+              <label className={styles.customersSuppliersField}>
+                <span className={styles.customersSuppliersFieldLabel}>CNPJ</span>
+                <input className={styles.field} placeholder="00.000.000/0000-00" />
+              </label>
               <SelectField label="Contribuinte">
-                <select className={styles.field} defaultValue="9 - Não Contribuinte, que">
+                <select
+                  className={styles.field}
+                  defaultValue="9 - Não Contribuinte, que pode ou não possuir Inscrição Estadual no Cadastro de Contribuintes do ICMS"
+                >
                   {contributorOptions.map((option) => (
                     <option key={option}>{option}</option>
                   ))}
                 </select>
               </SelectField>
               <label className={styles.customersSuppliersField}>
+                <span className={styles.customersSuppliersFieldLabel}>Inscrição Estadual</span>
+                <input className={styles.field} placeholder="Inscrição Estadual" />
+              </label>
+            </div>
+
+            <div className={styles.customersSuppliersFormGridThree}>
+              <label className={styles.customersSuppliersField}>
                 <span className={styles.customersSuppliersFieldLabel}>Inscrição Municipal</span>
                 <input className={styles.field} placeholder="Inscrição Municipal" />
               </label>
+              <SelectField label="Tipo de contato">
+                <select
+                  className={styles.field}
+                  value={selectedContactType}
+                  onChange={(event) => {
+                    const nextValue = event.target.value;
+                    if (nextValue === "+ Criar novo tipo de contato") {
+                      setSelectedContactType(lastContactType);
+                      setIsNewContactTypePanelOpen(true);
+                      return;
+                    }
+
+                    setSelectedContactType(nextValue);
+                    setLastContactType(nextValue);
+                    setIsNewContactTypePanelOpen(false);
+                    setContactTypeTags((current) => (current.includes(nextValue) ? current : [...current, nextValue]));
+                  }}
+                >
+                  {contactTypeOptions.map((option) => (
+                    <option key={option} value={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+              </SelectField>
+              <div className={styles.customersSuppliersTagList} aria-label="Tipos de contato selecionados">
+                {contactTypeTags.map((tag) => (
+                  <span key={tag} className={styles.customersSuppliersTag}>
+                    <span>{tag}</span>
+                    <button
+                      type="button"
+                      className={styles.customersSuppliersTagRemove}
+                      aria-label={`Remover ${tag}`}
+                      onClick={() => setContactTypeTags((current) => current.filter((item) => item !== tag))}
+                    >
+                      ×
+                    </button>
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -256,7 +302,12 @@ export function CustomersSuppliersContent({ currentUser }: { currentUser: Curren
             <div className={styles.customersSuppliersAddressGrid}>
               <label className={styles.customersSuppliersField}>
                 <span className={styles.customersSuppliersFieldLabel}>CEP</span>
-                <input className={styles.field} placeholder="00000-000" />
+                <div className={styles.customersSuppliersCepField}>
+                  <input className={styles.field} placeholder="00000-000" />
+                  <span className={styles.customersSuppliersCepIcon} aria-hidden="true">
+                    <SearchIcon />
+                  </span>
+                </div>
               </label>
               <label className={styles.customersSuppliersField}>
                 <span className={styles.customersSuppliersFieldLabel}>Município</span>
@@ -422,16 +473,62 @@ export function CustomersSuppliersContent({ currentUser }: { currentUser: Curren
         </div>
       ) : null}
 
-      <div className={styles.customersSuppliersFormActions}>
+      <div className={styles.customersSuppliersFormSectionDivider} />
+
+      <footer className={styles.customersSuppliersFormActions}>
         <button type="button" className={styles.customersSuppliersPrimaryButton}>
           salvar
         </button>
-        <button type="button" className={styles.customersSuppliersTextButton} onClick={() => setView("list")}>
+        <button
+          type="button"
+          className={styles.customersSuppliersTextButton}
+          onClick={() => {
+            setIsNewContactTypePanelOpen(false);
+            setView("list");
+          }}
+        >
           cancelar
         </button>
-      </div>
+      </footer>
     </section>
   );
+
+  const newContactTypePanel = isNewContactTypePanelOpen ? (
+    <aside className={styles.customersSuppliersRightPanel} aria-label="Novo tipo de contato">
+      <div className={styles.customersSuppliersRightPanelHeader}>
+        <div>
+          <h3 className={styles.customersSuppliersRightPanelTitle}>Novo tipo de contato</h3>
+        </div>
+        <button
+          type="button"
+          className={styles.customersSuppliersRightPanelClose}
+          onClick={() => setIsNewContactTypePanelOpen(false)}
+          aria-label="Fechar painel"
+        >
+          ×
+        </button>
+      </div>
+
+      <label className={styles.customersSuppliersField}>
+        <span className={styles.customersSuppliersFieldLabel}>Descrição</span>
+        <input className={styles.field} placeholder="Digite a descrição do tipo de contato" />
+      </label>
+
+      <footer className={styles.customersSuppliersRightPanelActions}>
+        <button type="button" className={styles.customersSuppliersPrimaryButton}>
+          salvar
+        </button>
+        <button
+          type="button"
+          className={styles.customersSuppliersTextButton}
+          onClick={() => setIsNewContactTypePanelOpen(false)}
+        >
+          cancelar
+        </button>
+        <span className={styles.customersSuppliersRightPanelEsc}>ESC</span>
+      </footer>
+    </aside>
+  ) : null;
 
   return (
     <main className={styles.customersSuppliersRoot}>
@@ -516,9 +613,13 @@ export function CustomersSuppliersContent({ currentUser }: { currentUser: Curren
                 </div>
               </div>
             </section>
+            {newContactTypePanel}
           </>
         ) : (
-          formBody
+          <>
+            {formBody}
+            {newContactTypePanel}
+          </>
         )}
       </section>
     </main>

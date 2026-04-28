@@ -15,6 +15,7 @@ import { VersionContent } from "./version-content";
 import { ToolsContent } from "./tools-content";
 import { ExtensionsStoreContent } from "./extensions-store-content";
 import { CustomersSuppliersContent } from "./customers-suppliers-content";
+import { ProductsContent } from "./products-content";
 import type {
   CurrentUser,
   DashboardData,
@@ -142,6 +143,7 @@ type NavigationGroupId = (typeof navigationGroups)[number]["id"];
 
 const menuRoutes = {
   "Clientes e Fornecedores": "/clientes-e-fornecedores",
+  Produtos: "/produtos",
   Índice: "/indice",
   Dashboard: "/dashboard",
   Agenda: "/agenda",
@@ -155,6 +157,7 @@ const menuRoutes = {
 
 const menuItemByPath: Record<string, keyof typeof menuRoutes> = {
   "/clientes-e-fornecedores": "Clientes e Fornecedores",
+  "/produtos": "Produtos",
   "/indice": "Índice",
   "/dashboard": "Dashboard",
   "/agenda": "Agenda",
@@ -208,6 +211,7 @@ export function SalesSystemDashboard({
   const router = useRouter();
   const [activeGroupId, setActiveGroupId] = useState<NavigationGroupId>("inicio");
   const [activeMenuItem, setActiveMenuItem] = useState<string>(initialMenuItem);
+  const [isPrimaryRailExpanded, setIsPrimaryRailExpanded] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const [search, setSearch] = useState("");
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
@@ -242,9 +246,10 @@ export function SalesSystemDashboard({
 
   useEffect(() => {
     const nextMenuItem = menuItemByPath[pathname] ?? initialMenuItem;
+    const nextGroupId = navigationGroups.find((group) => group.items.some((groupItem) => groupItem === nextMenuItem))?.id;
     setActiveMenuItem(nextMenuItem);
-    if (menuItemByPath[pathname]) {
-      setActiveGroupId("inicio");
+    if (nextGroupId) {
+      setActiveGroupId(nextGroupId);
     }
   }, [initialMenuItem, pathname]);
 
@@ -413,6 +418,350 @@ export function SalesSystemDashboard({
         );
       default:
         return null;
+    }
+  }
+
+  type SecondaryMenuIconKind =
+    | "book"
+    | "gauge"
+    | "calendar"
+    | "person"
+    | "pdv"
+    | "tag"
+    | "swap"
+    | "gear"
+    | "wrench"
+    | "hierarchy"
+    | "briefcase"
+    | "rocket"
+    | "info"
+    | "help"
+    | "bag"
+    | "gift"
+    | "file";
+
+  const secondaryMenuIconByLabel: Record<string, SecondaryMenuIconKind> = {
+    "Clientes e Fornecedores": "person",
+    Produtos: "tag",
+    "Campanhas Promocionais": "gear",
+    Serviços: "wrench",
+    "Categorias dos Produtos": "hierarchy",
+    Vendedores: "briefcase",
+    Embalagens: "gift",
+    Relatórios: "file",
+    Índice: "book",
+    Dashboard: "gauge",
+    Agenda: "calendar",
+    "Minha conta": "person",
+    PDV: "pdv",
+    Integrações: "swap",
+    "Upgrade de plano": "rocket",
+    "Sobre a versão": "info",
+    "Ajuda do ERP": "help",
+    Ferramentas: "wrench",
+    "Loja de extensões": "bag",
+  };
+
+  function SecondaryMenuIcon({ label }: { label: string }) {
+    const kind = secondaryMenuIconByLabel[label] ?? "file";
+
+    switch (kind) {
+      case "book":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4 4.2h5.4a2.6 2.6 0 0 1 2.6 2.6v9A2.2 2.2 0 0 0 9.8 13.6H4V4.2Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+            <path
+              d="M16 4.2h-5.4a2.6 2.6 0 0 0-2.6 2.6v9"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "gauge":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4.3 13.3a5.8 5.8 0 1 1 11.4 0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            <path d="M10 10l3.1-2.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <circle cx="10" cy="10" r="1.2" fill="currentColor" opacity="0.85" />
+          </svg>
+        );
+      case "calendar":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4 4.6h12a1 1 0 0 1 1 1V16a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5.6a1 1 0 0 1 1-1Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+            <path d="M5.6 2.8v3M14.4 2.8v3M3 8h14" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.85" />
+          </svg>
+        );
+      case "person":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M10 10.3a3.4 3.4 0 1 0 0-6.8 3.4 3.4 0 0 0 0 6.8Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
+            <path
+              d="M3.4 16.8a6.6 6.6 0 0 1 13.2 0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "pdv":
+        return (
+          <svg width="18" height="18" viewBox="0 0 64 64" aria-hidden="true">
+            <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M23 10v3" />
+              <path d="M27 10v3" />
+              <path d="M31 10v3" />
+              <path d="M37 10v4" />
+              <path d="M45 10v14" />
+              <path d="M50 10v14" />
+              <path d="M55 10v14" />
+              <rect x="10" y="18" width="28" height="38" rx="6" ry="6" />
+              <rect x="16" y="24" width="16" height="10" rx="1.5" ry="1.5" />
+              <path d="M18 42h4" />
+              <path d="M27 42h4" />
+              <path d="M18 48h4" />
+              <path d="M27 48h4" />
+            </g>
+          </svg>
+        );
+      case "tag":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M3 6.2V3.8A.8.8 0 0 1 3.8 3H6.2l8.6 8.6a1.5 1.5 0 0 1 0 2.1l-3.4 3.4a1.5 1.5 0 0 1-2.1 0L3 9.3Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+            <circle cx="6.4" cy="6.4" r="1.1" fill="currentColor" opacity="0.85" />
+          </svg>
+        );
+      case "swap":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M4 6.7h10.4M11.7 4.2 14.2 6.7 11.7 9.2"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+            <path
+              d="M16 13.3H5.6M8.3 10.8 5.8 13.3 8.3 15.8"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "gear":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M10 5.8a4.2 4.2 0 1 0 0 8.4 4.2 4.2 0 0 0 0-8.4Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
+            <path
+              d="M10 2.4v2.1M10 15.5v2.1M4.4 4.4l1.5 1.5M14.1 14.1l1.5 1.5M2.4 10h2.1M15.5 10h2.1M4.4 15.6l1.5-1.5M14.1 5.9l1.5-1.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              opacity="0.75"
+            />
+          </svg>
+        );
+      case "wrench":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M12.7 3.6a4.2 4.2 0 0 0-5.4 5.4L3.6 12.7l3.7 3.7 3.7-3.7a4.2 4.2 0 0 0 5.4-5.4l-2.1 2.1-2.1-.5-.5-2.1 2.1-2.1Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "hierarchy":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M10 4v4M5 14v-2.2A1.8 1.8 0 0 1 6.8 10h6.4A1.8 1.8 0 0 1 15 11.8V14M5 4h2.5v2.5H5ZM12.5 4H15v2.5h-2.5ZM8.8 14h2.4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "briefcase":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M7 6V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v1"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            <path
+              d="M4 6h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "rocket":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M12.9 3.1c1.8.2 3 1.4 3.2 3.2-.1 2.2-1.1 4.6-2.7 6.2l-3.7 3.7-2.6-2.6 3.7-3.7c1.7-1.7 4.1-2.6 6.3-2.8-1.7 1.7-3.1 4.6-3.3 6.4-.2 1.8-1.1 3.1-2.9 3.2-1.2.1-2.4-.4-3.3-1.3l-1.1-1.1"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinejoin="round"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            <path d="M6 14l-2.1.7.7-2.1" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.85" />
+          </svg>
+        );
+      case "info":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.85" />
+            <path d="M10 9v4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <circle cx="10" cy="6.4" r="1" fill="currentColor" opacity="0.85" />
+          </svg>
+        );
+      case "help":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.85" />
+            <path
+              d="M7.9 8.1A2.3 2.3 0 0 1 10 6.8c1.3 0 2.3.8 2.3 2 0 1.6-1.8 2-2.4 2.9v.6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+            <circle cx="10" cy="14.3" r="0.9" fill="currentColor" opacity="0.85" />
+          </svg>
+        );
+      case "bag":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M5.2 6.5h9.6l-.7 8.2a1.4 1.4 0 0 1-1.4 1.3H7.3a1.4 1.4 0 0 1-1.4-1.3l-.7-8.2Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+            <path
+              d="M7.2 6.5a2.8 2.8 0 0 1 5.6 0"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "gift":
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M3.5 8h13v9a2 2 0 0 1-2 2h-9a2 2 0 0 1-2-2V8Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
+            <path
+              d="M2.5 8h15M10 8v11"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+              opacity="0.7"
+            />
+            <path
+              d="M6.2 5.9c-.9-.9-1-2.2-.2-2.9.8-.7 2.1-.5 3 .4L10 4.5l1-1.1c.9-.9 2.2-1.1 3-.4.8.7.7 2-.2 2.9L12.5 7H7.5L6.2 5.9Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+          </svg>
+        );
+      case "file":
+      default:
+        return (
+          <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+            <path
+              d="M6 2.8h5l3.2 3.2V17.2a.8.8 0 0 1-.8.8H6a.8.8 0 0 1-.8-.8V3.6a.8.8 0 0 1 .8-.8Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinejoin="round"
+              opacity="0.85"
+            />
+            <path d="M11 2.8v3.2h3.2" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.85" />
+          </svg>
+        );
     }
   }
 
@@ -635,13 +984,28 @@ export function SalesSystemDashboard({
     : [];
 
   return (
-    <main className={styles.page}>
+    <main className={styles.page} data-primary-rail-state={isPrimaryRailExpanded ? "expanded" : "collapsed"}>
       <aside className={styles.primaryRailShell}>
         <div className={styles.hamburgerDock} aria-hidden="true">
           <span />
           <span />
           <span />
         </div>
+
+        <div className={styles.logoBadge} aria-hidden="true">
+          <DaBiTechLogo className={styles.railLogo} />
+        </div>
+
+        <button
+          className={isPrimaryRailExpanded ? styles.railModeDockButtonActive : styles.railModeDockButton}
+          onClick={() => setIsPrimaryRailExpanded((current) => !current)}
+          type="button"
+          aria-label={isPrimaryRailExpanded ? "Colapsar menu lateral esquerdo" : "Expandir menu lateral esquerdo"}
+          aria-pressed={isPrimaryRailExpanded}
+          title={isPrimaryRailExpanded ? "Colapsar menu" : "Expandir menu"}
+        >
+          <span aria-hidden="true">↔</span>
+        </button>
 
         <button
           className={isProfileMenuOpen ? styles.profileDockButtonActive : styles.profileDockButton}
@@ -655,9 +1019,6 @@ export function SalesSystemDashboard({
 
         <div className={styles.primaryRail}>
           <div className={styles.primaryRailTop}>
-            <div className={styles.logoBadge}>
-              <DaBiTechLogo className={styles.railLogo} />
-            </div>
             <nav className={styles.primaryNav}>
               {navigationGroups.map((group) => (
                 <button
@@ -697,13 +1058,6 @@ export function SalesSystemDashboard({
             </div>
           </div>
 
-          <button
-            className={styles.logoutMiniButton}
-            onClick={() => window.location.assign("/api/auth/logout")}
-            type="button"
-          >
-            Sair
-          </button>
         </div>
       </aside>
 
@@ -740,12 +1094,6 @@ export function SalesSystemDashboard({
           </>
         ) : (
           <>
-            <div className={styles.secondarySidebarHeader}>
-              <span className={styles.brandEyebrow}>{activeGroup.eyebrow}</span>
-              <h2>{activeGroup.label}</h2>
-              <p>{activeGroup.description}</p>
-            </div>
-
             <div className={styles.secondaryMenu}>
               {activeGroup.items.map((item) => (
                 <button
@@ -759,14 +1107,23 @@ export function SalesSystemDashboard({
                     }
                     const route = menuRoutes[item as keyof typeof menuRoutes];
                     if (route) {
-                      setActiveGroupId("inicio");
-                      router.push(route);
+                      const nextGroupId = navigationGroups.find((group) => group.items.some((groupItem) => groupItem === item))?.id;
+                      if (nextGroupId) {
+                        setActiveGroupId(nextGroupId);
+                      }
+                      setActiveMenuItem(item);
+                      if (pathname !== route) {
+                        router.push(route);
+                      }
                       return;
                     }
                     setActiveMenuItem(item);
                   }}
                   type="button"
                 >
+                  <span className={styles.secondaryMenuIcon} aria-hidden="true">
+                    <SecondaryMenuIcon label={item} />
+                  </span>
                   {item}
                 </button>
               ))}
@@ -803,6 +1160,8 @@ export function SalesSystemDashboard({
           <ExtensionsStoreContent currentUser={currentUser} />
         ) : activeMenuItem === "Clientes e Fornecedores" ? (
           <CustomersSuppliersContent currentUser={currentUser} />
+        ) : activeMenuItem === "Produtos" ? (
+          <ProductsContent currentUser={currentUser} />
         ) : (
           <>
         <header className={styles.hero}>
