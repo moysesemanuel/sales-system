@@ -7783,3 +7783,250 @@
     grid-template-columns: minmax(0, 1fr);
   }
 }
+
+/* CSS CAMPANHAS PROMOCIONAIS */
+.contentSection {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: #111315;
+  color: #f5f7fa;
+}
+
+.contentHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.breadcrumb {
+  margin: 0;
+  font-size: 14px;
+  color: #a4acb9;
+  text-transform: lowercase;
+}
+
+.breadcrumbSeparator {
+  margin: 0 6px;
+  color: #667085;
+}
+
+.breadcrumbCurrent {
+  color: #f5f7fa;
+  font-weight: 600;
+}
+
+.primaryActionButton {
+  border: none;
+  border-radius: 999px;
+  background: #0d6efd;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.guideBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 24px;
+  background: #4b5563;
+}
+
+.guideBannerLeft {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.guideBannerIcon {
+  color: #2f7cff;
+  font-size: 20px;
+}
+
+.guideBannerLabel {
+  color: #d0d5dd;
+  font-size: 14px;
+}
+
+.guideBannerTitle {
+  color: #ffffff;
+  font-size: 14px;
+}
+
+.guideBannerRight {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.guideBannerProgressText {
+  font-size: 14px;
+  color: #f5f7fa;
+}
+
+.guideBannerProgressTrack {
+  width: 72px;
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+}
+
+.guideBannerProgressFill {
+  width: 0%;
+  height: 100%;
+  background: #f5f7fa;
+}
+
+.guideBannerLink {
+  border: none;
+  background: transparent;
+  color: #0d6efd;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.pageSection {
+  padding: 24px;
+  flex: 1;
+}
+
+.pageTitle {
+  margin: 0 0 16px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.searchInputWrapper {
+  position: relative;
+  max-width: 480px;
+}
+
+.searchInput {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  border: 1px solid #3b3f46;
+  background: #13161a;
+  color: #f5f7fa;
+  padding: 0 44px 0 16px;
+  font-size: 15px;
+  outline: none;
+}
+
+.searchInput::placeholder {
+  color: #98a2b3;
+}
+
+.searchIcon {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  transform: translateY(-50%);
+  color: #f5f7fa;
+  font-size: 16px;
+}
+
+.filterPills {
+  display: flex;
+  gap: 10px;
+}
+
+.filterPill,
+.filterPillActive {
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filterPill {
+  border: 1px solid #4b5563;
+  background: transparent;
+  color: #f5f7fa;
+}
+
+.filterPillActive {
+  border: 1px solid #0d6efd;
+  background: rgba(13, 110, 253, 0.12);
+  color: #2f7cff;
+}
+
+.emptyStateWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 360px;
+}
+
+.emptyStateCard {
+  width: 100%;
+  max-width: 480px;
+  min-height: 260px;
+  border: 1px solid #2f7cff;
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.emptyStateText {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.emptyStateTitle {
+  margin: 0;
+  font-size: 18px;
+  line-height: 1.3;
+  color: #ffffff;
+}
+
+.emptyStateDescription {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #d0d5dd;
+}
+
+.emptyStateIllustration {
+  display: flex;
+  align-items: flex-end;
+  font-size: 72px;
+}
+
+.helpFooter {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 20px 24px 28px;
+}
+
+.helpFooterTitle {
+  margin: 0 0 4px;
+  font-size: 16px;
+  color: #f5f7fa;
+}
+
+.helpFooterLink {
+  color: #0d6efd;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+/* FIM CSS CAMPANHAS PROMOCIONAIS */

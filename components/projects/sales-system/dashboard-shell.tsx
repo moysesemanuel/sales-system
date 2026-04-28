@@ -24,6 +24,7 @@ import type {
   SalesProduct,
 } from "./types";
 import styles from "./landing-page.module.css";
+import { PromotionalCampaignsContent } from "./promotional-campaigns-content";
 
 const navigationGroups = [
   {
