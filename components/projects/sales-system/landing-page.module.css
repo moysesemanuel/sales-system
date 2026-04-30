@@ -8539,9 +8539,66 @@
   border-bottom: 1px solid rgba(15, 15, 15, 0.1);
   color: #111315;
   flex-wrap: nowrap;
-  overflow: visible;
+  overflow: hidden;
+  min-width: 0;
   position: relative;
   z-index: 5;
+}
+
+.richTextToolbar > * {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.richTextButton,
+.richTextLabeledSelect,
+.richTextDivider,
+.richTextMenu,
+.richTextSelect,
+.richTextSelectButton {
+  flex: 0 0 auto;
+}
+
+.richTextMenu {
+  margin-left: auto;
+  flex: 0 0 auto;
+}.richTextToolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #f8fafc;
+  border-bottom: 1px solid rgba(15, 15, 15, 0.1);
+  color: #111315;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  min-width: 0;
+  width: 100%;
+  position: relative;
+  z-index: 5;
+}
+
+.richTextToolbarContent {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.richTextToolbarContent > * {
+  flex: 0 0 auto;
+}
+
+.richTextMenu {
+  flex: 0 0 auto;
+  margin-left: 0;
+}
+
+.richTextSelect,
+.richTextSelectButton {
+  flex: 0 0 auto;
 }
 
 .richTextSelect {

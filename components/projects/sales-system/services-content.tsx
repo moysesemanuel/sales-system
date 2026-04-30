@@ -502,25 +502,49 @@ export function ServicesContent({ currentUser: _currentUser }: ServicesContentPr
     if (!toolbar || !measure) return;
 
     const compute = () => {
-      const toolbarWidth = toolbar.getBoundingClientRect().width;
+      const toolbarStyles = window.getComputedStyle(toolbar);
+      const paddingLeft = parseFloat(toolbarStyles.paddingLeft || "0");
+      const paddingRight = parseFloat(toolbarStyles.paddingRight || "0");
+      const toolbarWidth =
+        toolbar.getBoundingClientRect().width - paddingLeft - paddingRight;
+
       const menuEl = measure.querySelector<HTMLElement>('[data-toolbar-key="menu"]');
       if (!menuEl) return;
+
       const menuWidth = menuEl.getBoundingClientRect().width;
 
-      const nextOverflow = new Set<string>();
+      const measuredItems = toolbarItems
+        .filter((item) => item.key !== "menu" && !("keepInToolbar" in item && item.keepInToolbar))
+        .map((item) => {
+          const el = measure.querySelector<HTMLElement>(`[data-toolbar-key="${item.key}"]`);
+          return {
+            key: item.key,
+            width: el?.getBoundingClientRect().width ?? 0,
+          };
+        });
 
       let used = 0;
-      const reserveForMenu = menuWidth;
+      const firstPassOverflow: string[] = [];
 
-      for (const item of toolbarItems) {
-        if (item.key === "menu") continue;
-        if ("keepInToolbar" in item && item.keepInToolbar) continue;
-        const el = measure.querySelector<HTMLElement>(`[data-toolbar-key="${item.key}"]`);
-        if (!el) continue;
-        const itemWidth = el.getBoundingClientRect().width;
+      for (const item of measuredItems) {
+        if (used + item.width <= toolbarWidth) {
+          used += item.width;
+        } else {
+          firstPassOverflow.push(item.key);
+        }
+      }
 
-        if (used + itemWidth + reserveForMenu <= toolbarWidth) {
-          used += itemWidth;
+      if (firstPassOverflow.length === 0) {
+        setOverflowKeys(new Set());
+        return;
+      }
+
+      let usedWithMenu = 0;
+      const nextOverflow = new Set<string>();
+
+      for (const item of measuredItems) {
+        if (usedWithMenu + item.width + menuWidth <= toolbarWidth) {
+          usedWithMenu += item.width;
         } else {
           nextOverflow.add(item.key);
         }
@@ -1119,7 +1143,11 @@ export function ServicesContent({ currentUser: _currentUser }: ServicesContentPr
                     <NumberedListIcon />
                   </button>
 
-                  <div className={styles.richTextMenu} data-toolbar-key="menu">
+                  <div
+                    className={styles.richTextMenu}
+                    data-toolbar-key="menu"
+                    style={overflowKeys.size === 0 ? { display: "none" } : undefined}
+                  >
                     <button
                       type="button"
                       className={`${styles.richTextButton} ${styles.richTextMenuTrigger}`}
