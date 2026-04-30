@@ -223,6 +223,50 @@ function NumberedListIcon() {
   );
 }
 
+function UndoIcon() {
+  return (
+    <svg width="24" height="24" focusable="false" aria-hidden="true">
+      <path
+        d="M6.4 8H12c3.7 0 6.2 2 6.8 5.1.6 2.7-.4 5.6-2.3 6.8a1 1 0 0 1-1-1.8c1.1-.6 1.8-2.7 1.4-4.6-.5-2.1-2.1-3.5-4.9-3.5H6.4l3.3 3.3a1 1 0 1 1-1.4 1.4l-5-5a1 1 0 0 1 0-1.4l5-5a1 1 0 0 1 1.4 1.4L6.4 8Z"
+        fillRule="nonzero"
+      />
+    </svg>
+  );
+}
+
+function RedoIcon() {
+  return (
+    <svg width="24" height="24" focusable="false" aria-hidden="true">
+      <path
+        d="M17.6 10H12c-2.8 0-4.4 1.4-4.9 3.5-.4 2 .3 4 1.4 4.6a1 1 0 1 1-1 1.8c-2-1.2-2.9-4.1-2.3-6.8.6-3 3-5.1 6.8-5.1h5.6l-3.3-3.3a1 1 0 1 1 1.4-1.4l5 5a1 1 0 0 1 0 1.4l-5 5a1 1 0 0 1-1.4-1.4l3.3-3.3Z"
+        fillRule="nonzero"
+      />
+    </svg>
+  );
+}
+
+function InsertImageIcon() {
+  return (
+    <svg width="24" height="24" focusable="false" aria-hidden="true">
+      <path
+        d="m5 15.7 3.3-3.2c.3-.3.7-.3 1 0L12 15l4.1-4c.3-.4.8-.4 1 0l2 1.9V5H5v10.7ZM5 18V19h3l2.8-2.9-2-2L5 17.9Zm14-3-2.5-2.4-6.4 6.5H19v-4ZM4 3h16c.6 0 1 .4 1 1v16c0 .6-.4 1-1 1H4a1 1 0 0 1-1-1V4c0-.6.4-1 1-1Zm6 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"
+        fillRule="nonzero"
+      />
+    </svg>
+  );
+}
+
+function ClearFormattingIcon() {
+  return (
+    <svg width="24" height="24" focusable="false" aria-hidden="true">
+      <path
+        d="M13.2 6a1 1 0 0 1 0 .2l-2.6 10a1 1 0 0 1-1 .8h-.2a.8.8 0 0 1-.8-1l2.6-10H8a1 1 0 1 1 0-2h9a1 1 0 0 1 0 2h-3.8ZM5 18h7a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Zm13 1.5L16.5 18 15 19.5a.7.7 0 0 1-1-1l1.5-1.5-1.5-1.5a.7.7 0 0 1 1-1l1.5 1.5 1.5-1.5a.7.7 0 0 1 1 1L17.5 17l1.5 1.5a.7.7 0 0 1-1 1Z"
+        fillRule="evenodd"
+      />
+    </svg>
+  );
+}
+
 export function ServicesContent({ currentUser: _currentUser }: ServicesContentProps) {
   const [mode, setMode] = useState<"list" | "create">("list");
   const situationSelectId = useId();
@@ -490,6 +534,10 @@ export function ServicesContent({ currentUser: _currentUser }: ServicesContentPr
         { key: "indent" },
         { key: "list_bullets" },
         { key: "list_numbers" },
+        { key: "undo" },
+        { key: "redo" },
+        { key: "insert_image" },
+        { key: "clear_format" },
         { key: "menu", keepInToolbar: true },
       ] as const,
     []
@@ -505,13 +553,27 @@ export function ServicesContent({ currentUser: _currentUser }: ServicesContentPr
       const toolbarStyles = window.getComputedStyle(toolbar);
       const paddingLeft = parseFloat(toolbarStyles.paddingLeft || "0");
       const paddingRight = parseFloat(toolbarStyles.paddingRight || "0");
+      const columnGap = parseFloat(toolbarStyles.columnGap || toolbarStyles.gap || "0");
+
+      const safety = 8;
+
       const toolbarWidth =
-        toolbar.getBoundingClientRect().width - paddingLeft - paddingRight;
+        toolbar.getBoundingClientRect().width - paddingLeft - paddingRight - safety;
 
       const menuEl = measure.querySelector<HTMLElement>('[data-toolbar-key="menu"]');
       if (!menuEl) return;
 
       const menuWidth = menuEl.getBoundingClientRect().width;
+
+      const pinnedItems = toolbarItems
+        .filter((item) => "keepInToolbar" in item && item.keepInToolbar && item.key !== "menu")
+        .map((item) => {
+          const el = measure.querySelector<HTMLElement>(`[data-toolbar-key="${item.key}"]`);
+          return el?.getBoundingClientRect().width ?? 0;
+        });
+
+      const pinnedWidth = pinnedItems.reduce((total, width) => total + width, 0);
+      const pinnedGaps = Math.max(0, pinnedItems.length - 1) * columnGap;
 
       const measuredItems = toolbarItems
         .filter((item) => item.key !== "menu" && !("keepInToolbar" in item && item.keepInToolbar))
@@ -523,12 +585,18 @@ export function ServicesContent({ currentUser: _currentUser }: ServicesContentPr
           };
         });
 
+      const availableWithoutMenu = Math.max(0, toolbarWidth - pinnedWidth - pinnedGaps);
+
       let used = 0;
+      let usedCount = 0;
       const firstPassOverflow: string[] = [];
 
       for (const item of measuredItems) {
-        if (used + item.width <= toolbarWidth) {
-          used += item.width;
+        const nextWidth = used + item.width + (usedCount > 0 ? columnGap : 0);
+
+        if (nextWidth <= availableWithoutMenu) {
+          used = nextWidth;
+          usedCount += 1;
         } else {
           firstPassOverflow.push(item.key);
         }
@@ -539,12 +607,22 @@ export function ServicesContent({ currentUser: _currentUser }: ServicesContentPr
         return;
       }
 
+      const availableWithMenu = Math.max(
+        0,
+        toolbarWidth - pinnedWidth - pinnedGaps - menuWidth - columnGap
+      );
+
       let usedWithMenu = 0;
+      let usedWithMenuCount = 0;
       const nextOverflow = new Set<string>();
 
       for (const item of measuredItems) {
-        if (usedWithMenu + item.width + menuWidth <= toolbarWidth) {
-          usedWithMenu += item.width;
+        const nextWidth =
+          usedWithMenu + item.width + (usedWithMenuCount > 0 ? columnGap : 0);
+
+        if (nextWidth <= availableWithMenu) {
+          usedWithMenu = nextWidth;
+          usedWithMenuCount += 1;
         } else {
           nextOverflow.add(item.key);
         }
@@ -897,565 +975,722 @@ export function ServicesContent({ currentUser: _currentUser }: ServicesContentPr
 
             <section className={styles.formSection}>
               <h2 className={styles.formSectionTitle}>Descrição Complementar</h2>
-              <div className={styles.richTextEditor}>
-                <div
-                  className={styles.richTextToolbar}
-                  role="toolbar"
-                  ref={toolbarRef}
-                  onMouseDownCapture={handleToolbarMouseDownCapture}
-                >
+              <div className={styles.richTextEditorWrap}>
+                <div className={styles.richTextEditor}>
                   <div
-                    className={styles.richTextLabeledSelect}
-                    data-toolbar-key="text_style"
-                    ref={textStyleMenuRef}
+                    className={styles.richTextToolbar}
+                    role="toolbar"
+                    ref={toolbarRef}
+                    onMouseDownCapture={handleToolbarMouseDownCapture}
                   >
-                    <div className={styles.richTextSelectControl}>
-                      <button
-                        type="button"
-                        className={styles.richTextSelectButton}
-                        aria-haspopup="menu"
-                        aria-expanded={isTextStyleMenuOpen}
-                        aria-label="Tipo de texto"
-                        onClick={() => setIsTextStyleMenuOpen((prev) => !prev)}
-                      >
-                        <span className={styles.richTextSelectButtonPreview} aria-hidden="true">
-                          <span className={getBlockTypePreviewClass(selectedBlockType)}>
-                            {selectedBlockTypeLabel}
-                          </span>
-                        </span>
-                      </button>
-                    </div>
-
-                    {isTextStyleMenuOpen ? (
-                      <div className={styles.richTextSelectMenu} role="menu">
-                        {blockTypeOptions.map((option) => (
-                          <button
-                            key={option.value}
-                            type="button"
-                            role="menuitemradio"
-                            aria-checked={selectedBlockType === option.value}
-                            className={`${styles.richTextSelectMenuItem} ${selectedBlockType === option.value
-                              ? styles.richTextSelectMenuItemActive
-                              : ""
-                              }`}
-                            onClick={() => {
-                              applyBlockType(option.value);
-                              setIsTextStyleMenuOpen(false);
-                            }}
-                          >
-                            <span className={getBlockTypePreviewClass(option.value)}>
-                              {option.label}
-                            </span>
-                          </button>
-                        ))}
-                      </div>
-                    ) : null}
-                  </div>
-
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Negrito"
-                    onClick={() => runCommand("bold")}
-                    data-toolbar-key="bold"
-                    style={overflowKeys.has("bold") ? { display: "none" } : undefined}
-                  >
-                    <strong>B</strong>
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Itálico"
-                    onClick={() => runCommand("italic")}
-                    data-toolbar-key="italic"
-                    style={overflowKeys.has("italic") ? { display: "none" } : undefined}
-                  >
-                    <em>I</em>
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Sublinhado"
-                    onClick={() => runCommand("underline")}
-                    data-toolbar-key="underline"
-                    style={overflowKeys.has("underline") ? { display: "none" } : undefined}
-                  >
-                    <span className={styles.underlineText}>U</span>
-                  </button>
-
-                  <div className={styles.richTextLabeledSelect} data-toolbar-key="font_size">
-                    <div className={styles.richTextSelectControl}>
-                      <span className={styles.richTextSelectLabel} aria-hidden="true">
-                        {selectedFontPt}pt
-                      </span>
-                      <select
-                        className={styles.richTextSelect}
-                        defaultValue="12"
-                        aria-label="Tamanho da fonte"
-                        value={selectedFontPt}
-                        onMouseDown={() => saveSelection()}
-                        onChange={(event) => {
-                          const pt = event.target.value;
-                          setSelectedFontPt(pt);
-                          const match = sizeOptions.find((option) => String(option.pt) === pt);
-                          runCommand("fontSize", match?.cmd ?? "3");
-                        }}
-                      >
-                        <option value="8">8pt</option>
-                        <option value="10">10pt</option>
-                        <option value="12">12pt</option>
-                        <option value="14">14pt</option>
-                        <option value="18">18pt</option>
-                        <option value="24">24pt</option>
-                        <option value="36">36pt</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    className={`${styles.richTextButton} ${styles.richTextButtonChevron} ${styles.richTextColorButton}`}
-                    aria-label="Cor da fonte"
-                    onClick={() => textColorInputRef.current?.click()}
-                    data-toolbar-key="text_color"
-                    style={overflowKeys.has("text_color") ? { display: "none" } : undefined}
-                  >
-                    <span className={styles.richTextColorGlyph}>
-                      <TextColorIcon />
-                    </span>
-                    <span
-                      className={styles.richTextColorSwatch}
-                      style={{ backgroundColor: selectedTextColor }}
-                      aria-hidden="true"
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    className={`${styles.richTextButton} ${styles.richTextButtonChevron}`}
-                    aria-label="Marca texto"
-                    onClick={() => highlightColorInputRef.current?.click()}
-                    data-toolbar-key="highlight"
-                    style={overflowKeys.has("highlight") ? { display: "none" } : undefined}
-                  >
-                    <HighlightColorIcon />
-                  </button>
-
-                  <div
-                    className={styles.richTextDivider}
-                    aria-hidden="true"
-                    data-toolbar-key="divider_1"
-                    style={overflowKeys.has("divider_1") ? { display: "none" } : undefined}
-                  />
-
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Alinhar à esquerda"
-                    title="Alinhar à esquerda"
-                    onClick={() => runCommand("justifyLeft")}
-                    aria-pressed={formatState.justifyLeft}
-                    data-toolbar-key="align_left"
-                    style={overflowKeys.has("align_left") ? { display: "none" } : undefined}
-                  >
-                    <AlignLeftIcon />
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Centralizar"
-                    title="Centralizar"
-                    onClick={() => runCommand("justifyCenter")}
-                    aria-pressed={formatState.justifyCenter}
-                    data-toolbar-key="align_center"
-                    style={overflowKeys.has("align_center") ? { display: "none" } : undefined}
-                  >
-                    <AlignCenterIcon />
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Alinhar à direita"
-                    title="Alinhar à direita"
-                    onClick={() => runCommand("justifyRight")}
-                    aria-pressed={formatState.justifyRight}
-                    data-toolbar-key="align_right"
-                    style={overflowKeys.has("align_right") ? { display: "none" } : undefined}
-                  >
-                    <AlignRightIcon />
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.richTextMenuItem}
-                    onMouseDown={(event) => event.preventDefault()}
-                    onClick={() => {
-                      restoreSelection();
-                      runCommand("justifyFull");
-                    }}
-                  >
-                    <JustifyIcon />
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Diminuir recuo"
-                    title="Diminuir recuo"
-                    onClick={() => runCommand("outdent")}
-                    disabled={!formatState.canOutdent}
-                    data-toolbar-key="outdent"
-                    style={overflowKeys.has("outdent") ? { display: "none" } : undefined}
-                  >
-                    <OutdentIcon />
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Aumentar recuo"
-                    title="Aumentar recuo"
-                    onClick={() => runCommand("indent")}
-                    disabled={!formatState.canIndent}
-                    data-toolbar-key="indent"
-                    style={overflowKeys.has("indent") ? { display: "none" } : undefined}
-                  >
-                    <IndentIcon />
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Lista com marcadores"
-                    title="Lista com marcadores"
-                    onClick={() => runCommand("insertUnorderedList")}
-                    aria-pressed={formatState.unorderedList}
-                    data-toolbar-key="list_bullets"
-                    style={overflowKeys.has("list_bullets") ? { display: "none" } : undefined}
-                  >
-                    <BulletListIcon />
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.richTextButton}
-                    aria-label="Lista numerada"
-                    title="Lista numerada"
-                    onClick={() => runCommand("insertOrderedList")}
-                    aria-pressed={formatState.orderedList}
-                    data-toolbar-key="list_numbers"
-                    style={overflowKeys.has("list_numbers") ? { display: "none" } : undefined}
-                  >
-                    <NumberedListIcon />
-                  </button>
-
-                  <div
-                    className={styles.richTextMenu}
-                    data-toolbar-key="menu"
-                    style={overflowKeys.size === 0 ? { display: "none" } : undefined}
-                  >
-                    <button
-                      type="button"
-                      className={`${styles.richTextButton} ${styles.richTextMenuTrigger}`}
-                      aria-label="Mais opções"
+                    <div
+                      className={styles.richTextLabeledSelect}
+                      data-toolbar-key="text_style"
+                      ref={textStyleMenuRef}
                     >
-                      <span className={styles.richTextMenuTriggerIcon}>
-                        <svg width="24" height="24" focusable="false" aria-hidden="true">
-                          <path
-                            d="M6 10a2 2 0 0 0-2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2Zm12 0a2 2 0 0 0-2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2Zm-6 0a2 2 0 0 0-2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2Z"
-                            fillRule="nonzero"
-                          />
-                        </svg>
-                      </span>
-                    </button>
-                    <div className={styles.richTextMenuPopover}>
-                      {Array.from(overflowKeys).length ? (
-                        <>
-                          {overflowKeys.has("bold") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => runCommand("bold")}
-                            >
-                              negrito
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("italic") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => runCommand("italic")}
-                            >
-                              itálico
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("underline") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => runCommand("underline")}
-                            >
-                              sublinhado
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("text_color") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => textColorInputRef.current?.click()}
-                            >
-                              cor da fonte
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("highlight") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => highlightColorInputRef.current?.click()}
-                            >
-                              marca texto
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("align_left") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => runCommand("justifyLeft")}
-                            >
-                              alinhar à esquerda
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("align_center") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => runCommand("justifyCenter")}
-                            >
-                              centralizar
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("align_right") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => runCommand("justifyRight")}
-                            >
-                              alinhar à direita
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("align_justify") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onMouseDown={(event) => event.preventDefault()}
-                              onClick={() => {
-                                restoreSelection();
-                                runCommand("justifyFull");
-                              }}
-                            >
-                              justificar
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("outdent") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              disabled={!formatState.canOutdent}
-                              onClick={() => runCommand("outdent")}
-                            >
-                              diminuir recuo
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("indent") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              disabled={!formatState.canIndent}
-                              onClick={() => runCommand("indent")}
-                            >
-                              aumentar recuo
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("list_bullets") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => runCommand("insertUnorderedList")}
-                            >
-                              lista com marcadores
-                            </button>
-                          ) : null}
-                          {overflowKeys.has("list_numbers") ? (
-                            <button
-                              type="button"
-                              className={styles.richTextMenuItem}
-                              onClick={() => runCommand("insertOrderedList")}
-                            >
-                              lista numerada
-                            </button>
-                          ) : null}
-                          <div className={styles.richTextMenuSeparator} aria-hidden="true" />
-                        </>
-                      ) : null}
-                      <button
-                        type="button"
-                        className={styles.richTextMenuItem}
-                        disabled={!canUndo}
-                        onClick={handleUndo}
-                      >
-                        desfazer
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.richTextMenuItem}
-                        disabled={!canRedo}
-                        onClick={handleRedo}
-                      >
-                        refazer
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.richTextMenuItem}
-                        onClick={() => imageInputRef.current?.click()}
-                      >
-                        inserir imagem
-                      </button>
-                      <button
-                        type="button"
-                        className={styles.richTextMenuItem}
-                        onClick={() => runCommand("removeFormat")}
-                      >
-                        limpar formatação
-                      </button>
-                    </div>
-                  </div>
-                </div>
-
-                <div className={styles.richTextMeasure} ref={measureRef} aria-hidden="true">
-                  <div className={styles.richTextToolbar}>
-                    <div className={styles.richTextLabeledSelect} data-toolbar-key="text_style">
                       <div className={styles.richTextSelectControl}>
-                        <span className={styles.richTextSelectLabel}>Título 1</span>
-                        <button className={styles.richTextSelectButton} type="button">
-                          <span className={styles.richTextSelectButtonPreview}>
-                            <span className={styles.richTextSelectPreviewH1}>Título 1</span>
+                        <button
+                          type="button"
+                          className={styles.richTextSelectButton}
+                          aria-haspopup="menu"
+                          aria-expanded={isTextStyleMenuOpen}
+                          aria-label="Tipo de texto"
+                          onClick={() => setIsTextStyleMenuOpen((prev) => !prev)}
+                        >
+                          <span className={styles.richTextSelectButtonPreview} aria-hidden="true">
+                            <span className={getBlockTypePreviewClass(selectedBlockType)}>
+                              {selectedBlockTypeLabel}
+                            </span>
                           </span>
                         </button>
                       </div>
+
+                      {isTextStyleMenuOpen ? (
+                        <div className={styles.richTextSelectMenu} role="menu">
+                          {blockTypeOptions.map((option) => (
+                            <button
+                              key={option.value}
+                              type="button"
+                              role="menuitemradio"
+                              aria-checked={selectedBlockType === option.value}
+                              className={`${styles.richTextSelectMenuItem} ${selectedBlockType === option.value
+                                ? styles.richTextSelectMenuItemActive
+                                : ""
+                                }`}
+                              onClick={() => {
+                                applyBlockType(option.value);
+                                setIsTextStyleMenuOpen(false);
+                              }}
+                            >
+                              <span className={getBlockTypePreviewClass(option.value)}>
+                                {option.label}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      ) : null}
                     </div>
-                    <button className={styles.richTextButton} data-toolbar-key="bold" type="button">
+
+                    <button
+                      type="button"
+                      className={styles.richTextButton}
+                      aria-label="Negrito"
+                      onClick={() => runCommand("bold")}
+                      data-toolbar-key="bold"
+                      style={overflowKeys.has("bold") ? { display: "none" } : undefined}
+                    >
                       <strong>B</strong>
                     </button>
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="italic"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Itálico"
+                      onClick={() => runCommand("italic")}
+                      data-toolbar-key="italic"
+                      style={overflowKeys.has("italic") ? { display: "none" } : undefined}
                     >
                       <em>I</em>
                     </button>
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="underline"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Sublinhado"
+                      onClick={() => runCommand("underline")}
+                      data-toolbar-key="underline"
+                      style={overflowKeys.has("underline") ? { display: "none" } : undefined}
                     >
                       <span className={styles.underlineText}>U</span>
                     </button>
+
                     <div className={styles.richTextLabeledSelect} data-toolbar-key="font_size">
                       <div className={styles.richTextSelectControl}>
-                        <span className={styles.richTextSelectLabel}>Tamanho</span>
-                        <select className={styles.richTextSelect} defaultValue="12">
+                        <span className={styles.richTextSelectLabel} aria-hidden="true">
+                          {selectedFontPt}pt
+                        </span>
+                        <select
+                          className={styles.richTextSelect}
+                          aria-label="Tamanho da fonte"
+                          value={selectedFontPt}
+                          onMouseDown={() => saveSelection()}
+                          onChange={(event) => {
+                            const pt = event.target.value;
+                            setSelectedFontPt(pt);
+                            const match = sizeOptions.find((option) => String(option.pt) === pt);
+                            runCommand("fontSize", match?.cmd ?? "3");
+                          }}
+                        >
+                          <option value="8">8pt</option>
+                          <option value="10">10pt</option>
                           <option value="12">12pt</option>
+                          <option value="14">14pt</option>
+                          <option value="18">18pt</option>
+                          <option value="24">24pt</option>
+                          <option value="36">36pt</option>
                         </select>
                       </div>
                     </div>
+
                     <button
-                      className={`${styles.richTextButton} ${styles.richTextButtonChevron}`}
-                      data-toolbar-key="text_color"
                       type="button"
+                      className={`${styles.richTextButton} ${styles.richTextButtonChevron} ${styles.richTextColorButton}`}
+                      aria-label="Cor da fonte"
+                      onClick={() => textColorInputRef.current?.click()}
+                      data-toolbar-key="text_color"
+                      style={overflowKeys.has("text_color") ? { display: "none" } : undefined}
                     >
-                      <TextColorIcon />
+                      <span className={styles.richTextColorGlyph}>
+                        <TextColorIcon />
+                      </span>
+                      <span
+                        className={styles.richTextColorSwatch}
+                        style={{ backgroundColor: selectedTextColor }}
+                        aria-hidden="true"
+                      />
                     </button>
                     <button
-                      className={`${styles.richTextButton} ${styles.richTextButtonChevron}`}
-                      data-toolbar-key="highlight"
                       type="button"
+                      className={`${styles.richTextButton} ${styles.richTextButtonChevron}`}
+                      aria-label="Marca texto"
+                      onClick={() => highlightColorInputRef.current?.click()}
+                      data-toolbar-key="highlight"
+                      style={overflowKeys.has("highlight") ? { display: "none" } : undefined}
                     >
                       <HighlightColorIcon />
                     </button>
-                    <div className={styles.richTextDivider} data-toolbar-key="divider_1" />
+
+                    <div
+                      className={styles.richTextDivider}
+                      aria-hidden="true"
+                      data-toolbar-key="divider_1"
+                      style={overflowKeys.has("divider_1") ? { display: "none" } : undefined}
+                    />
+
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="align_left"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Alinhar à esquerda"
+                      title="Alinhar à esquerda"
+                      onClick={() => runCommand("justifyLeft")}
+                      aria-pressed={formatState.justifyLeft}
+                      data-toolbar-key="align_left"
+                      style={overflowKeys.has("align_left") ? { display: "none" } : undefined}
                     >
                       <AlignLeftIcon />
                     </button>
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="align_center"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Centralizar"
+                      title="Centralizar"
+                      onClick={() => runCommand("justifyCenter")}
+                      aria-pressed={formatState.justifyCenter}
+                      data-toolbar-key="align_center"
+                      style={overflowKeys.has("align_center") ? { display: "none" } : undefined}
                     >
                       <AlignCenterIcon />
                     </button>
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="align_right"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Alinhar à direita"
+                      title="Alinhar à direita"
+                      onClick={() => runCommand("justifyRight")}
+                      aria-pressed={formatState.justifyRight}
+                      data-toolbar-key="align_right"
+                      style={overflowKeys.has("align_right") ? { display: "none" } : undefined}
                     >
                       <AlignRightIcon />
                     </button>
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="align_justify"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Justificar"
+                      title="Justificar"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => {
+                        restoreSelection();
+                        runCommand("justifyFull");
+                      }}
+                      aria-pressed={formatState.justifyFull}
+                      data-toolbar-key="align_justify"
+                      style={overflowKeys.has("align_justify") ? { display: "none" } : undefined}
                     >
                       <JustifyIcon />
                     </button>
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="outdent"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Diminuir recuo"
+                      title="Diminuir recuo"
+                      onClick={() => runCommand("outdent")}
+                      disabled={!formatState.canOutdent}
+                      data-toolbar-key="outdent"
+                      style={overflowKeys.has("outdent") ? { display: "none" } : undefined}
                     >
                       <OutdentIcon />
                     </button>
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="indent"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Aumentar recuo"
+                      title="Aumentar recuo"
+                      onClick={() => runCommand("indent")}
+                      disabled={!formatState.canIndent}
+                      data-toolbar-key="indent"
+                      style={overflowKeys.has("indent") ? { display: "none" } : undefined}
                     >
                       <IndentIcon />
                     </button>
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="list_bullets"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Lista com marcadores"
+                      title="Lista com marcadores"
+                      onClick={() => runCommand("insertUnorderedList")}
+                      aria-pressed={formatState.unorderedList}
+                      data-toolbar-key="list_bullets"
+                      style={overflowKeys.has("list_bullets") ? { display: "none" } : undefined}
                     >
                       <BulletListIcon />
                     </button>
                     <button
-                      className={styles.richTextButton}
-                      data-toolbar-key="list_numbers"
                       type="button"
+                      className={styles.richTextButton}
+                      aria-label="Lista numerada"
+                      title="Lista numerada"
+                      onClick={() => runCommand("insertOrderedList")}
+                      aria-pressed={formatState.orderedList}
+                      data-toolbar-key="list_numbers"
+                      style={overflowKeys.has("list_numbers") ? { display: "none" } : undefined}
                     >
                       <NumberedListIcon />
                     </button>
-                    <div className={styles.richTextMenu} data-toolbar-key="menu">
-                      <button className={styles.richTextButton} type="button">
-                        …
+
+                    <button
+                      type="button"
+                      className={styles.richTextButton}
+                      aria-label="Desfazer"
+                      title="Desfazer"
+                      onClick={handleUndo}
+                      disabled={!canUndo}
+                      data-toolbar-key="undo"
+                      style={overflowKeys.has("undo") ? { display: "none" } : undefined}
+                    >
+                      <UndoIcon />
+                    </button>
+
+                    <button
+                      type="button"
+                      className={styles.richTextButton}
+                      aria-label="Refazer"
+                      title="Refazer"
+                      onClick={handleRedo}
+                      disabled={!canRedo}
+                      data-toolbar-key="redo"
+                      style={overflowKeys.has("redo") ? { display: "none" } : undefined}
+                    >
+                      <RedoIcon />
+                    </button>
+
+                    <button
+                      type="button"
+                      className={styles.richTextButton}
+                      aria-label="Inserir imagem"
+                      title="Inserir imagem"
+                      onClick={() => imageInputRef.current?.click()}
+                      data-toolbar-key="insert_image"
+                      style={overflowKeys.has("insert_image") ? { display: "none" } : undefined}
+                    >
+                      <InsertImageIcon />
+                    </button>
+
+                    <button
+                      type="button"
+                      className={styles.richTextButton}
+                      aria-label="Limpar formatação"
+                      title="Limpar formatação"
+                      onClick={() => runCommand("removeFormat")}
+                      data-toolbar-key="clear_format"
+                      style={overflowKeys.has("clear_format") ? { display: "none" } : undefined}
+                    >
+                      <ClearFormattingIcon />
+                    </button>
+
+                    <div
+                      className={styles.richTextMenu}
+                      data-toolbar-key="menu"
+                      style={overflowKeys.size === 0 ? { display: "none" } : undefined}
+                    >
+                      <button
+                        type="button"
+                        className={`${styles.richTextButton} ${styles.richTextMenuTrigger}`}
+                        aria-label="Mais opções"
+                      >
+                        <span className={styles.richTextMenuTriggerIcon}>
+                          <svg width="24" height="24" focusable="false" aria-hidden="true">
+                            <path
+                              d="M6 10a2 2 0 0 0-2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2Zm12 0a2 2 0 0 0-2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2Zm-6 0a2 2 0 0 0-2 2c0 1.1.9 2 2 2a2 2 0 0 0 2-2 2 2 0 0 0-2-2Z"
+                              fillRule="nonzero"
+                            />
+                          </svg>
+                        </span>
                       </button>
+                      <div className={styles.richTextMenuPopover}>
+                        {Array.from(overflowKeys).length ? (
+                          <>
+                            {overflowKeys.has("bold") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Negrito"
+                                title="Negrito"
+                                onClick={() => runCommand("bold")}
+                              >
+                                <strong>B</strong>
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("italic") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Itálico"
+                                title="Itálico"
+                                onClick={() => runCommand("italic")}
+                              >
+                                <em>I</em>
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("underline") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Sublinhado"
+                                title="Sublinhado"
+                                onClick={() => runCommand("underline")}
+                              >
+                                <span className={styles.underlineText}>U</span>
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("text_color") ? (
+                              <button
+                                type="button"
+                                className={`${styles.richTextMenuItemIcon} ${styles.richTextButtonChevron} ${styles.richTextColorButton}`}
+                                aria-label="Cor da fonte"
+                                title="Cor da fonte"
+                                onClick={() => textColorInputRef.current?.click()}
+                              >
+                                <span className={styles.richTextColorGlyph}>
+                                  <TextColorIcon />
+                                </span>
+                                <span
+                                  className={styles.richTextColorSwatch}
+                                  style={{ backgroundColor: selectedTextColor }}
+                                  aria-hidden="true"
+                                />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("highlight") ? (
+                              <button
+                                type="button"
+                                className={`${styles.richTextMenuItemIcon} ${styles.richTextButtonChevron}`}
+                                aria-label="Marca texto"
+                                title="Marca texto"
+                                onClick={() => highlightColorInputRef.current?.click()}
+                              >
+                                <HighlightColorIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("align_left") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Alinhar à esquerda"
+                                title="Alinhar à esquerda"
+                                onClick={() => runCommand("justifyLeft")}
+                              >
+                                <AlignLeftIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("align_center") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Centralizar"
+                                title="Centralizar"
+                                onClick={() => runCommand("justifyCenter")}
+                              >
+                                <AlignCenterIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("align_right") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Alinhar à direita"
+                                title="Alinhar à direita"
+                                onClick={() => runCommand("justifyRight")}
+                              >
+                                <AlignRightIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("align_justify") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Justificar"
+                                title="Justificar"
+                                onMouseDown={(event) => event.preventDefault()}
+                                onClick={() => {
+                                  restoreSelection();
+                                  runCommand("justifyFull");
+                                }}
+                              >
+                                <JustifyIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("outdent") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Diminuir recuo"
+                                title="Diminuir recuo"
+                                disabled={!formatState.canOutdent}
+                                onClick={() => runCommand("outdent")}
+                              >
+                                <OutdentIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("indent") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Aumentar recuo"
+                                title="Aumentar recuo"
+                                disabled={!formatState.canIndent}
+                                onClick={() => runCommand("indent")}
+                              >
+                                <IndentIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("list_bullets") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Lista com marcadores"
+                                title="Lista com marcadores"
+                                onClick={() => runCommand("insertUnorderedList")}
+                              >
+                                <BulletListIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("list_numbers") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Lista numerada"
+                                title="Lista numerada"
+                                onClick={() => runCommand("insertOrderedList")}
+                              >
+                                <NumberedListIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("undo") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Desfazer"
+                                title="Desfazer"
+                                disabled={!canUndo}
+                                onClick={handleUndo}
+                              >
+                                <UndoIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("redo") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Refazer"
+                                title="Refazer"
+                                disabled={!canRedo}
+                                onClick={handleRedo}
+                              >
+                                <RedoIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("insert_image") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Inserir imagem"
+                                title="Inserir imagem"
+                                onClick={() => imageInputRef.current?.click()}
+                              >
+                                <InsertImageIcon />
+                              </button>
+                            ) : null}
+
+                            {overflowKeys.has("clear_format") ? (
+                              <button
+                                type="button"
+                                className={styles.richTextMenuItemIcon}
+                                aria-label="Limpar formatação"
+                                title="Limpar formatação"
+                                onClick={() => runCommand("removeFormat")}
+                              >
+                                <ClearFormattingIcon />
+                              </button>
+                            ) : null}
+
+                            <div className={styles.richTextMenuSeparator} aria-hidden="true" />
+                          </>
+                        ) : null}
+
+
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div
-                  className={styles.richTextSurface}
-                  contentEditable
-                  suppressContentEditableWarning
-                  ref={editorRef}
-                  onBlur={saveSelection}
-                  onFocus={saveSelection}
-                  onKeyUp={saveSelection}
-                  onMouseUp={saveSelection}
-                  onInput={() => {
-                    const html = getEditorHtml();
-                    syncComplementaryDescription(html);
-                    commitHistory(html);
-                  }}
-                />
+                  <div className={styles.richTextMeasure} ref={measureRef} aria-hidden="true">
+                    <div className={styles.richTextToolbar}>
+                      <div className={styles.richTextLabeledSelect} data-toolbar-key="text_style">
+                        <div className={styles.richTextSelectControl}>
+                          <span className={styles.richTextSelectLabel}>Título 1</span>
+                          <button className={styles.richTextSelectButton} type="button">
+                            <span className={styles.richTextSelectButtonPreview}>
+                              <span className={styles.richTextSelectPreviewH1}>Título 1</span>
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                      <button className={styles.richTextButton} data-toolbar-key="bold" type="button">
+                        <strong>B</strong>
+                      </button>
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="italic"
+                        type="button"
+                      >
+                        <em>I</em>
+                      </button>
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="underline"
+                        type="button"
+                      >
+                        <span className={styles.underlineText}>U</span>
+                      </button>
+                      <div className={styles.richTextLabeledSelect} data-toolbar-key="font_size">
+                        <div className={styles.richTextSelectControl}>
+                          <span className={styles.richTextSelectLabel}>Tamanho</span>
+                          <select className={styles.richTextSelect} defaultValue="12">
+                            <option value="12">12pt</option>
+                          </select>
+                        </div>
+                      </div>
+                      <button
+                        className={`${styles.richTextButton} ${styles.richTextButtonChevron}`}
+                        data-toolbar-key="text_color"
+                        type="button"
+                      >
+                        <TextColorIcon />
+                      </button>
+                      <button
+                        className={`${styles.richTextButton} ${styles.richTextButtonChevron}`}
+                        data-toolbar-key="highlight"
+                        type="button"
+                      >
+                        <HighlightColorIcon />
+                      </button>
+                      <div className={styles.richTextDivider} data-toolbar-key="divider_1" />
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="align_left"
+                        type="button"
+                      >
+                        <AlignLeftIcon />
+                      </button>
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="align_center"
+                        type="button"
+                      >
+                        <AlignCenterIcon />
+                      </button>
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="align_right"
+                        type="button"
+                      >
+                        <AlignRightIcon />
+                      </button>
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="align_justify"
+                        type="button"
+                      >
+                        <JustifyIcon />
+                      </button>
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="outdent"
+                        type="button"
+                      >
+                        <OutdentIcon />
+                      </button>
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="indent"
+                        type="button"
+                      >
+                        <IndentIcon />
+                      </button>
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="list_bullets"
+                        type="button"
+                      >
+                        <BulletListIcon />
+                      </button>
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="list_numbers"
+                        type="button"
+                      >
+                        <NumberedListIcon />
+                      </button>
+
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="undo"
+                        type="button"
+                      >
+                        <UndoIcon />
+                      </button>
+
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="redo"
+                        type="button"
+                      >
+                        <RedoIcon />
+                      </button>
+
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="insert_image"
+                        type="button"
+                      >
+                        <InsertImageIcon />
+                      </button>
+
+                      <button
+                        className={styles.richTextButton}
+                        data-toolbar-key="clear_format"
+                        type="button"
+                      >
+                        <ClearFormattingIcon />
+                      </button>
+
+                      <div className={styles.richTextMenu} data-toolbar-key="menu">
+                        <button className={styles.richTextButton} type="button">
+                          …
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    className={styles.richTextSurface}
+                    contentEditable
+                    suppressContentEditableWarning
+                    ref={editorRef}
+                    onBlur={saveSelection}
+                    onFocus={saveSelection}
+                    onKeyUp={saveSelection}
+                    onMouseUp={saveSelection}
+                    onInput={() => {
+                      const html = getEditorHtml();
+                      syncComplementaryDescription(html);
+                      commitHistory(html);
+                    }}
+                  />
+                </div>
               </div>
               <input
                 ref={textColorInputRef}

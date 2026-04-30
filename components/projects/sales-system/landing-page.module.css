@@ -348,7 +348,7 @@
   overflow: visible;
 }
 
-.primaryNavItemActive + .primaryNavItem::before {
+.primaryNavItemActive+.primaryNavItem::before {
   background: transparent;
   border-top-left-radius: 18px;
   box-shadow: -8px -8px 0 8px rgba(14, 24, 40, 0.54);
@@ -1865,14 +1865,12 @@
 
 .dashCardLoading::after {
   animation: dashShimmer 1100ms linear infinite;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.06),
-    rgba(90, 209, 255, 0.08),
-    rgba(255, 255, 255, 0.06),
-    transparent
-  );
+  background: linear-gradient(90deg,
+      transparent,
+      rgba(255, 255, 255, 0.06),
+      rgba(90, 209, 255, 0.08),
+      rgba(255, 255, 255, 0.06),
+      transparent);
   content: "";
   inset: 0;
   position: absolute;
@@ -1883,6 +1881,7 @@
   0% {
     transform: translateX(-35%);
   }
+
   100% {
     transform: translateX(35%);
   }
@@ -1893,7 +1892,7 @@
   padding-right: 0;
 }
 
-.dashCardMap > header {
+.dashCardMap>header {
   padding: 0 18px;
 }
 
@@ -5378,7 +5377,7 @@
   text-decoration: none;
 }
 
-.helpTopNav > a:first-child {
+.helpTopNav>a:first-child {
   font-size: 20px;
 }
 
@@ -6214,7 +6213,7 @@
   margin-top: 2px;
 }
 
-.extensionsFiltersRow > span {
+.extensionsFiltersRow>span {
   color: rgba(243, 247, 251, 0.72);
   font-size: 0.9rem;
 }
@@ -6465,7 +6464,7 @@
   font-weight: 600;
 }
 
-.customersSuppliersCrumbs span + span::before {
+.customersSuppliersCrumbs span+span::before {
   color: rgba(243, 247, 251, 0.3);
   content: "≡";
   margin-right: 10px;
@@ -7123,7 +7122,7 @@
   font-weight: 600;
 }
 
-.productsCrumbs span + span::before {
+.productsCrumbs span+span::before {
   color: rgba(243, 247, 251, 0.3);
   content: "≡";
   margin-right: 10px;
@@ -7843,6 +7842,7 @@
 }
 
 @media (max-width: 980px) {
+
   .helpTopBarInner,
   .helpVideoSectionHeader,
   .helpFooterMeta {
@@ -8436,8 +8436,7 @@
 
 @media (min-width: 1231px) {
   .servicesGridRow4 {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) minmax(0, 0.9fr)
-      minmax(0, 1.1fr);
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr) minmax(0, 0.9fr) minmax(0, 1.1fr);
   }
 }
 
@@ -8521,12 +8520,16 @@
 }
 
 .richTextEditor {
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 12px;
-  background: #ffffff;
-  overflow: hidden;
-  height: 220px;
   position: relative;
+  background: transparent;
+  overflow: visible;
+  height: 220px;
+  z-index: 1;
+}
+
+.richTextEditorWrap {
+  position: relative;
+  overflow: visible;
   z-index: 1;
 }
 
@@ -8536,16 +8539,20 @@
   gap: 8px;
   padding: 10px 12px;
   background: #f8fafc;
+  border: 1px solid rgba(255, 255, 255, 0.14);
   border-bottom: 1px solid rgba(15, 15, 15, 0.1);
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
   color: #111315;
   flex-wrap: nowrap;
-  overflow: hidden;
+  overflow: visible;
   min-width: 0;
+  width: 100%;
   position: relative;
-  z-index: 5;
+  z-index: 20;
 }
 
-.richTextToolbar > * {
+.richTextToolbar>* {
   flex: 0 0 auto;
   min-width: 0;
 }
@@ -8559,23 +8566,24 @@
   flex: 0 0 auto;
 }
 
-.richTextMenu {
-  margin-left: auto;
-  flex: 0 0 auto;
-}.richTextToolbar {
+.richTextToolbarContent {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px;
-  background: #f8fafc;
-  border-bottom: 1px solid rgba(15, 15, 15, 0.1);
-  color: #111315;
-  flex-wrap: nowrap;
-  overflow: hidden;
   min-width: 0;
-  width: 100%;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.richTextToolbarContent>* {
+  flex: 0 0 auto;
+}
+
+.richTextMenu {
   position: relative;
-  z-index: 5;
+  z-index: 40;
+  flex: 0 0 auto;
+  margin-left: auto;
 }
 
 .richTextToolbarContent {
@@ -8587,7 +8595,7 @@
   overflow: hidden;
 }
 
-.richTextToolbarContent > * {
+.richTextToolbarContent>* {
   flex: 0 0 auto;
 }
 
@@ -8726,6 +8734,7 @@
   display: inline-flex;
   align-items: center;
   overflow: visible;
+  z-index: 30;
 }
 
 .richTextSelectControl {
@@ -8746,6 +8755,7 @@
   color: rgba(17, 19, 21, 0.55);
   text-align: left;
   pointer-events: none;
+  z-index: 1;
 }
 
 .richTextSelectMenu {
@@ -8762,7 +8772,7 @@
   min-width: 190px;
   max-height: 390px;
   overflow: auto;
-  z-index: 50;
+  z-index: 200;
 }
 
 .richTextSelectMenuItem,
@@ -8899,6 +8909,7 @@
 
 .richTextMenu {
   position: relative;
+  z-index: 40;
 }
 
 .richTextMenuPopover {
@@ -8910,9 +8921,9 @@
   border-radius: 10px;
   padding: 6px;
   display: none;
-  min-width: 180px;
+  min-width: auto;
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.22);
-  z-index: 10;
+  z-index: 100;
 }
 
 .richTextMenuSeparator {
@@ -8932,7 +8943,8 @@
 
 .richTextMenu:hover .richTextMenuPopover,
 .richTextMenu:focus-within .richTextMenuPopover {
-  display: grid;
+  display: flex;
+  align-items: center;
   gap: 4px;
 }
 
@@ -8940,12 +8952,15 @@
   appearance: none;
   border: 0;
   background: transparent;
-  text-align: left;
-  padding: 8px 10px;
   border-radius: 8px;
-  font-size: 14px;
   color: rgba(17, 19, 21, 0.9);
   cursor: pointer;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .richTextMenuItem:hover:not(:disabled) {
@@ -8965,8 +8980,13 @@
   outline: none;
   background: #ffffff;
   min-height: 0;
+  height: calc(220px - 53px);
   position: relative;
   z-index: 1;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-top: 0;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
 }
 
 .richTextMenuTrigger {
@@ -8987,6 +9007,42 @@
 }
 
 .richTextMenuTriggerIcon svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.richTextMenuItemIcon {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  color: rgba(17, 19, 21, 0.9);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.richTextMenuItemIcon:hover:not(:disabled) {
+  background: rgba(13, 110, 253, 0.12);
+  color: rgba(13, 110, 253, 0.95);
+}
+
+.richTextMenuItemIcon:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(47, 124, 255, 0.18);
+}
+
+.richTextMenuItemIcon:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.richTextMenuItemIcon svg {
   width: 24px;
   height: 24px;
   display: block;
@@ -9155,23 +9211,19 @@
   color: transparent;
 }
 
-.dateField[data-has-value="false"]
-  .fieldInput[type="date"]::-webkit-datetime-edit-text {
+.dateField[data-has-value="false"] .fieldInput[type="date"]::-webkit-datetime-edit-text {
   color: transparent;
 }
 
-.dateField[data-has-value="false"]
-  .fieldInput[type="date"]::-webkit-datetime-edit-month-field {
+.dateField[data-has-value="false"] .fieldInput[type="date"]::-webkit-datetime-edit-month-field {
   color: transparent;
 }
 
-.dateField[data-has-value="false"]
-  .fieldInput[type="date"]::-webkit-datetime-edit-day-field {
+.dateField[data-has-value="false"] .fieldInput[type="date"]::-webkit-datetime-edit-day-field {
   color: transparent;
 }
 
-.dateField[data-has-value="false"]
-  .fieldInput[type="date"]::-webkit-datetime-edit-year-field {
+.dateField[data-has-value="false"] .fieldInput[type="date"]::-webkit-datetime-edit-year-field {
   color: transparent;
 }
 
@@ -9307,12 +9359,12 @@
   transition: transform 160ms ease;
 }
 
-.toggleControl input:checked + .toggleTrack {
+.toggleControl input:checked+.toggleTrack {
   background: rgba(13, 110, 253, 0.32);
   border-color: rgba(13, 110, 253, 0.52);
 }
 
-.toggleControl input:checked + .toggleTrack .toggleThumb {
+.toggleControl input:checked+.toggleTrack .toggleThumb {
   transform: translateX(20px);
 }
 
