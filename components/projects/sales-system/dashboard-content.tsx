@@ -1,7 +1,5 @@
 "use client";
 
-import "brazil-map";
-
 import { useEffect, useMemo, useRef, useState } from "react";
 import styles from "./landing-page.module.css";
 
@@ -232,6 +230,11 @@ export function DashboardContent({
   const [selectedUF, setSelectedUF] = useState<string | null>(null);
   const isFinance = tab === "financas";
   const wasRefreshingRef = useRef(false);
+
+   useEffect(() => {
+    import("brazil-map");
+  }, []);
+  
   const [period, setPeriod] = useState<PeriodSelection>({ preset: "last_7_days" });
   const [draftPeriod, setDraftPeriod] = useState<PeriodSelection>({ preset: "last_7_days" });
   const [isPeriodOpen, setIsPeriodOpen] = useState(false);

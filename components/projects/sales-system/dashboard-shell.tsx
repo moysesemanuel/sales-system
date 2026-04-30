@@ -25,13 +25,15 @@ import type {
 } from "./types";
 import styles from "./landing-page.module.css";
 import { PromotionalCampaignsContent } from "./promotional-campaigns-content";
+import { ServicesContent } from "./services-content";
 
 const navigationGroups = [
   {
     id: "inicio",
     label: "Início",
     eyebrow: "Cockpit",
-    description: "Painel geral da operação, agenda e recursos de crescimento do ERP.",
+    description:
+      "Painel geral da operação, agenda e recursos de crescimento do ERP.",
     items: [
       "Índice",
       "Dashboard",
@@ -49,7 +51,8 @@ const navigationGroups = [
     id: "cadastros",
     label: "Cadastros",
     eyebrow: "Base",
-    description: "Entidades mestras para clientes, catálogo, campanhas, serviços e operação comercial.",
+    description:
+      "Entidades mestras para clientes, catálogo, campanhas, serviços e operação comercial.",
     items: [
       "Clientes e Fornecedores",
       "Produtos",
@@ -65,7 +68,8 @@ const navigationGroups = [
     id: "suprimentos",
     label: "Suprimentos",
     eyebrow: "Supply",
-    description: "Estoques, compras e rotinas de entrada para dar previsibilidade ao abastecimento.",
+    description:
+      "Estoques, compras e rotinas de entrada para dar previsibilidade ao abastecimento.",
     items: [
       "Controle de Estoques",
       "Ordens de Compra",
@@ -82,7 +86,8 @@ const navigationGroups = [
     id: "vendas",
     label: "Vendas",
     eyebrow: "Revenue",
-    description: "CRM, pedidos, notas, automações e execução ponta a ponta da esteira comercial.",
+    description:
+      "CRM, pedidos, notas, automações e execução ponta a ponta da esteira comercial.",
     items: [
       "CRM",
       "Painel de Automações",
@@ -121,7 +126,8 @@ const navigationGroups = [
     id: "servicos",
     label: "Serviços",
     eyebrow: "Service",
-    description: "Gestão de contratos, ordens de serviço, notas e cobrança operacional.",
+    description:
+      "Gestão de contratos, ordens de serviço, notas e cobrança operacional.",
     items: [
       "Contratos",
       "Ordens de Serviço",
@@ -145,6 +151,8 @@ type NavigationGroupId = (typeof navigationGroups)[number]["id"];
 const menuRoutes = {
   "Clientes e Fornecedores": "/clientes-e-fornecedores",
   Produtos: "/produtos",
+  "Campanhas Promocionais": "/campanhas-promocionais",
+  Serviços: "/servicos",
   Índice: "/indice",
   Dashboard: "/dashboard",
   Agenda: "/agenda",
@@ -159,6 +167,8 @@ const menuRoutes = {
 const menuItemByPath: Record<string, keyof typeof menuRoutes> = {
   "/clientes-e-fornecedores": "Clientes e Fornecedores",
   "/produtos": "Produtos",
+  "/campanhas-promocionais": "Campanhas Promocionais",
+  "/servicos": "Serviços",
   "/indice": "Índice",
   "/dashboard": "Dashboard",
   "/agenda": "Agenda",
@@ -210,10 +220,13 @@ export function SalesSystemDashboard({
   const { showToast } = useToast();
   const pathname = usePathname();
   const router = useRouter();
-  const [activeGroupId, setActiveGroupId] = useState<NavigationGroupId>("inicio");
+  const [activeGroupId, setActiveGroupId] =
+    useState<NavigationGroupId>("inicio");
   const [activeMenuItem, setActiveMenuItem] = useState<string>(initialMenuItem);
   const [isPrimaryRailExpanded, setIsPrimaryRailExpanded] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [mobileMenuMode, setMobileMenuMode] = useState<"nav" | "profile">("nav");
   const [search, setSearch] = useState("");
   const [dashboard, setDashboard] = useState<DashboardData | null>(null);
   const [customers, setCustomers] = useState<SalesCustomer[]>([]);
@@ -243,30 +256,51 @@ export function SalesSystemDashboard({
     notes: "",
   });
 
-  const activeGroup = navigationGroups.find((group) => group.id === activeGroupId) ?? navigationGroups[0];
+  const activeGroup =
+    navigationGroups.find((group) => group.id === activeGroupId) ??
+    navigationGroups[0];
 
   useEffect(() => {
     const nextMenuItem = menuItemByPath[pathname] ?? initialMenuItem;
-    const nextGroupId = navigationGroups.find((group) => group.items.some((groupItem) => groupItem === nextMenuItem))?.id;
+    const nextGroupId = navigationGroups.find((group) =>
+      group.items.some((groupItem) => groupItem === nextMenuItem)
+    )?.id;
     setActiveMenuItem(nextMenuItem);
     if (nextGroupId) {
       setActiveGroupId(nextGroupId);
     }
   }, [initialMenuItem, pathname]);
 
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [pathname]);
+
   const profileItems = useMemo(
     () => [
       { id: "company", label: "Dados da empresa", icon: "briefcase" as const },
       { id: "user", label: "Dados do usuário", icon: "user" as const },
-      { id: "support_user", label: "Usuário de suporte", icon: "support" as const },
+      {
+        id: "support_user",
+        label: "Usuário de suporte",
+        icon: "support" as const,
+      },
       { id: "extensions", label: "Extensões", icon: "puzzle" as const },
       { id: "blog", label: "Blog", icon: "rss" as const },
-      { id: "refer", label: "Indique e ganhe", icon: "gift" as const, accent: true as const },
+      {
+        id: "refer",
+        label: "Indique e ganhe",
+        icon: "gift" as const,
+        accent: true as const,
+      },
     ],
-    [],
+    []
   );
 
-  function ProfileIcon({ kind }: { kind: (typeof profileItems)[number]["icon"] }) {
+  function ProfileIcon({
+    kind,
+  }: {
+    kind: (typeof profileItems)[number]["icon"];
+  }) {
     switch (kind) {
       case "briefcase":
         return (
@@ -499,8 +533,20 @@ export function SalesSystemDashboard({
               strokeLinecap="round"
               opacity="0.85"
             />
-            <path d="M10 10l3.1-2.5" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-            <circle cx="10" cy="10" r="1.2" fill="currentColor" opacity="0.85" />
+            <path
+              d="M10 10l3.1-2.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+            />
+            <circle
+              cx="10"
+              cy="10"
+              r="1.2"
+              fill="currentColor"
+              opacity="0.85"
+            />
           </svg>
         );
       case "calendar":
@@ -514,7 +560,13 @@ export function SalesSystemDashboard({
               strokeLinejoin="round"
               opacity="0.85"
             />
-            <path d="M5.6 2.8v3M14.4 2.8v3M3 8h14" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.85" />
+            <path
+              d="M5.6 2.8v3M14.4 2.8v3M3 8h14"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
           </svg>
         );
       case "person":
@@ -540,7 +592,13 @@ export function SalesSystemDashboard({
       case "pdv":
         return (
           <svg width="18" height="18" viewBox="0 0 64 64" aria-hidden="true">
-            <g fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <g
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <path d="M23 10v3" />
               <path d="M27 10v3" />
               <path d="M31 10v3" />
@@ -568,7 +626,13 @@ export function SalesSystemDashboard({
               strokeLinejoin="round"
               opacity="0.85"
             />
-            <circle cx="6.4" cy="6.4" r="1.1" fill="currentColor" opacity="0.85" />
+            <circle
+              cx="6.4"
+              cy="6.4"
+              r="1.1"
+              fill="currentColor"
+              opacity="0.85"
+            />
           </svg>
         );
       case "swap":
@@ -673,21 +737,50 @@ export function SalesSystemDashboard({
               strokeLinecap="round"
               opacity="0.85"
             />
-            <path d="M6 14l-2.1.7.7-2.1" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" opacity="0.85" />
+            <path
+              d="M6 14l-2.1.7.7-2.1"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
           </svg>
         );
       case "info":
         return (
           <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
-            <circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.85" />
-            <path d="M10 9v4" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+            <circle
+              cx="10"
+              cy="10"
+              r="7"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
+            <path
+              d="M10 9v4"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              strokeLinecap="round"
+            />
             <circle cx="10" cy="6.4" r="1" fill="currentColor" opacity="0.85" />
           </svg>
         );
       case "help":
         return (
           <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
-            <circle cx="10" cy="10" r="7" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.85" />
+            <circle
+              cx="10"
+              cy="10"
+              r="7"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
             <path
               d="M7.9 8.1A2.3 2.3 0 0 1 10 6.8c1.3 0 2.3.8 2.3 2 0 1.6-1.8 2-2.4 2.9v.6"
               fill="none"
@@ -696,7 +789,13 @@ export function SalesSystemDashboard({
               strokeLinecap="round"
               strokeLinejoin="round"
             />
-            <circle cx="10" cy="14.3" r="0.9" fill="currentColor" opacity="0.85" />
+            <circle
+              cx="10"
+              cy="14.3"
+              r="0.9"
+              fill="currentColor"
+              opacity="0.85"
+            />
           </svg>
         );
       case "bag":
@@ -760,20 +859,30 @@ export function SalesSystemDashboard({
               strokeLinejoin="round"
               opacity="0.85"
             />
-            <path d="M11 2.8v3.2h3.2" fill="none" stroke="currentColor" strokeWidth="1.6" opacity="0.85" />
+            <path
+              d="M11 2.8v3.2h3.2"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              opacity="0.85"
+            />
           </svg>
         );
     }
   }
 
   async function loadData() {
-    const [dashboardResponse, customersResponse, productsResponse, ordersResponse] =
-      await Promise.all([
-        fetch("/api/sales-system/dashboard", { cache: "no-store" }),
-        fetch("/api/sales-system/customers", { cache: "no-store" }),
-        fetch("/api/sales-system/products", { cache: "no-store" }),
-        fetch("/api/sales-system/orders", { cache: "no-store" }),
-      ]);
+    const [
+      dashboardResponse,
+      customersResponse,
+      productsResponse,
+      ordersResponse,
+    ] = await Promise.all([
+      fetch("/api/sales-system/dashboard", { cache: "no-store" }),
+      fetch("/api/sales-system/customers", { cache: "no-store" }),
+      fetch("/api/sales-system/products", { cache: "no-store" }),
+      fetch("/api/sales-system/orders", { cache: "no-store" }),
+    ]);
 
     const firstFailure = [
       { response: dashboardResponse, label: "dashboard" },
@@ -783,16 +892,22 @@ export function SalesSystemDashboard({
     ].find((item) => !item.response.ok);
 
     if (firstFailure) {
-      const payload = (await firstFailure.response.json().catch(() => null)) as { error?: string } | null;
-      throw new Error(payload?.error ?? `Não foi possível carregar ${firstFailure.label} do ERP.`);
+      const payload = (await firstFailure.response
+        .json()
+        .catch(() => null)) as { error?: string } | null;
+      throw new Error(
+        payload?.error ??
+          `Não foi possível carregar ${firstFailure.label} do ERP.`
+      );
     }
 
-    const [dashboardPayload, customersPayload, productsPayload, ordersPayload] = await Promise.all([
-      dashboardResponse.json() as Promise<DashboardData>,
-      customersResponse.json() as Promise<{ customers: SalesCustomer[] }>,
-      productsResponse.json() as Promise<{ products: SalesProduct[] }>,
-      ordersResponse.json() as Promise<{ orders: SalesOrder[] }>,
-    ]);
+    const [dashboardPayload, customersPayload, productsPayload, ordersPayload] =
+      await Promise.all([
+        dashboardResponse.json() as Promise<DashboardData>,
+        customersResponse.json() as Promise<{ customers: SalesCustomer[] }>,
+        productsResponse.json() as Promise<{ products: SalesProduct[] }>,
+        ordersResponse.json() as Promise<{ orders: SalesOrder[] }>,
+      ]);
 
     setDashboard(dashboardPayload);
     setCustomers(customersPayload.customers);
@@ -805,7 +920,8 @@ export function SalesSystemDashboard({
       void loadData().catch((error) => {
         showToast({
           variant: "error",
-          message: error instanceof Error ? error.message : "Falha ao carregar o ERP.",
+          message:
+            error instanceof Error ? error.message : "Falha ao carregar o ERP.",
         });
       });
     });
@@ -832,20 +948,27 @@ export function SalesSystemDashboard({
   const filteredOrders = useMemo(() => {
     if (!search) return orders;
     return orders.filter((order) =>
-      [String(order.orderNumber), order.customerName, order.status].some((value) =>
-        value.toLowerCase().includes(search.toLowerCase())
+      [String(order.orderNumber), order.customerName, order.status].some(
+        (value) => value.toLowerCase().includes(search.toLowerCase())
       )
     );
   }, [orders, search]);
 
   const conversionRate = dashboard
-    ? Math.round((dashboard.summary.ordersToday / Math.max(1, dashboard.summary.customersCount)) * 100)
+    ? Math.round(
+        (dashboard.summary.ordersToday /
+          Math.max(1, dashboard.summary.customersCount)) *
+          100
+      )
     : 0;
 
   const marginPreview = dashboard
     ? Math.round(
-        (products.reduce((sum, product) => sum + (product.priceInCents - product.costInCents), 0) /
-          Math.max(1, products.length)) /
+        products.reduce(
+          (sum, product) => sum + (product.priceInCents - product.costInCents),
+          0
+        ) /
+          Math.max(1, products.length) /
           100
       )
     : 0;
@@ -861,7 +984,10 @@ export function SalesSystemDashboard({
         .catch((error) => {
           showToast({
             variant: "error",
-            message: error instanceof Error ? error.message : "Falha ao atualizar os dados.",
+            message:
+              error instanceof Error
+                ? error.message
+                : "Falha ao atualizar os dados.",
           });
         });
     });
@@ -878,10 +1004,14 @@ export function SalesSystemDashboard({
           body: JSON.stringify(customerForm),
         });
 
-        const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+        const payload = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
 
         if (!response.ok) {
-          throw new Error(payload?.error ?? "Não foi possível cadastrar o cliente.");
+          throw new Error(
+            payload?.error ?? "Não foi possível cadastrar o cliente."
+          );
         }
 
         setCustomerForm({ name: "", email: "", phone: "", city: "" });
@@ -889,7 +1019,10 @@ export function SalesSystemDashboard({
       })().catch((error) => {
         showToast({
           variant: "error",
-          message: error instanceof Error ? error.message : "Falha ao cadastrar cliente.",
+          message:
+            error instanceof Error
+              ? error.message
+              : "Falha ao cadastrar cliente.",
         });
       });
     });
@@ -907,17 +1040,25 @@ export function SalesSystemDashboard({
             name: productForm.name,
             sku: productForm.sku,
             category: productForm.category,
-            priceInCents: Math.round(Number(productForm.price.replace(",", ".")) * 100),
-            costInCents: Math.round(Number(productForm.cost.replace(",", ".")) * 100),
+            priceInCents: Math.round(
+              Number(productForm.price.replace(",", ".")) * 100
+            ),
+            costInCents: Math.round(
+              Number(productForm.cost.replace(",", ".")) * 100
+            ),
             stockQuantity: Number(productForm.stockQuantity),
             minimumStock: 0,
           }),
         });
 
-        const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+        const payload = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
 
         if (!response.ok) {
-          throw new Error(payload?.error ?? "Não foi possível cadastrar o produto.");
+          throw new Error(
+            payload?.error ?? "Não foi possível cadastrar o produto."
+          );
         }
 
         setProductForm({
@@ -932,7 +1073,10 @@ export function SalesSystemDashboard({
       })().catch((error) => {
         showToast({
           variant: "error",
-          message: error instanceof Error ? error.message : "Falha ao cadastrar produto.",
+          message:
+            error instanceof Error
+              ? error.message
+              : "Falha ao cadastrar produto.",
         });
       });
     });
@@ -958,18 +1102,30 @@ export function SalesSystemDashboard({
           }),
         });
 
-        const payload = (await response.json().catch(() => null)) as { error?: string } | null;
+        const payload = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
 
         if (!response.ok) {
-          throw new Error(payload?.error ?? "Não foi possível registrar o pedido.");
+          throw new Error(
+            payload?.error ?? "Não foi possível registrar o pedido."
+          );
         }
 
-        setOrderForm({ customerId: "", productId: "", quantity: "1", notes: "" });
+        setOrderForm({
+          customerId: "",
+          productId: "",
+          quantity: "1",
+          notes: "",
+        });
         await refreshData("Pedido registrado.");
       })().catch((error) => {
         showToast({
           variant: "error",
-          message: error instanceof Error ? error.message : "Falha ao registrar pedido.",
+          message:
+            error instanceof Error
+              ? error.message
+              : "Falha ao registrar pedido.",
         });
       });
     });
@@ -977,15 +1133,198 @@ export function SalesSystemDashboard({
 
   const summaryCards = dashboard
     ? [
-        { label: "Receita do mês", value: formatCurrency(dashboard.summary.monthRevenueInCents), tone: "primary" },
-        { label: "Receita de hoje", value: formatCurrency(dashboard.summary.todayRevenueInCents), tone: "secondary" },
-        { label: "Pedidos hoje", value: String(dashboard.summary.ordersToday), tone: "neutral" },
-        { label: "Itens em alerta", value: String(dashboard.summary.lowStockCount), tone: "warning" },
+        {
+          label: "Receita do mês",
+          value: formatCurrency(dashboard.summary.monthRevenueInCents),
+          tone: "primary",
+        },
+        {
+          label: "Receita de hoje",
+          value: formatCurrency(dashboard.summary.todayRevenueInCents),
+          tone: "secondary",
+        },
+        {
+          label: "Pedidos hoje",
+          value: String(dashboard.summary.ordersToday),
+          tone: "neutral",
+        },
+        {
+          label: "Itens em alerta",
+          value: String(dashboard.summary.lowStockCount),
+          tone: "warning",
+        },
       ]
     : [];
 
   return (
-    <main className={styles.page} data-primary-rail-state={isPrimaryRailExpanded ? "expanded" : "collapsed"}>
+    <main
+      className={styles.page}
+      data-primary-rail-state={isPrimaryRailExpanded ? "expanded" : "collapsed"}
+    >
+      <header className={styles.mobileTopBar}>
+        <button
+          type="button"
+          className={styles.mobileTopBarLogo}
+          aria-label="Início"
+          onClick={() => router.push("/indice")}
+        >
+          <DaBiTechLogo className={styles.mobileLogo} mode="symbol" />
+        </button>
+
+        <button
+          type="button"
+          className={styles.mobileTopBarHamburger}
+          aria-label="Abrir menu"
+          aria-pressed={isMobileMenuOpen && mobileMenuMode === "nav"}
+          onClick={() => {
+            setMobileMenuMode("nav");
+            setIsMobileMenuOpen((prev) => !prev);
+          }}
+        >
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+        </button>
+
+        <button
+          type="button"
+          className={styles.mobileTopBarProfile}
+          aria-label="Perfil"
+          aria-pressed={isMobileMenuOpen && mobileMenuMode === "profile"}
+          onClick={() => {
+            setIsMobileMenuOpen((prev) => {
+              const willClose = prev && mobileMenuMode === "profile";
+              return !willClose;
+            });
+            setMobileMenuMode("profile");
+          }}
+        >
+          <span className={styles.profileDockAvatar}>
+            {getInitials(currentUser.name)}
+          </span>
+        </button>
+      </header>
+
+      {isMobileMenuOpen ? (
+        <div
+          className={styles.mobileMenuOverlay}
+          role="dialog"
+          aria-modal="true"
+          aria-label={mobileMenuMode === "profile" ? "Menu do perfil" : "Menu"}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setIsMobileMenuOpen(false);
+          }}
+        >
+          <div className={styles.mobileMenuPanel}>
+            {mobileMenuMode === "profile" ? (
+              <>
+                <div className={styles.mobileMenuHeaderRow}>
+                  <p className={styles.mobileMenuTitle}>Perfil</p>
+                  <button
+                    type="button"
+                    className={styles.mobileMenuClose}
+                    aria-label="Fechar"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    ×
+                  </button>
+                </div>
+                <nav className={styles.mobileMenuList}>
+                  {profileItems.map((item) => (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className={styles.mobileMenuItem}
+                      onClick={() => {
+                        showToast({ message: `Abrir: ${item.label}` });
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      <span className={styles.mobileMenuItemIcon} aria-hidden="true">
+                        <ProfileIcon kind={item.icon} />
+                      </span>
+                      {item.label}
+                    </button>
+                  ))}
+                  <button
+                    type="button"
+                    className={styles.mobileMenuItem}
+                    onClick={() => window.location.assign("/api/auth/logout")}
+                  >
+                    sair
+                  </button>
+                </nav>
+              </>
+            ) : (
+              <>
+                <div className={styles.mobileMenuHeaderRow}>
+                  <p className={styles.mobileMenuTitle}>Menu</p>
+                  <button
+                    type="button"
+                    className={styles.mobileMenuClose}
+                    aria-label="Fechar"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    ×
+                  </button>
+                </div>
+                <nav className={styles.mobileMenuGroups}>
+                  {navigationGroups.map((group) => (
+                    <button
+                      key={group.id}
+                      type="button"
+                      className={
+                        group.id === activeGroupId
+                          ? styles.mobileMenuGroupActive
+                          : styles.mobileMenuGroup
+                      }
+                      onClick={() => setActiveGroupId(group.id)}
+                    >
+                      {group.label}
+                    </button>
+                  ))}
+                </nav>
+                <nav className={styles.mobileMenuList}>
+                  {activeGroup.items.map((item) => (
+                    <button
+                      key={item}
+                      type="button"
+                      className={
+                        item === activeMenuItem
+                          ? styles.mobileMenuItemActive
+                          : styles.mobileMenuItem
+                      }
+                      onClick={() => {
+                        if (item === "Ajuda do ERP") {
+                          window.open("/ajuda-do-erp", "_blank", "noopener,noreferrer");
+                          setIsMobileMenuOpen(false);
+                          return;
+                        }
+                        const route = menuRoutes[item as keyof typeof menuRoutes];
+                        if (route) {
+                          const nextGroupId = navigationGroups.find((nextGroup) =>
+                            nextGroup.items.some((groupItem) => groupItem === item)
+                          )?.id;
+                          if (nextGroupId) setActiveGroupId(nextGroupId);
+                          setActiveMenuItem(item);
+                          if (pathname !== route) router.push(route);
+                          setIsMobileMenuOpen(false);
+                          return;
+                        }
+                        setActiveMenuItem(item);
+                        setIsMobileMenuOpen(false);
+                      }}
+                    >
+                      {item}
+                    </button>
+                  ))}
+                </nav>
+              </>
+            )}
+          </div>
+        </div>
+      ) : null}
+
       <aside className={styles.primaryRailShell}>
         <div className={styles.hamburgerDock} aria-hidden="true">
           <span />
@@ -994,14 +1333,23 @@ export function SalesSystemDashboard({
         </div>
 
         <div className={styles.logoBadge} aria-hidden="true">
-          <DaBiTechLogo className={styles.railLogo} />
+          <DaBiTechLogo className={styles.railLogoFull} />
+          <DaBiTechLogo className={styles.railLogoSymbol} mode="symbol" />
         </div>
 
         <button
-          className={isPrimaryRailExpanded ? styles.railModeDockButtonActive : styles.railModeDockButton}
+          className={
+            isPrimaryRailExpanded
+              ? styles.railModeDockButtonActive
+              : styles.railModeDockButton
+          }
           onClick={() => setIsPrimaryRailExpanded((current) => !current)}
           type="button"
-          aria-label={isPrimaryRailExpanded ? "Colapsar menu lateral esquerdo" : "Expandir menu lateral esquerdo"}
+          aria-label={
+            isPrimaryRailExpanded
+              ? "Colapsar menu lateral esquerdo"
+              : "Expandir menu lateral esquerdo"
+          }
           aria-pressed={isPrimaryRailExpanded}
           title={isPrimaryRailExpanded ? "Colapsar menu" : "Expandir menu"}
         >
@@ -1009,13 +1357,19 @@ export function SalesSystemDashboard({
         </button>
 
         <button
-          className={isProfileMenuOpen ? styles.profileDockButtonActive : styles.profileDockButton}
+          className={
+            isProfileMenuOpen
+              ? styles.profileDockButtonActive
+              : styles.profileDockButton
+          }
           onClick={() => setIsProfileMenuOpen((current) => !current)}
           type="button"
           aria-label="Perfil"
           aria-pressed={isProfileMenuOpen}
         >
-          <span className={styles.profileDockAvatar}>{getInitials(currentUser.name)}</span>
+          <span className={styles.profileDockAvatar}>
+            {getInitials(currentUser.name)}
+          </span>
         </button>
 
         <div className={styles.primaryRail}>
@@ -1024,7 +1378,11 @@ export function SalesSystemDashboard({
               {navigationGroups.map((group) => (
                 <button
                   key={group.id}
-                  className={group.id === activeGroupId ? styles.primaryNavItemActive : styles.primaryNavItem}
+                  className={
+                    group.id === activeGroupId
+                      ? styles.primaryNavItemActive
+                      : styles.primaryNavItem
+                  }
                   onClick={() => {
                     setIsProfileMenuOpen(false);
                     setActiveGroupId(group.id);
@@ -1034,7 +1392,9 @@ export function SalesSystemDashboard({
                   type="button"
                 >
                   {group.id === activeGroupId ? (
-                    <MenuSelectionShape className={styles.primaryNavSelectionShape} />
+                    <MenuSelectionShape
+                      className={styles.primaryNavSelectionShape}
+                    />
                   ) : null}
                   <span className={styles.primaryNavText}>{group.label}</span>
                 </button>
@@ -1045,7 +1405,11 @@ export function SalesSystemDashboard({
               {supportLinks.map((item) => (
                 <button
                   key={item}
-                  className={item === activeMenuItem ? styles.primaryQuickLinkActive : styles.primaryQuickLink}
+                  className={
+                    item === activeMenuItem
+                      ? styles.primaryQuickLinkActive
+                      : styles.primaryQuickLink
+                  }
                   onClick={() => {
                     setIsProfileMenuOpen(false);
                     setActiveMenuItem(item);
@@ -1058,11 +1422,14 @@ export function SalesSystemDashboard({
               ))}
             </div>
           </div>
-
         </div>
       </aside>
 
-      <aside className={`${styles.secondarySidebar} ${isProfileMenuOpen ? styles.secondarySidebarProfileMode : ""}`}>
+      <aside
+        className={`${styles.secondarySidebar} ${
+          isProfileMenuOpen ? styles.secondarySidebarProfileMode : ""
+        }`}
+      >
         {isProfileMenuOpen ? (
           <>
             <div className={styles.secondarySidebarSpacer} aria-hidden="true" />
@@ -1070,7 +1437,11 @@ export function SalesSystemDashboard({
               {profileItems.map((item) => (
                 <button
                   key={item.id}
-                  className={item.accent ? styles.profileMenuItemAccent : styles.profileMenuItem}
+                  className={
+                    item.accent
+                      ? styles.profileMenuItemAccent
+                      : styles.profileMenuItem
+                  }
                   onClick={() => {
                     // TODO: conectar navegação real.
                     showToast({ message: `Abrir: ${item.label}` });
@@ -1099,16 +1470,26 @@ export function SalesSystemDashboard({
               {activeGroup.items.map((item) => (
                 <button
                   key={item}
-                  className={item === activeMenuItem ? styles.secondaryMenuItemActive : styles.secondaryMenuItem}
+                  className={
+                    item === activeMenuItem
+                      ? styles.secondaryMenuItemActive
+                      : styles.secondaryMenuItem
+                  }
                   onClick={() => {
                     setIsProfileMenuOpen(false);
                     if (item === "Ajuda do ERP") {
-                      window.open("/ajuda-do-erp", "_blank", "noopener,noreferrer");
+                      window.open(
+                        "/ajuda-do-erp",
+                        "_blank",
+                        "noopener,noreferrer"
+                      );
                       return;
                     }
                     const route = menuRoutes[item as keyof typeof menuRoutes];
                     if (route) {
-                      const nextGroupId = navigationGroups.find((group) => group.items.some((groupItem) => groupItem === item))?.id;
+                      const nextGroupId = navigationGroups.find((group) =>
+                        group.items.some((groupItem) => groupItem === item)
+                      )?.id;
                       if (nextGroupId) {
                         setActiveGroupId(nextGroupId);
                       }
@@ -1125,7 +1506,7 @@ export function SalesSystemDashboard({
                   <span className={styles.secondaryMenuIcon} aria-hidden="true">
                     <SecondaryMenuIcon label={item} />
                   </span>
-                  {item}
+                  <span className={styles.secondaryMenuLabel}>{item}</span>
                 </button>
               ))}
             </div>
@@ -1137,7 +1518,10 @@ export function SalesSystemDashboard({
         {activeMenuItem === "Índice" ? (
           <IndiceContent currentUser={currentUser} />
         ) : activeMenuItem === "Dashboard" ? (
-          <DashboardContent isRefreshing={isLoading} onRefresh={() => void refreshData()} />
+          <DashboardContent
+            isRefreshing={isLoading}
+            onRefresh={() => void refreshData()}
+          />
         ) : activeMenuItem === "Agenda" ? (
           <AgendaContent currentUser={currentUser} />
         ) : activeMenuItem === "Minha conta" ? (
@@ -1163,281 +1547,474 @@ export function SalesSystemDashboard({
           <CustomersSuppliersContent currentUser={currentUser} />
         ) : activeMenuItem === "Produtos" ? (
           <ProductsContent currentUser={currentUser} />
+        ) : activeMenuItem === "Campanhas Promocionais" ? (
+          <PromotionalCampaignsContent currentUser={currentUser} />
+        ) : activeMenuItem === "Serviços" ? (
+          <ServicesContent currentUser={currentUser} />
         ) : (
           <>
-        <header className={styles.hero}>
-          <div className={styles.heroContent}>
-            <span className={styles.panelEyebrow}>{activeGroup.label}</span>
-            <h1>{activeMenuItem}</h1>
-            <p>
-              Navegação em trilho duplo: módulo colapsado à esquerda e submenu completo ao lado,
-              no padrão de operação que você pediu.
-            </p>
-          </div>
-
-          <div className={styles.heroActions}>
-            <input
-              className={styles.searchInput}
-              onChange={(event) => setSearch(event.target.value)}
-              placeholder={`Buscar dentro de ${activeGroup.label.toLowerCase()}...`}
-              value={search}
-            />
-            <button className={styles.primaryButton} onClick={() => void refreshData("Dados atualizados.")} type="button">
-              {isLoading ? "Atualizando..." : "Atualizar"}
-            </button>
-          </div>
-        </header>
-
-        <section className={styles.summaryGrid}>
-          {summaryCards.map((card) => (
-            <article
-              key={card.label}
-              className={`${styles.metricCard} ${styles[`tone${card.tone[0].toUpperCase()}${card.tone.slice(1)}`]}`}
-            >
-              <span>{card.label}</span>
-              <strong>{card.value}</strong>
-            </article>
-          ))}
-        </section>
-
-        <section className={styles.storyGrid}>
-          <article className={styles.panel}>
-            <div className={styles.panelHeader}>
-              <div>
-                <span className={styles.panelEyebrow}>Operação ao vivo</span>
-                <h2>Indicadores rápidos</h2>
+            <header className={styles.hero}>
+              <div className={styles.heroContent}>
+                <span className={styles.panelEyebrow}>{activeGroup.label}</span>
+                <h1>{activeMenuItem}</h1>
+                <p>
+                  Navegação em trilho duplo: módulo colapsado à esquerda e
+                  submenu completo ao lado, no padrão de operação que você
+                  pediu.
+                </p>
               </div>
-            </div>
-            <div className={styles.list}>
-              <div className={styles.listRow}>
-                <div>
-                  <strong>{dashboard?.summary.ordersToday ?? 0}</strong>
-                  <p>pedidos capturados hoje</p>
-                </div>
-                <div>
-                  <strong>{conversionRate}%</strong>
-                  <p>pressão comercial</p>
-                </div>
-              </div>
-              <div className={styles.listRow}>
-                <div>
-                  <strong>R$ {marginPreview}</strong>
-                  <p>margem média estimada por item</p>
-                </div>
-                <div>
-                  <strong>{dashboard?.summary.activeProductsCount ?? 0}</strong>
-                  <p>produtos ativos</p>
-                </div>
-              </div>
-            </div>
-          </article>
 
-          <article className={styles.panel}>
-            <div className={styles.panelHeader}>
-              <div>
-                <span className={styles.panelEyebrow}>Ritmo recente</span>
-                <h2>Pedidos mais recentes</h2>
+              <div className={styles.heroActions}>
+                <input
+                  className={styles.searchInput}
+                  onChange={(event) => setSearch(event.target.value)}
+                  placeholder={`Buscar dentro de ${activeGroup.label.toLowerCase()}...`}
+                  value={search}
+                />
+                <button
+                  className={styles.primaryButton}
+                  onClick={() => void refreshData("Dados atualizados.")}
+                  type="button"
+                >
+                  {isLoading ? "Atualizando..." : "Atualizar"}
+                </button>
               </div>
-            </div>
-            <div className={styles.list}>
-              {dashboard?.recentOrders.map((order) => (
-                <div key={order.id} className={styles.listRow}>
-                  <div>
-                    <strong>#{order.orderNumber}</strong>
-                    <p>{order.customerName}</p>
-                  </div>
-                  <div>
-                    <strong>{formatCurrency(order.totalInCents)}</strong>
-                    <p>{formatDate(order.createdAt)}</p>
-                  </div>
-                </div>
+            </header>
+
+            <section className={styles.summaryGrid}>
+              {summaryCards.map((card) => (
+                <article
+                  key={card.label}
+                  className={`${styles.metricCard} ${
+                    styles[
+                      `tone${card.tone[0].toUpperCase()}${card.tone.slice(1)}`
+                    ]
+                  }`}
+                >
+                  <span>{card.label}</span>
+                  <strong>{card.value}</strong>
+                </article>
               ))}
-            </div>
-          </article>
-        </section>
+            </section>
 
-        <section className={styles.contentGrid}>
-          <div className={styles.mainColumn}>
-            <article className={styles.panel}>
-              <div className={styles.panelHeader}>
-                <div>
-                  <span className={styles.panelEyebrow}>Pedidos</span>
-                  <h2>Fila comercial</h2>
+            <section className={styles.storyGrid}>
+              <article className={styles.panel}>
+                <div className={styles.panelHeader}>
+                  <div>
+                    <span className={styles.panelEyebrow}>
+                      Operação ao vivo
+                    </span>
+                    <h2>Indicadores rápidos</h2>
+                  </div>
                 </div>
-                <span className={styles.countBadge}>{filteredOrders.length} resultados</span>
-              </div>
-              <div className={styles.table}>
-                {filteredOrders.map((order) => (
-                  <div key={order.id} className={styles.tableRow}>
+                <div className={styles.list}>
+                  <div className={styles.listRow}>
                     <div>
-                      <strong>#{order.orderNumber}</strong>
-                      <p>{order.customerName}</p>
+                      <strong>{dashboard?.summary.ordersToday ?? 0}</strong>
+                      <p>pedidos capturados hoje</p>
                     </div>
                     <div>
-                      <strong>{order.items.reduce((sum, item) => sum + item.quantity, 0)} itens</strong>
-                      <p>{order.status}</p>
-                    </div>
-                    <div>
-                      <strong>{formatCurrency(order.totalInCents)}</strong>
-                      <p>{formatDate(order.createdAt)}</p>
+                      <strong>{conversionRate}%</strong>
+                      <p>pressão comercial</p>
                     </div>
                   </div>
-                ))}
-              </div>
-            </article>
-
-            <article className={styles.panel}>
-              <div className={styles.panelHeader}>
-                <div>
-                  <span className={styles.panelEyebrow}>Catálogo</span>
-                  <h2>Produtos ativos</h2>
-                </div>
-                <span className={styles.countBadge}>{filteredProducts.length} SKUs</span>
-              </div>
-              <div className={styles.table}>
-                {filteredProducts.map((product) => (
-                  <div key={product.id} className={styles.tableRow}>
+                  <div className={styles.listRow}>
                     <div>
-                      <strong>{product.name}</strong>
-                      <p>{product.sku} · {product.category}</p>
+                      <strong>R$ {marginPreview}</strong>
+                      <p>margem média estimada por item</p>
                     </div>
                     <div>
-                      <strong>{formatCurrency(product.priceInCents)}</strong>
-                      <p>Estoque {product.stockQuantity}</p>
-                    </div>
-                    <div>
-                      <strong>{formatCurrency(product.costInCents)}</strong>
-                      <p>Cadastro {formatDateOnly(product.createdAt)}</p>
+                      <strong>
+                        {dashboard?.summary.activeProductsCount ?? 0}
+                      </strong>
+                      <p>produtos ativos</p>
                     </div>
                   </div>
-                ))}
-              </div>
-            </article>
-
-            <article className={styles.panel}>
-              <div className={styles.panelHeader}>
-                <div>
-                  <span className={styles.panelEyebrow}>Carteira</span>
-                  <h2>Clientes acompanhados</h2>
                 </div>
-                <span className={styles.countBadge}>{filteredCustomers.length} contas</span>
-              </div>
-              <div className={styles.table}>
-                {filteredCustomers.map((customer) => (
-                  <div key={customer.id} className={styles.tableRow}>
-                    <div>
-                      <strong>{customer.name}</strong>
-                      <p>{customer.email ?? "Sem email"} · {customer.city ?? "Cidade não informada"}</p>
-                    </div>
-                    <div>
-                      <strong>{customer.ordersCount} pedidos</strong>
-                      <p>{customer.phone ?? "Sem telefone"}</p>
-                    </div>
-                    <div>
-                      <strong>{formatCurrency(customer.totalRevenueInCents)}</strong>
-                      <p>{formatDateOnly(customer.createdAt)}</p>
-                    </div>
+              </article>
+
+              <article className={styles.panel}>
+                <div className={styles.panelHeader}>
+                  <div>
+                    <span className={styles.panelEyebrow}>Ritmo recente</span>
+                    <h2>Pedidos mais recentes</h2>
                   </div>
-                ))}
-              </div>
-            </article>
-          </div>
-
-          <aside className={styles.sideColumn}>
-            <article className={styles.panel}>
-              <div className={styles.panelHeader}>
-                <div>
-                  <span className={styles.panelEyebrow}>Ação rápida</span>
-                  <h2>Novo cliente</h2>
                 </div>
-              </div>
-              <form className={styles.form} onSubmit={handleCreateCustomer}>
-                <input className={styles.field} onChange={(event) => setCustomerForm((current) => ({ ...current, name: event.target.value }))} placeholder="Nome da conta" value={customerForm.name} />
-                <input className={styles.field} onChange={(event) => setCustomerForm((current) => ({ ...current, email: event.target.value }))} placeholder="Email" value={customerForm.email} />
-                <input className={styles.field} onChange={(event) => setCustomerForm((current) => ({ ...current, phone: event.target.value }))} placeholder="Telefone" value={customerForm.phone} />
-                <input className={styles.field} onChange={(event) => setCustomerForm((current) => ({ ...current, city: event.target.value }))} placeholder="Cidade" value={customerForm.city} />
-                <button className={styles.primaryButton} disabled={isSaving} type="submit">
-                  Criar cliente
-                </button>
-              </form>
-            </article>
-
-            <article className={styles.panel}>
-              <div className={styles.panelHeader}>
-                <div>
-                  <span className={styles.panelEyebrow}>Ação rápida</span>
-                  <h2>Novo produto</h2>
-                </div>
-              </div>
-              <form className={styles.form} onSubmit={handleCreateProduct}>
-                <input className={styles.field} placeholder="Nome" value={productForm.name} onChange={(event) => setProductForm((current) => ({ ...current, name: event.target.value }))} />
-                <input className={styles.field} placeholder="SKU" value={productForm.sku} onChange={(event) => setProductForm((current) => ({ ...current, sku: event.target.value }))} />
-                <input className={styles.field} placeholder="Categoria" value={productForm.category} onChange={(event) => setProductForm((current) => ({ ...current, category: event.target.value }))} />
-                <input className={styles.field} placeholder="Preço" value={productForm.price} onChange={(event) => setProductForm((current) => ({ ...current, price: event.target.value }))} />
-                <input className={styles.field} placeholder="Custo" value={productForm.cost} onChange={(event) => setProductForm((current) => ({ ...current, cost: event.target.value }))} />
-                <input className={styles.field} placeholder="Estoque inicial" value={productForm.stockQuantity} onChange={(event) => setProductForm((current) => ({ ...current, stockQuantity: event.target.value }))} />
-                <button className={styles.primaryButton} disabled={isSaving} type="submit">
-                  Criar produto
-                </button>
-              </form>
-            </article>
-
-            <article className={styles.panel}>
-              <div className={styles.panelHeader}>
-                <div>
-                  <span className={styles.panelEyebrow}>Ação rápida</span>
-                  <h2>Novo pedido</h2>
-                </div>
-              </div>
-              <form className={styles.form} onSubmit={handleCreateOrder}>
-                <select className={styles.field} value={orderForm.customerId} onChange={(event) => setOrderForm((current) => ({ ...current, customerId: event.target.value }))}>
-                  <option value="">Selecione o cliente</option>
-                  {customers.map((customer) => (
-                    <option key={customer.id} value={customer.id}>
-                      {customer.name}
-                    </option>
+                <div className={styles.list}>
+                  {dashboard?.recentOrders.map((order) => (
+                    <div key={order.id} className={styles.listRow}>
+                      <div>
+                        <strong>#{order.orderNumber}</strong>
+                        <p>{order.customerName}</p>
+                      </div>
+                      <div>
+                        <strong>{formatCurrency(order.totalInCents)}</strong>
+                        <p>{formatDate(order.createdAt)}</p>
+                      </div>
+                    </div>
                   ))}
-                </select>
-                <select className={styles.field} value={orderForm.productId} onChange={(event) => setOrderForm((current) => ({ ...current, productId: event.target.value }))}>
-                  <option value="">Selecione o produto</option>
-                  {products.filter((product) => product.active).map((product) => (
-                    <option key={product.id} value={product.id}>
-                      {product.name}
-                    </option>
-                  ))}
-                </select>
-                <input className={styles.field} min="1" onChange={(event) => setOrderForm((current) => ({ ...current, quantity: event.target.value }))} placeholder="Quantidade" type="number" value={orderForm.quantity} />
-                <textarea className={styles.field} onChange={(event) => setOrderForm((current) => ({ ...current, notes: event.target.value }))} placeholder="Observações" rows={3} value={orderForm.notes} />
-                <button className={styles.primaryButton} disabled={isSaving} type="submit">
-                  Registrar pedido
-                </button>
-              </form>
-            </article>
-
-            <article className={styles.panel}>
-              <div className={styles.panelHeader}>
-                <div>
-                  <span className={styles.panelEyebrow}>Alerta</span>
-                  <h2>Baixo estoque</h2>
                 </div>
-              </div>
-              <div className={styles.list}>
-                {dashboard?.lowStockProducts.map((product) => (
-                  <div key={product.id} className={styles.listRow}>
+              </article>
+            </section>
+
+            <section className={styles.contentGrid}>
+              <div className={styles.mainColumn}>
+                <article className={styles.panel}>
+                  <div className={styles.panelHeader}>
                     <div>
-                      <strong>{product.name}</strong>
-                      <p>{product.sku}</p>
+                      <span className={styles.panelEyebrow}>Pedidos</span>
+                      <h2>Fila comercial</h2>
                     </div>
+                    <span className={styles.countBadge}>
+                      {filteredOrders.length} resultados
+                    </span>
+                  </div>
+                  <div className={styles.table}>
+                    {filteredOrders.map((order) => (
+                      <div key={order.id} className={styles.tableRow}>
+                        <div>
+                          <strong>#{order.orderNumber}</strong>
+                          <p>{order.customerName}</p>
+                        </div>
+                        <div>
+                          <strong>
+                            {order.items.reduce(
+                              (sum, item) => sum + item.quantity,
+                              0
+                            )}{" "}
+                            itens
+                          </strong>
+                          <p>{order.status}</p>
+                        </div>
+                        <div>
+                          <strong>{formatCurrency(order.totalInCents)}</strong>
+                          <p>{formatDate(order.createdAt)}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+
+                <article className={styles.panel}>
+                  <div className={styles.panelHeader}>
                     <div>
-                      <strong>{product.stockQuantity}</strong>
-                      <p>mínimo {product.minimumStock}</p>
+                      <span className={styles.panelEyebrow}>Catálogo</span>
+                      <h2>Produtos ativos</h2>
+                    </div>
+                    <span className={styles.countBadge}>
+                      {filteredProducts.length} SKUs
+                    </span>
+                  </div>
+                  <div className={styles.table}>
+                    {filteredProducts.map((product) => (
+                      <div key={product.id} className={styles.tableRow}>
+                        <div>
+                          <strong>{product.name}</strong>
+                          <p>
+                            {product.sku} · {product.category}
+                          </p>
+                        </div>
+                        <div>
+                          <strong>
+                            {formatCurrency(product.priceInCents)}
+                          </strong>
+                          <p>Estoque {product.stockQuantity}</p>
+                        </div>
+                        <div>
+                          <strong>{formatCurrency(product.costInCents)}</strong>
+                          <p>Cadastro {formatDateOnly(product.createdAt)}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+
+                <article className={styles.panel}>
+                  <div className={styles.panelHeader}>
+                    <div>
+                      <span className={styles.panelEyebrow}>Carteira</span>
+                      <h2>Clientes acompanhados</h2>
+                    </div>
+                    <span className={styles.countBadge}>
+                      {filteredCustomers.length} contas
+                    </span>
+                  </div>
+                  <div className={styles.table}>
+                    {filteredCustomers.map((customer) => (
+                      <div key={customer.id} className={styles.tableRow}>
+                        <div>
+                          <strong>{customer.name}</strong>
+                          <p>
+                            {customer.email ?? "Sem email"} ·{" "}
+                            {customer.city ?? "Cidade não informada"}
+                          </p>
+                        </div>
+                        <div>
+                          <strong>{customer.ordersCount} pedidos</strong>
+                          <p>{customer.phone ?? "Sem telefone"}</p>
+                        </div>
+                        <div>
+                          <strong>
+                            {formatCurrency(customer.totalRevenueInCents)}
+                          </strong>
+                          <p>{formatDateOnly(customer.createdAt)}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+              </div>
+
+              <aside className={styles.sideColumn}>
+                <article className={styles.panel}>
+                  <div className={styles.panelHeader}>
+                    <div>
+                      <span className={styles.panelEyebrow}>Ação rápida</span>
+                      <h2>Novo cliente</h2>
                     </div>
                   </div>
-                ))}
-              </div>
-            </article>
-          </aside>
-        </section>
+                  <form className={styles.form} onSubmit={handleCreateCustomer}>
+                    <input
+                      className={styles.field}
+                      onChange={(event) =>
+                        setCustomerForm((current) => ({
+                          ...current,
+                          name: event.target.value,
+                        }))
+                      }
+                      placeholder="Nome da conta"
+                      value={customerForm.name}
+                    />
+                    <input
+                      className={styles.field}
+                      onChange={(event) =>
+                        setCustomerForm((current) => ({
+                          ...current,
+                          email: event.target.value,
+                        }))
+                      }
+                      placeholder="Email"
+                      value={customerForm.email}
+                    />
+                    <input
+                      className={styles.field}
+                      onChange={(event) =>
+                        setCustomerForm((current) => ({
+                          ...current,
+                          phone: event.target.value,
+                        }))
+                      }
+                      placeholder="Telefone"
+                      value={customerForm.phone}
+                    />
+                    <input
+                      className={styles.field}
+                      onChange={(event) =>
+                        setCustomerForm((current) => ({
+                          ...current,
+                          city: event.target.value,
+                        }))
+                      }
+                      placeholder="Cidade"
+                      value={customerForm.city}
+                    />
+                    <button
+                      className={styles.primaryButton}
+                      disabled={isSaving}
+                      type="submit"
+                    >
+                      Criar cliente
+                    </button>
+                  </form>
+                </article>
+
+                <article className={styles.panel}>
+                  <div className={styles.panelHeader}>
+                    <div>
+                      <span className={styles.panelEyebrow}>Ação rápida</span>
+                      <h2>Novo produto</h2>
+                    </div>
+                  </div>
+                  <form className={styles.form} onSubmit={handleCreateProduct}>
+                    <input
+                      className={styles.field}
+                      placeholder="Nome"
+                      value={productForm.name}
+                      onChange={(event) =>
+                        setProductForm((current) => ({
+                          ...current,
+                          name: event.target.value,
+                        }))
+                      }
+                    />
+                    <input
+                      className={styles.field}
+                      placeholder="SKU"
+                      value={productForm.sku}
+                      onChange={(event) =>
+                        setProductForm((current) => ({
+                          ...current,
+                          sku: event.target.value,
+                        }))
+                      }
+                    />
+                    <input
+                      className={styles.field}
+                      placeholder="Categoria"
+                      value={productForm.category}
+                      onChange={(event) =>
+                        setProductForm((current) => ({
+                          ...current,
+                          category: event.target.value,
+                        }))
+                      }
+                    />
+                    <input
+                      className={styles.field}
+                      placeholder="Preço"
+                      value={productForm.price}
+                      onChange={(event) =>
+                        setProductForm((current) => ({
+                          ...current,
+                          price: event.target.value,
+                        }))
+                      }
+                    />
+                    <input
+                      className={styles.field}
+                      placeholder="Custo"
+                      value={productForm.cost}
+                      onChange={(event) =>
+                        setProductForm((current) => ({
+                          ...current,
+                          cost: event.target.value,
+                        }))
+                      }
+                    />
+                    <input
+                      className={styles.field}
+                      placeholder="Estoque inicial"
+                      value={productForm.stockQuantity}
+                      onChange={(event) =>
+                        setProductForm((current) => ({
+                          ...current,
+                          stockQuantity: event.target.value,
+                        }))
+                      }
+                    />
+                    <button
+                      className={styles.primaryButton}
+                      disabled={isSaving}
+                      type="submit"
+                    >
+                      Criar produto
+                    </button>
+                  </form>
+                </article>
+
+                <article className={styles.panel}>
+                  <div className={styles.panelHeader}>
+                    <div>
+                      <span className={styles.panelEyebrow}>Ação rápida</span>
+                      <h2>Novo pedido</h2>
+                    </div>
+                  </div>
+                  <form className={styles.form} onSubmit={handleCreateOrder}>
+                    <select
+                      className={styles.field}
+                      value={orderForm.customerId}
+                      onChange={(event) =>
+                        setOrderForm((current) => ({
+                          ...current,
+                          customerId: event.target.value,
+                        }))
+                      }
+                    >
+                      <option value="">Selecione o cliente</option>
+                      {customers.map((customer) => (
+                        <option key={customer.id} value={customer.id}>
+                          {customer.name}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      className={styles.field}
+                      value={orderForm.productId}
+                      onChange={(event) =>
+                        setOrderForm((current) => ({
+                          ...current,
+                          productId: event.target.value,
+                        }))
+                      }
+                    >
+                      <option value="">Selecione o produto</option>
+                      {products
+                        .filter((product) => product.active)
+                        .map((product) => (
+                          <option key={product.id} value={product.id}>
+                            {product.name}
+                          </option>
+                        ))}
+                    </select>
+                    <input
+                      className={styles.field}
+                      min="1"
+                      onChange={(event) =>
+                        setOrderForm((current) => ({
+                          ...current,
+                          quantity: event.target.value,
+                        }))
+                      }
+                      placeholder="Quantidade"
+                      type="number"
+                      value={orderForm.quantity}
+                    />
+                    <textarea
+                      className={styles.field}
+                      onChange={(event) =>
+                        setOrderForm((current) => ({
+                          ...current,
+                          notes: event.target.value,
+                        }))
+                      }
+                      placeholder="Observações"
+                      rows={3}
+                      value={orderForm.notes}
+                    />
+                    <button
+                      className={styles.primaryButton}
+                      disabled={isSaving}
+                      type="submit"
+                    >
+                      Registrar pedido
+                    </button>
+                  </form>
+                </article>
+
+                <article className={styles.panel}>
+                  <div className={styles.panelHeader}>
+                    <div>
+                      <span className={styles.panelEyebrow}>Alerta</span>
+                      <h2>Baixo estoque</h2>
+                    </div>
+                  </div>
+                  <div className={styles.list}>
+                    {dashboard?.lowStockProducts.map((product) => (
+                      <div key={product.id} className={styles.listRow}>
+                        <div>
+                          <strong>{product.name}</strong>
+                          <p>{product.sku}</p>
+                        </div>
+                        <div>
+                          <strong>{product.stockQuantity}</strong>
+                          <p>mínimo {product.minimumStock}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </article>
+              </aside>
+            </section>
           </>
         )}
       </section>

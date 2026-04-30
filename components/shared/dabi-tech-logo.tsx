@@ -1,16 +1,21 @@
 type DaBiTechLogoProps = {
   className?: string;
   variant?: "light" | "dark";
+  mode?: "full" | "symbol";
 };
 
-export function DaBiTechLogo({ className, variant = "light" }: DaBiTechLogoProps) {
+export function DaBiTechLogo({
+  className,
+  variant = "light",
+  mode = "full",
+}: DaBiTechLogoProps) {
   const wordmarkFill = variant === "dark" ? "#000000" : "#ffffff";
   return (
     <svg
       aria-label="DaBi Tech Digital Solutions"
       className={className}
       role="img"
-      viewBox="120 85 520 120"
+      viewBox={mode === "symbol" ? "120 85 110 110" : "120 85 520 120"}
       xmlns="http://www.w3.org/2000/svg"
     >
       <g transform="translate(120,85)">
@@ -22,27 +27,31 @@ export function DaBiTechLogo({ className, variant = "light" }: DaBiTechLogoProps
         </g>
       </g>
 
-      <text
-        x="285"
-        y="145"
-        fill={wordmarkFill}
-        fontFamily="Inter, system-ui, Arial, sans-serif"
-        fontSize="68"
-        fontWeight="700"
-      >
-        DaBi Tech
-      </text>
-      <text
-        x="288"
-        y="190"
-        fill="#00B6E6"
-        fontFamily="Inter, system-ui, Arial, sans-serif"
-        fontSize="24"
-        fontWeight="500"
-        letterSpacing="1px"
-      >
-        DIGITAL SOLUTIONS
-      </text>
+      {mode === "full" ? (
+        <>
+          <text
+            x="285"
+            y="145"
+            fill={wordmarkFill}
+            fontFamily="Inter, system-ui, Arial, sans-serif"
+            fontSize="68"
+            fontWeight="700"
+          >
+            DaBi Tech
+          </text>
+          <text
+            x="288"
+            y="190"
+            fill="#00B6E6"
+            fontFamily="Inter, system-ui, Arial, sans-serif"
+            fontSize="24"
+            fontWeight="500"
+            letterSpacing="1px"
+          >
+            DIGITAL SOLUTIONS
+          </text>
+        </>
+      ) : null}
     </svg>
   );
 }
