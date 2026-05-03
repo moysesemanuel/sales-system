@@ -4,18 +4,7 @@ import { FormEvent, useEffect, useMemo, useState, useTransition } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { DaBiTechLogo } from "@/components/shared/dabi-tech-logo";
 import { useToast } from "@/components/shared/toast-provider";
-import { MenuSelectionShape } from "./menu-selection-shape";
-import { IndiceContent } from "./indice-content";
-import { DashboardContent } from "./dashboard-content";
-import { AgendaContent } from "./agenda-content";
-import { MyAccountContent } from "./my-account-content";
-import { IntegrationsContent } from "./integrations-content";
-import { UpgradePlanContent } from "./upgrade-plan-content";
-import { VersionContent } from "./version-content";
-import { ToolsContent } from "./tools-content";
-import { ExtensionsStoreContent } from "./extensions-store-content";
-import { CustomersSuppliersContent } from "./customers-suppliers-content";
-import { ProductsContent } from "./products-content";
+import { MenuSelectionShape } from "./shell/ui/menu-selection-shape";
 import type {
   CurrentUser,
   DashboardData,
@@ -24,162 +13,15 @@ import type {
   SalesProduct,
 } from "./types";
 import styles from "./landing-page.module.css";
-import { PromotionalCampaignsContent } from "./promotional-campaigns-content";
-import { ServicesContent } from "./services-content";
-
-const navigationGroups = [
-  {
-    id: "inicio",
-    label: "Início",
-    eyebrow: "Cockpit",
-    description:
-      "Painel geral da operação, agenda e recursos de crescimento do ERP.",
-    items: [
-      "Índice",
-      "Dashboard",
-      "Agenda",
-      "Minha conta",
-      "Integrações",
-      "Upgrade de plano",
-      "Sobre a versão",
-      "Ajuda do ERP",
-      "Ferramentas",
-      "Loja de extensões",
-    ],
-  },
-  {
-    id: "cadastros",
-    label: "Cadastros",
-    eyebrow: "Base",
-    description:
-      "Entidades mestras para clientes, catálogo, campanhas, serviços e operação comercial.",
-    items: [
-      "Clientes e Fornecedores",
-      "Produtos",
-      "Campanhas Promocionais",
-      "Serviços",
-      "Categorias dos Produtos",
-      "Vendedores",
-      "Embalagens",
-      "Relatórios",
-    ],
-  },
-  {
-    id: "suprimentos",
-    label: "Suprimentos",
-    eyebrow: "Supply",
-    description:
-      "Estoques, compras e rotinas de entrada para dar previsibilidade ao abastecimento.",
-    items: [
-      "Controle de Estoques",
-      "Ordens de Compra",
-      "Serviços Tomados",
-      "Notas de Entrada",
-      "Conferência de compra",
-      "Necessidades de Compra",
-      "Giro de Estoque",
-      "FCI",
-      "Relatórios",
-    ],
-  },
-  {
-    id: "vendas",
-    label: "Vendas",
-    eyebrow: "Revenue",
-    description:
-      "CRM, pedidos, notas, automações e execução ponta a ponta da esteira comercial.",
-    items: [
-      "CRM",
-      "Painel de Automações",
-      "PDV",
-      "Propostas Comerciais",
-      "Pedidos de Venda",
-      "Notas Fiscais",
-      "Comissões",
-      "Notas Fiscais Consumidor",
-      "Performance de Vendas",
-      "Margem Contribuição",
-      "Custos do e-commerce",
-      "Separação",
-      "Expedição",
-      "Devoluções de venda",
-      "Relatórios",
-    ],
-  },
-  {
-    id: "financas",
-    label: "Finanças",
-    eyebrow: "Cashflow",
-    description: "Caixa, contas, conciliação e leitura financeira consolidada.",
-    items: [
-      "Caixa",
-      "Conta Digital",
-      "pix grátis",
-      "Contas a Pagar",
-      "Contas a Receber",
-      "Cobranças Bancárias",
-      "Extratos Bancários",
-      "Relatórios",
-    ],
-  },
-  {
-    id: "servicos",
-    label: "Serviços",
-    eyebrow: "Service",
-    description:
-      "Gestão de contratos, ordens de serviço, notas e cobrança operacional.",
-    items: [
-      "Contratos",
-      "Ordens de Serviço",
-      "Notas de Serviço",
-      "Cobranças",
-      "Relatórios",
-    ],
-  },
-] as const;
-
-const supportLinks = [
-  "Configurações",
-  "Canal de ideias",
-  "Suporte",
-  "Envios DaBi Tech",
-  "Ecommerce",
-] as const;
-
-type NavigationGroupId = (typeof navigationGroups)[number]["id"];
-
-const menuRoutes = {
-  "Clientes e Fornecedores": "/clientes-e-fornecedores",
-  Produtos: "/produtos",
-  "Campanhas Promocionais": "/campanhas-promocionais",
-  Serviços: "/servicos",
-  Índice: "/indice",
-  Dashboard: "/dashboard",
-  Agenda: "/agenda",
-  "Minha conta": "/minha-conta",
-  Integrações: "/integracoes",
-  "Upgrade de plano": "/upgrade-plano",
-  "Sobre a versão": "/sobre-versao",
-  Ferramentas: "/ferramentas",
-  "Loja de extensões": "/loja-de-extensoes",
-} as const;
-
-const menuItemByPath: Record<string, keyof typeof menuRoutes> = {
-  "/clientes-e-fornecedores": "Clientes e Fornecedores",
-  "/produtos": "Produtos",
-  "/campanhas-promocionais": "Campanhas Promocionais",
-  "/servicos": "Serviços",
-  "/indice": "Índice",
-  "/dashboard": "Dashboard",
-  "/agenda": "Agenda",
-  "/minha-conta": "Minha conta",
-  "/integracoes": "Integrações",
-  "/upgrade-plano": "Upgrade de plano",
-  "/sobre-versao": "Sobre a versão",
-  "/ferramentas": "Ferramentas",
-  "/loja-de-extensoes": "Loja de extensões",
-  "/": "Índice",
-};
+import { ShellContentRouter } from "./shell/content/shell-content-router";
+import { ShellDefaultWorkspace } from "./shell/content/shell-default-workspace";
+import {
+  menuItemByPath,
+  menuRoutes,
+  navigationGroups,
+  supportLinks,
+} from "./shell/navigation/navigation-config";
+import type { NavigationGroupId } from "./shell/navigation/navigation-config";
 
 function formatCurrency(valueInCents: number) {
   return new Intl.NumberFormat("pt-BR", {
@@ -225,6 +67,9 @@ export function SalesSystemDashboard({
   const [activeMenuItem, setActiveMenuItem] = useState<string>(initialMenuItem);
   const [isPrimaryRailExpanded, setIsPrimaryRailExpanded] = useState(false);
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [theme, setTheme] = useState<"dark" | "light">("dark");
+  const [isThemeHydrated, setIsThemeHydrated] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [mobileMenuMode, setMobileMenuMode] = useState<"nav" | "profile">("nav");
   const [search, setSearch] = useState("");
@@ -275,6 +120,21 @@ export function SalesSystemDashboard({
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const storedTheme = window.localStorage.getItem("sales-system-theme");
+    if (storedTheme === "light" || storedTheme === "dark") {
+      setTheme(storedTheme);
+    }
+    setIsThemeHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!isThemeHydrated) return;
+    window.localStorage.setItem("sales-system-theme", theme);
+  }, [isThemeHydrated, theme]);
+
   const profileItems = useMemo(
     () => [
       { id: "company", label: "Dados da empresa", icon: "briefcase" as const },
@@ -295,6 +155,8 @@ export function SalesSystemDashboard({
     ],
     []
   );
+
+  const notifications = useMemo<Array<{ id: string; text: string }>>(() => [], []);
 
   function ProfileIcon({
     kind,
@@ -871,6 +733,30 @@ export function SalesSystemDashboard({
     }
   }
 
+  function NotificationBellIcon() {
+    return (
+      <svg width="18" height="18" viewBox="0 0 20 20" aria-hidden="true">
+        <path
+          d="M10 3.4a4.6 4.6 0 0 0-4.6 4.6v2.2c0 .7-.2 1.4-.6 2l-1 1.4h12.4l-1-1.4c-.4-.6-.6-1.3-.6-2V8A4.6 4.6 0 0 0 10 3.4Z"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          opacity="0.9"
+        />
+        <path
+          d="M8.3 15.4a1.7 1.7 0 0 0 3.4 0"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          opacity="0.9"
+        />
+      </svg>
+    );
+  }
+
   async function loadData() {
     const [
       dashboardResponse,
@@ -897,7 +783,7 @@ export function SalesSystemDashboard({
         .catch(() => null)) as { error?: string } | null;
       throw new Error(
         payload?.error ??
-          `Não foi possível carregar ${firstFailure.label} do ERP.`
+        `Não foi possível carregar ${firstFailure.label} do ERP.`
       );
     }
 
@@ -956,21 +842,21 @@ export function SalesSystemDashboard({
 
   const conversionRate = dashboard
     ? Math.round(
-        (dashboard.summary.ordersToday /
-          Math.max(1, dashboard.summary.customersCount)) *
-          100
-      )
+      (dashboard.summary.ordersToday /
+        Math.max(1, dashboard.summary.customersCount)) *
+      100
+    )
     : 0;
 
   const marginPreview = dashboard
     ? Math.round(
-        products.reduce(
-          (sum, product) => sum + (product.priceInCents - product.costInCents),
-          0
-        ) /
-          Math.max(1, products.length) /
-          100
-      )
+      products.reduce(
+        (sum, product) => sum + (product.priceInCents - product.costInCents),
+        0
+      ) /
+      Math.max(1, products.length) /
+      100
+    )
     : 0;
 
   async function refreshData(message?: string) {
@@ -1133,33 +1019,34 @@ export function SalesSystemDashboard({
 
   const summaryCards = dashboard
     ? [
-        {
-          label: "Receita do mês",
-          value: formatCurrency(dashboard.summary.monthRevenueInCents),
-          tone: "primary",
-        },
-        {
-          label: "Receita de hoje",
-          value: formatCurrency(dashboard.summary.todayRevenueInCents),
-          tone: "secondary",
-        },
-        {
-          label: "Pedidos hoje",
-          value: String(dashboard.summary.ordersToday),
-          tone: "neutral",
-        },
-        {
-          label: "Itens em alerta",
-          value: String(dashboard.summary.lowStockCount),
-          tone: "warning",
-        },
-      ]
+      {
+        label: "Receita do mês",
+        value: formatCurrency(dashboard.summary.monthRevenueInCents),
+        tone: "primary",
+      },
+      {
+        label: "Receita de hoje",
+        value: formatCurrency(dashboard.summary.todayRevenueInCents),
+        tone: "secondary",
+      },
+      {
+        label: "Pedidos hoje",
+        value: String(dashboard.summary.ordersToday),
+        tone: "neutral",
+      },
+      {
+        label: "Itens em alerta",
+        value: String(dashboard.summary.lowStockCount),
+        tone: "warning",
+      },
+    ]
     : [];
 
   return (
     <main
       className={styles.page}
       data-primary-rail-state={isPrimaryRailExpanded ? "expanded" : "collapsed"}
+      data-theme={theme}
     >
       <header className={styles.mobileTopBar}>
         <button
@@ -1236,8 +1123,16 @@ export function SalesSystemDashboard({
                       type="button"
                       className={styles.mobileMenuItem}
                       onClick={() => {
+                        setIsProfileMenuOpen(false);
+
+                        if (item.label === "Dados da empresa") {
+                          setActiveGroupId("inicio");
+                          setActiveMenuItem("Dados da empresa");
+                          router.push("/dados-da-empresa");
+                          return;
+                        }
+
                         showToast({ message: `Abrir: ${item.label}` });
-                        setIsMobileMenuOpen(false);
                       }}
                     >
                       <span className={styles.mobileMenuItemIcon} aria-hidden="true">
@@ -1326,23 +1221,8 @@ export function SalesSystemDashboard({
       ) : null}
 
       <aside className={styles.primaryRailShell}>
-        <div className={styles.hamburgerDock} aria-hidden="true">
-          <span />
-          <span />
-          <span />
-        </div>
-
-        <div className={styles.logoBadge} aria-hidden="true">
-          <DaBiTechLogo className={styles.railLogoFull} />
-          <DaBiTechLogo className={styles.railLogoSymbol} mode="symbol" />
-        </div>
-
         <button
-          className={
-            isPrimaryRailExpanded
-              ? styles.railModeDockButtonActive
-              : styles.railModeDockButton
-          }
+          className={styles.hamburgerDock}
           onClick={() => setIsPrimaryRailExpanded((current) => !current)}
           type="button"
           aria-label={
@@ -1353,7 +1233,56 @@ export function SalesSystemDashboard({
           aria-pressed={isPrimaryRailExpanded}
           title={isPrimaryRailExpanded ? "Colapsar menu" : "Expandir menu"}
         >
-          <span aria-hidden="true">↔</span>
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+          <span aria-hidden="true" />
+        </button>
+
+        <div className={styles.logoBadge} aria-hidden="true">
+          <DaBiTechLogo className={styles.railLogoFull} />
+          <DaBiTechLogo className={styles.railLogoSymbol} mode="symbol" />
+        </div>
+
+        <button
+          className={styles.notificationDockButton}
+          onClick={() => {
+            setIsProfileMenuOpen(false);
+            setIsPrimaryRailExpanded(true);
+            setIsNotificationsOpen((current) => !current);
+          }}
+          type="button"
+          aria-label="Notificações"
+          aria-pressed={isNotificationsOpen}
+          title="Notificações"
+        >
+          <span aria-hidden="true">
+            <NotificationBellIcon />
+          </span>
+        </button>
+
+        <button
+          className={styles.helpDockButton}
+          onClick={() => {
+            window.open("/ajuda-do-erp", "_blank", "noopener,noreferrer");
+          }}
+          type="button"
+          aria-label="Ajuda"
+          title="Ajuda"
+        >
+          <span aria-hidden="true">?</span>
+        </button>
+
+        <button
+          className={styles.appearanceDockButton}
+          onClick={() =>
+            setTheme((current) => (current === "dark" ? "light" : "dark"))
+          }
+          type="button"
+          aria-label="Aparência"
+          aria-pressed={theme === "light"}
+          title="Aparência"
+        >
+          <span aria-hidden="true">◐</span>
         </button>
 
         <button
@@ -1362,7 +1291,10 @@ export function SalesSystemDashboard({
               ? styles.profileDockButtonActive
               : styles.profileDockButton
           }
-          onClick={() => setIsProfileMenuOpen((current) => !current)}
+          onClick={() => {
+            setIsNotificationsOpen(false);
+            setIsProfileMenuOpen((current) => !current);
+          }}
           type="button"
           aria-label="Perfil"
           aria-pressed={isProfileMenuOpen}
@@ -1385,6 +1317,7 @@ export function SalesSystemDashboard({
                   }
                   onClick={() => {
                     setIsProfileMenuOpen(false);
+                    setIsNotificationsOpen(false);
                     setActiveGroupId(group.id);
                     setActiveMenuItem(group.items[0]);
                   }}
@@ -1400,7 +1333,9 @@ export function SalesSystemDashboard({
                 </button>
               ))}
             </nav>
+          </div>
 
+          <div className={styles.primaryRailBottom}>
             <div className={styles.primaryQuickLinks}>
               {supportLinks.map((item) => (
                 <button
@@ -1412,6 +1347,7 @@ export function SalesSystemDashboard({
                   }
                   onClick={() => {
                     setIsProfileMenuOpen(false);
+                    setIsNotificationsOpen(false);
                     setActiveMenuItem(item);
                   }}
                   title={item}
@@ -1426,9 +1362,8 @@ export function SalesSystemDashboard({
       </aside>
 
       <aside
-        className={`${styles.secondarySidebar} ${
-          isProfileMenuOpen ? styles.secondarySidebarProfileMode : ""
-        }`}
+        className={`${styles.secondarySidebar} ${isProfileMenuOpen ? styles.secondarySidebarProfileMode : ""
+          }`}
       >
         {isProfileMenuOpen ? (
           <>
@@ -1443,9 +1378,16 @@ export function SalesSystemDashboard({
                       : styles.profileMenuItem
                   }
                   onClick={() => {
-                    // TODO: conectar navegação real.
-                    showToast({ message: `Abrir: ${item.label}` });
                     setIsProfileMenuOpen(false);
+
+                    if (item.label === "Dados da empresa") {
+                      setActiveGroupId("inicio");
+                      setActiveMenuItem("Dados da empresa");
+                      router.push("/dados-da-empresa");
+                      return;
+                    }
+
+                    showToast({ message: `Abrir: ${item.label}` });
                   }}
                   type="button"
                 >
@@ -1464,6 +1406,21 @@ export function SalesSystemDashboard({
               sair
             </button>
           </>
+        ) : isNotificationsOpen ? (
+          <div className={styles.secondaryNotifications}>
+            <h2 className={styles.secondaryNotificationsTitle}>Minhas notificações</h2>
+            {notifications.length > 0 ? (
+              <div className={styles.secondaryNotificationsList}>
+                {notifications.map((notification) => (
+                  <p key={notification.id} className={styles.secondaryNotificationItem}>
+                    {notification.text}
+                  </p>
+                ))}
+              </div>
+            ) : (
+              <p className={styles.secondaryNotificationsEmpty}>Sem notificações.</p>
+            )}
+          </div>
         ) : (
           <>
             <div className={styles.secondaryMenu}>
@@ -1477,6 +1434,7 @@ export function SalesSystemDashboard({
                   }
                   onClick={() => {
                     setIsProfileMenuOpen(false);
+                    setIsNotificationsOpen(false);
                     if (item === "Ajuda do ERP") {
                       window.open(
                         "/ajuda-do-erp",
@@ -1515,508 +1473,49 @@ export function SalesSystemDashboard({
       </aside>
 
       <section className={styles.workspace}>
-        {activeMenuItem === "Índice" ? (
-          <IndiceContent currentUser={currentUser} />
-        ) : activeMenuItem === "Dashboard" ? (
-          <DashboardContent
-            isRefreshing={isLoading}
-            onRefresh={() => void refreshData()}
-          />
-        ) : activeMenuItem === "Agenda" ? (
-          <AgendaContent currentUser={currentUser} />
-        ) : activeMenuItem === "Minha conta" ? (
-          <MyAccountContent
-            currentUser={currentUser}
-            onBack={() => {
-              setActiveGroupId("inicio");
-              setActiveMenuItem("Índice");
-              router.push("/indice");
-            }}
-          />
-        ) : activeMenuItem === "Integrações" ? (
-          <IntegrationsContent currentUser={currentUser} />
-        ) : activeMenuItem === "Upgrade de plano" ? (
-          <UpgradePlanContent currentUser={currentUser} />
-        ) : activeMenuItem === "Sobre a versão" ? (
-          <VersionContent currentUser={currentUser} />
-        ) : activeMenuItem === "Ferramentas" ? (
-          <ToolsContent currentUser={currentUser} />
-        ) : activeMenuItem === "Loja de extensões" ? (
-          <ExtensionsStoreContent currentUser={currentUser} />
-        ) : activeMenuItem === "Clientes e Fornecedores" ? (
-          <CustomersSuppliersContent currentUser={currentUser} />
-        ) : activeMenuItem === "Produtos" ? (
-          <ProductsContent currentUser={currentUser} />
-        ) : activeMenuItem === "Campanhas Promocionais" ? (
-          <PromotionalCampaignsContent currentUser={currentUser} />
-        ) : activeMenuItem === "Serviços" ? (
-          <ServicesContent currentUser={currentUser} />
-        ) : (
-          <>
-            <header className={styles.hero}>
-              <div className={styles.heroContent}>
-                <span className={styles.panelEyebrow}>{activeGroup.label}</span>
-                <h1>{activeMenuItem}</h1>
-                <p>
-                  Navegação em trilho duplo: módulo colapsado à esquerda e
-                  submenu completo ao lado, no padrão de operação que você
-                  pediu.
-                </p>
-              </div>
-
-              <div className={styles.heroActions}>
-                <input
-                  className={styles.searchInput}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder={`Buscar dentro de ${activeGroup.label.toLowerCase()}...`}
-                  value={search}
-                />
-                <button
-                  className={styles.primaryButton}
-                  onClick={() => void refreshData("Dados atualizados.")}
-                  type="button"
-                >
-                  {isLoading ? "Atualizando..." : "Atualizar"}
-                </button>
-              </div>
-            </header>
-
-            <section className={styles.summaryGrid}>
-              {summaryCards.map((card) => (
-                <article
-                  key={card.label}
-                  className={`${styles.metricCard} ${
-                    styles[
-                      `tone${card.tone[0].toUpperCase()}${card.tone.slice(1)}`
-                    ]
-                  }`}
-                >
-                  <span>{card.label}</span>
-                  <strong>{card.value}</strong>
-                </article>
-              ))}
-            </section>
-
-            <section className={styles.storyGrid}>
-              <article className={styles.panel}>
-                <div className={styles.panelHeader}>
-                  <div>
-                    <span className={styles.panelEyebrow}>
-                      Operação ao vivo
-                    </span>
-                    <h2>Indicadores rápidos</h2>
-                  </div>
-                </div>
-                <div className={styles.list}>
-                  <div className={styles.listRow}>
-                    <div>
-                      <strong>{dashboard?.summary.ordersToday ?? 0}</strong>
-                      <p>pedidos capturados hoje</p>
-                    </div>
-                    <div>
-                      <strong>{conversionRate}%</strong>
-                      <p>pressão comercial</p>
-                    </div>
-                  </div>
-                  <div className={styles.listRow}>
-                    <div>
-                      <strong>R$ {marginPreview}</strong>
-                      <p>margem média estimada por item</p>
-                    </div>
-                    <div>
-                      <strong>
-                        {dashboard?.summary.activeProductsCount ?? 0}
-                      </strong>
-                      <p>produtos ativos</p>
-                    </div>
-                  </div>
-                </div>
-              </article>
-
-              <article className={styles.panel}>
-                <div className={styles.panelHeader}>
-                  <div>
-                    <span className={styles.panelEyebrow}>Ritmo recente</span>
-                    <h2>Pedidos mais recentes</h2>
-                  </div>
-                </div>
-                <div className={styles.list}>
-                  {dashboard?.recentOrders.map((order) => (
-                    <div key={order.id} className={styles.listRow}>
-                      <div>
-                        <strong>#{order.orderNumber}</strong>
-                        <p>{order.customerName}</p>
-                      </div>
-                      <div>
-                        <strong>{formatCurrency(order.totalInCents)}</strong>
-                        <p>{formatDate(order.createdAt)}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </article>
-            </section>
-
-            <section className={styles.contentGrid}>
-              <div className={styles.mainColumn}>
-                <article className={styles.panel}>
-                  <div className={styles.panelHeader}>
-                    <div>
-                      <span className={styles.panelEyebrow}>Pedidos</span>
-                      <h2>Fila comercial</h2>
-                    </div>
-                    <span className={styles.countBadge}>
-                      {filteredOrders.length} resultados
-                    </span>
-                  </div>
-                  <div className={styles.table}>
-                    {filteredOrders.map((order) => (
-                      <div key={order.id} className={styles.tableRow}>
-                        <div>
-                          <strong>#{order.orderNumber}</strong>
-                          <p>{order.customerName}</p>
-                        </div>
-                        <div>
-                          <strong>
-                            {order.items.reduce(
-                              (sum, item) => sum + item.quantity,
-                              0
-                            )}{" "}
-                            itens
-                          </strong>
-                          <p>{order.status}</p>
-                        </div>
-                        <div>
-                          <strong>{formatCurrency(order.totalInCents)}</strong>
-                          <p>{formatDate(order.createdAt)}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </article>
-
-                <article className={styles.panel}>
-                  <div className={styles.panelHeader}>
-                    <div>
-                      <span className={styles.panelEyebrow}>Catálogo</span>
-                      <h2>Produtos ativos</h2>
-                    </div>
-                    <span className={styles.countBadge}>
-                      {filteredProducts.length} SKUs
-                    </span>
-                  </div>
-                  <div className={styles.table}>
-                    {filteredProducts.map((product) => (
-                      <div key={product.id} className={styles.tableRow}>
-                        <div>
-                          <strong>{product.name}</strong>
-                          <p>
-                            {product.sku} · {product.category}
-                          </p>
-                        </div>
-                        <div>
-                          <strong>
-                            {formatCurrency(product.priceInCents)}
-                          </strong>
-                          <p>Estoque {product.stockQuantity}</p>
-                        </div>
-                        <div>
-                          <strong>{formatCurrency(product.costInCents)}</strong>
-                          <p>Cadastro {formatDateOnly(product.createdAt)}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </article>
-
-                <article className={styles.panel}>
-                  <div className={styles.panelHeader}>
-                    <div>
-                      <span className={styles.panelEyebrow}>Carteira</span>
-                      <h2>Clientes acompanhados</h2>
-                    </div>
-                    <span className={styles.countBadge}>
-                      {filteredCustomers.length} contas
-                    </span>
-                  </div>
-                  <div className={styles.table}>
-                    {filteredCustomers.map((customer) => (
-                      <div key={customer.id} className={styles.tableRow}>
-                        <div>
-                          <strong>{customer.name}</strong>
-                          <p>
-                            {customer.email ?? "Sem email"} ·{" "}
-                            {customer.city ?? "Cidade não informada"}
-                          </p>
-                        </div>
-                        <div>
-                          <strong>{customer.ordersCount} pedidos</strong>
-                          <p>{customer.phone ?? "Sem telefone"}</p>
-                        </div>
-                        <div>
-                          <strong>
-                            {formatCurrency(customer.totalRevenueInCents)}
-                          </strong>
-                          <p>{formatDateOnly(customer.createdAt)}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </article>
-              </div>
-
-              <aside className={styles.sideColumn}>
-                <article className={styles.panel}>
-                  <div className={styles.panelHeader}>
-                    <div>
-                      <span className={styles.panelEyebrow}>Ação rápida</span>
-                      <h2>Novo cliente</h2>
-                    </div>
-                  </div>
-                  <form className={styles.form} onSubmit={handleCreateCustomer}>
-                    <input
-                      className={styles.field}
-                      onChange={(event) =>
-                        setCustomerForm((current) => ({
-                          ...current,
-                          name: event.target.value,
-                        }))
-                      }
-                      placeholder="Nome da conta"
-                      value={customerForm.name}
-                    />
-                    <input
-                      className={styles.field}
-                      onChange={(event) =>
-                        setCustomerForm((current) => ({
-                          ...current,
-                          email: event.target.value,
-                        }))
-                      }
-                      placeholder="Email"
-                      value={customerForm.email}
-                    />
-                    <input
-                      className={styles.field}
-                      onChange={(event) =>
-                        setCustomerForm((current) => ({
-                          ...current,
-                          phone: event.target.value,
-                        }))
-                      }
-                      placeholder="Telefone"
-                      value={customerForm.phone}
-                    />
-                    <input
-                      className={styles.field}
-                      onChange={(event) =>
-                        setCustomerForm((current) => ({
-                          ...current,
-                          city: event.target.value,
-                        }))
-                      }
-                      placeholder="Cidade"
-                      value={customerForm.city}
-                    />
-                    <button
-                      className={styles.primaryButton}
-                      disabled={isSaving}
-                      type="submit"
-                    >
-                      Criar cliente
-                    </button>
-                  </form>
-                </article>
-
-                <article className={styles.panel}>
-                  <div className={styles.panelHeader}>
-                    <div>
-                      <span className={styles.panelEyebrow}>Ação rápida</span>
-                      <h2>Novo produto</h2>
-                    </div>
-                  </div>
-                  <form className={styles.form} onSubmit={handleCreateProduct}>
-                    <input
-                      className={styles.field}
-                      placeholder="Nome"
-                      value={productForm.name}
-                      onChange={(event) =>
-                        setProductForm((current) => ({
-                          ...current,
-                          name: event.target.value,
-                        }))
-                      }
-                    />
-                    <input
-                      className={styles.field}
-                      placeholder="SKU"
-                      value={productForm.sku}
-                      onChange={(event) =>
-                        setProductForm((current) => ({
-                          ...current,
-                          sku: event.target.value,
-                        }))
-                      }
-                    />
-                    <input
-                      className={styles.field}
-                      placeholder="Categoria"
-                      value={productForm.category}
-                      onChange={(event) =>
-                        setProductForm((current) => ({
-                          ...current,
-                          category: event.target.value,
-                        }))
-                      }
-                    />
-                    <input
-                      className={styles.field}
-                      placeholder="Preço"
-                      value={productForm.price}
-                      onChange={(event) =>
-                        setProductForm((current) => ({
-                          ...current,
-                          price: event.target.value,
-                        }))
-                      }
-                    />
-                    <input
-                      className={styles.field}
-                      placeholder="Custo"
-                      value={productForm.cost}
-                      onChange={(event) =>
-                        setProductForm((current) => ({
-                          ...current,
-                          cost: event.target.value,
-                        }))
-                      }
-                    />
-                    <input
-                      className={styles.field}
-                      placeholder="Estoque inicial"
-                      value={productForm.stockQuantity}
-                      onChange={(event) =>
-                        setProductForm((current) => ({
-                          ...current,
-                          stockQuantity: event.target.value,
-                        }))
-                      }
-                    />
-                    <button
-                      className={styles.primaryButton}
-                      disabled={isSaving}
-                      type="submit"
-                    >
-                      Criar produto
-                    </button>
-                  </form>
-                </article>
-
-                <article className={styles.panel}>
-                  <div className={styles.panelHeader}>
-                    <div>
-                      <span className={styles.panelEyebrow}>Ação rápida</span>
-                      <h2>Novo pedido</h2>
-                    </div>
-                  </div>
-                  <form className={styles.form} onSubmit={handleCreateOrder}>
-                    <select
-                      className={styles.field}
-                      value={orderForm.customerId}
-                      onChange={(event) =>
-                        setOrderForm((current) => ({
-                          ...current,
-                          customerId: event.target.value,
-                        }))
-                      }
-                    >
-                      <option value="">Selecione o cliente</option>
-                      {customers.map((customer) => (
-                        <option key={customer.id} value={customer.id}>
-                          {customer.name}
-                        </option>
-                      ))}
-                    </select>
-                    <select
-                      className={styles.field}
-                      value={orderForm.productId}
-                      onChange={(event) =>
-                        setOrderForm((current) => ({
-                          ...current,
-                          productId: event.target.value,
-                        }))
-                      }
-                    >
-                      <option value="">Selecione o produto</option>
-                      {products
-                        .filter((product) => product.active)
-                        .map((product) => (
-                          <option key={product.id} value={product.id}>
-                            {product.name}
-                          </option>
-                        ))}
-                    </select>
-                    <input
-                      className={styles.field}
-                      min="1"
-                      onChange={(event) =>
-                        setOrderForm((current) => ({
-                          ...current,
-                          quantity: event.target.value,
-                        }))
-                      }
-                      placeholder="Quantidade"
-                      type="number"
-                      value={orderForm.quantity}
-                    />
-                    <textarea
-                      className={styles.field}
-                      onChange={(event) =>
-                        setOrderForm((current) => ({
-                          ...current,
-                          notes: event.target.value,
-                        }))
-                      }
-                      placeholder="Observações"
-                      rows={3}
-                      value={orderForm.notes}
-                    />
-                    <button
-                      className={styles.primaryButton}
-                      disabled={isSaving}
-                      type="submit"
-                    >
-                      Registrar pedido
-                    </button>
-                  </form>
-                </article>
-
-                <article className={styles.panel}>
-                  <div className={styles.panelHeader}>
-                    <div>
-                      <span className={styles.panelEyebrow}>Alerta</span>
-                      <h2>Baixo estoque</h2>
-                    </div>
-                  </div>
-                  <div className={styles.list}>
-                    {dashboard?.lowStockProducts.map((product) => (
-                      <div key={product.id} className={styles.listRow}>
-                        <div>
-                          <strong>{product.name}</strong>
-                          <p>{product.sku}</p>
-                        </div>
-                        <div>
-                          <strong>{product.stockQuantity}</strong>
-                          <p>mínimo {product.minimumStock}</p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </article>
-              </aside>
-            </section>
-          </>
-        )}
+        <ShellContentRouter
+          activeMenuItem={activeMenuItem}
+          currentUser={currentUser}
+          isRefreshing={isLoading}
+          onRefresh={() => void refreshData()}
+          onMyAccountBack={() => {
+            setActiveGroupId("inicio");
+            setActiveMenuItem("Índice");
+            router.push("/indice");
+          }}
+          fallback={
+            <ShellDefaultWorkspace
+              activeGroupLabel={activeGroup.label}
+              activeMenuItem={activeMenuItem}
+              search={search}
+              setSearch={setSearch}
+              isLoading={isLoading}
+              isSaving={isSaving}
+              refreshData={refreshData}
+              summaryCards={summaryCards}
+              dashboard={dashboard}
+              conversionRate={conversionRate}
+              marginPreview={marginPreview}
+              filteredOrders={filteredOrders}
+              filteredProducts={filteredProducts}
+              filteredCustomers={filteredCustomers}
+              formatCurrency={formatCurrency}
+              formatDate={formatDate}
+              formatDateOnly={formatDateOnly}
+              handleCreateCustomer={handleCreateCustomer}
+              handleCreateProduct={handleCreateProduct}
+              handleCreateOrder={handleCreateOrder}
+              customerForm={customerForm}
+              setCustomerForm={setCustomerForm}
+              productForm={productForm}
+              setProductForm={setProductForm}
+              orderForm={orderForm}
+              setOrderForm={setOrderForm}
+              customers={customers}
+              products={products}
+            />
+          }
+        />
       </section>
     </main>
   );

@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState, type ReactNode } from "react";
-import type { CurrentUser } from "./types";
-import styles from "./landing-page.module.css";
+import type { CurrentUser } from "../types";
+import styles from "../landing-page.module.css";
 
 const productTabs = ["todos", "simples", "kits", "variações", "matéria-prima"] as const;
 const productFormTabs = [
