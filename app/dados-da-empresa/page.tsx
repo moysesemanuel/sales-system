@@ -1,14 +1,10 @@
 import { SalesSystemDashboard } from "@/components/projects/sales-system/dashboard-shell";
+import { mockCurrentUser } from "@/components/projects/sales-system/mock-current-user";
 
 export default function Page() {
-  const currentUser = {
-    name: "Moyses Emanuel",
-    email: "moyses@email.com",
-  };
-
   return (
     <SalesSystemDashboard
-      currentUser={currentUser}
+      currentUser={mockCurrentUser}
       initialMenuItem="Dados da empresa"
     />
   );
