@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getCurrentAppSession } from "@/lib/auth";
-import { DabiLoading } from "@/components/projects/sales-system/dabi-loading";
+import { SalesSystemDashboard } from "@/components/projects/sales-system/dashboard-shell";
 
 export default async function Page() {
   const session = await getCurrentAppSession();
@@ -9,5 +9,5 @@ export default async function Page() {
     redirect("/login");
   }
 
-  return <DabiLoading />;
+  return <SalesSystemDashboard currentUser={session.user} initialMenuItem="Dashboard" />;
 }
