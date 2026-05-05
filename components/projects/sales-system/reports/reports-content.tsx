@@ -17,6 +17,20 @@ type ReportItem = {
   href: string;
 };
 
+type ActiveReportPage =
+  | "list"
+  | "product-prices"
+  | "supply-reports"
+  | "sales-reports"
+  | "finance-reports"
+  | "service-reports";
+
+type OtherReportSection = {
+  id: Exclude<ActiveReportPage, "list" | "product-prices">;
+  title: string;
+  icon: "box" | "cart" | "money" | "tool";
+};
+
 const reportGroups: ReportGroup[] = [
   {
     id: "products",
@@ -34,17 +48,222 @@ const reports: ReportItem[] = [
   },
 ];
 
-export function ReportsContent({ currentUser: _currentUser }: { currentUser: CurrentUser }) {
-  const [activeGroupId, setActiveGroupId] = useState(reportGroups[0]?.id ?? "");
-  const [activeReportPage, setActiveReportPage] = useState<"list" | "product-prices">("list");
+const otherReportsSections: OtherReportSection[] = [
+  {
+    id: "supply-reports",
+    title: "Suprimentos",
+    icon: "box",
+  },
+  {
+    id: "sales-reports",
+    title: "Vendas",
+    icon: "cart",
+  },
+  {
+    id: "finance-reports",
+    title: "Finanças",
+    icon: "money",
+  },
+  {
+    id: "service-reports",
+    title: "Serviços",
+    icon: "tool",
+  },
+];
 
-  const [isCustomReportDrawerOpen, setIsCustomReportDrawerOpen] = useState(false);
+function ReportsDrawerSectionIcon({
+  kind,
+}: {
+  kind: OtherReportSection["icon"];
+}) {
+  switch (kind) {
+    case "box":
+      return (
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path
+            d="M10 2.8 16 5.8v8.4L10 17.2l-6-3V5.8l6-3Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M4 5.8 10 9l6-3.2"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+          />
+          <path
+            d="M10 9v8.2"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+
+    case "cart":
+      return (
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path
+            d="M3 4h2l1.3 6.2h7.2L15 6.5H6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+          <circle cx="8" cy="15.2" r="1.2" fill="currentColor" />
+          <circle cx="13.5" cy="15.2" r="1.2" fill="currentColor" />
+        </svg>
+      );
+
+    case "money":
+      return (
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path
+            d="M10 3.2v13.6"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+          <path
+            d="M13.2 6.1c0-1.2-1.2-2.1-3-2.1s-3 .9-3 2.1c0 1.3 1.2 1.9 3 2.3 1.8.4 3 1 3 2.4 0 1.3-1.2 2.3-3 2.3s-3.2-.9-3.2-2.3"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+
+    case "tool":
+      return (
+        <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+          <path
+            d="M12.8 3.5a3.4 3.4 0 0 0-4.2 4.2l-4.5 4.5 1.9 1.9 4.5-4.5a3.4 3.4 0 0 0 4.2-4.2l-1.8 1.8-1.8-.4-.4-1.8 2.1-1.5Z"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinejoin="round"
+            strokeLinecap="round"
+          />
+        </svg>
+      );
+
+    default:
+      return null;
+  }
+}
+
+function ReportsDrawerArrowIcon() {
+  return (
+    <svg viewBox="0 0 20 20" aria-hidden="true" focusable="false">
+      <path
+        d="M6.5 10h7"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+      />
+      <path
+        d="M10.8 6.7 14.2 10l-3.4 3.3"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function GenericReportsCategoryPage({
+  title,
+  onBack,
+}: {
+  title: string;
+  onBack: () => void;
+}) {
+  return (
+    <main className={styles.reportsRoot}>
+      <section className={styles.reportsPage}>
+        <header className={styles.reportsTopBar}>
+          <div className={styles.reportsCrumbs}>
+            <button type="button" className={styles.reportsBackButton} onClick={onBack}>
+              <i className="fa fa-arrow-left" aria-hidden="true" />
+              Voltar
+            </button>
+
+            <span>início</span>
+            <span>cadastros</span>
+            <button type="button" className={styles.reportsCrumbButton} onClick={onBack}>
+              relatórios
+            </button>
+            <strong>{title.toLowerCase()}</strong>
+          </div>
+        </header>
+
+        <section className={styles.guideBanner}>
+          <div className={styles.guideBannerLeft}>
+            <span className={styles.guideBannerIcon}>✦</span>
+            <span className={styles.guideBannerLabel}>Etapa atual</span>
+            <strong className={styles.guideBannerTitle}>
+              Configure a emissão da nota fiscal
+            </strong>
+          </div>
+
+          <div className={styles.guideBannerRight}>
+            <span className={styles.guideBannerProgressText}>1 de 4</span>
+            <span className={styles.guideBannerProgressTrack}>
+              <span className={styles.vendorsGuideProgressFill} />
+            </span>
+            <button type="button" className={styles.guideBannerLink}>
+              acessar o guia
+            </button>
+          </div>
+        </section>
+
+        <section className={styles.reportDetailHeader}>
+          <h2>Relatórios de {title}</h2>
+        </section>
+
+        <section className={styles.reportDetailBody}>
+          <p className={styles.reportPlaceholderText}>
+            Essa área será montada depois com os filtros e campos específicos de{" "}
+            {title.toLowerCase()}.
+          </p>
+        </section>
+      </section>
+    </main>
+  );
+}
+
+export function ReportsContent({
+  currentUser: _currentUser,
+}: {
+  currentUser: CurrentUser;
+}) {
+  const [activeGroupId, setActiveGroupId] = useState(reportGroups[0]?.id ?? "");
+  const [activeReportPage, setActiveReportPage] =
+    useState<ActiveReportPage>("list");
+
+  const [isCustomReportDrawerOpen, setIsCustomReportDrawerOpen] =
+    useState(false);
+  const [isOtherReportsDrawerOpen, setIsOtherReportsDrawerOpen] =
+    useState(false);
+
   const [reportName, setReportName] = useState("");
   const [reportDescription, setReportDescription] = useState("");
   const [reportType, setReportType] = useState("contatos");
 
   const activeGroup = reportGroups.find((group) => group.id === activeGroupId);
-  const filteredReports = reports.filter((report) => report.groupId === activeGroupId);
+  const filteredReports = reports.filter(
+    (report) => report.groupId === activeGroupId
+  );
 
   const canCreateCustomReport = reportName.trim().length > 0;
 
@@ -72,6 +291,42 @@ export function ReportsContent({ currentUser: _currentUser }: { currentUser: Cur
     );
   }
 
+  if (activeReportPage === "supply-reports") {
+    return (
+      <GenericReportsCategoryPage
+        title="Suprimentos"
+        onBack={() => setActiveReportPage("list")}
+      />
+    );
+  }
+
+  if (activeReportPage === "sales-reports") {
+    return (
+      <GenericReportsCategoryPage
+        title="Vendas"
+        onBack={() => setActiveReportPage("list")}
+      />
+    );
+  }
+
+  if (activeReportPage === "finance-reports") {
+    return (
+      <GenericReportsCategoryPage
+        title="Finanças"
+        onBack={() => setActiveReportPage("list")}
+      />
+    );
+  }
+
+  if (activeReportPage === "service-reports") {
+    return (
+      <GenericReportsCategoryPage
+        title="Serviços"
+        onBack={() => setActiveReportPage("list")}
+      />
+    );
+  }
+
   return (
     <main className={styles.reportsRoot}>
       <section className={styles.reportsPage}>
@@ -83,7 +338,11 @@ export function ReportsContent({ currentUser: _currentUser }: { currentUser: Cur
           </div>
 
           <div className={styles.reportsActions}>
-            <button type="button" className={styles.reportsGhostButton}>
+            <button
+              type="button"
+              className={styles.reportsGhostButton}
+              onClick={() => setIsOtherReportsDrawerOpen(true)}
+            >
               <i className="fal fa-file-alt" aria-hidden="true" />
               outros relatórios
             </button>
@@ -103,7 +362,9 @@ export function ReportsContent({ currentUser: _currentUser }: { currentUser: Cur
           <div className={styles.guideBannerLeft}>
             <span className={styles.guideBannerIcon}>✦</span>
             <span className={styles.guideBannerLabel}>Etapa atual</span>
-            <strong className={styles.guideBannerTitle}>Configure a emissão da nota fiscal</strong>
+            <strong className={styles.guideBannerTitle}>
+              Configure a emissão da nota fiscal
+            </strong>
           </div>
 
           <div className={styles.guideBannerRight}>
@@ -119,22 +380,25 @@ export function ReportsContent({ currentUser: _currentUser }: { currentUser: Cur
 
         <section className={styles.reportsHeader}>
           <h1>Relatórios de Cadastros</h1>
-          <p>Gere e analise relatórios para acompanhar o desempenho de suas operações</p>
+          <p>
+            Gere e analise relatórios para acompanhar o desempenho de suas
+            operações
+          </p>
         </section>
 
         <section className={styles.reportsCustomCard}>
           <div className={styles.reportsCustomIllustration} aria-hidden="true">
-            <div className={styles.reportsIllustrationPerson} />
-            <div className={styles.reportsIllustrationPanel}>
-              <span>valor</span>
-              <span>frete</span>
-            </div>
+            <img
+              src="/relatorios_personalizados.svg"
+              alt="Relatórios personalizados"
+              className={styles.reportsCustomIllustrationImage}
+            />
           </div>
 
           <div className={styles.reportsCustomText}>
             <h2>
-              Adicione e ordene os dados do seu relatório para ter uma análise de cadastros mais
-              assertiva e eficiente para seu negócio
+              Adicione e ordene os dados do seu relatório para ter uma análise
+              de cadastros mais assertiva e eficiente para seu negócio
             </h2>
           </div>
 
@@ -183,14 +447,71 @@ export function ReportsContent({ currentUser: _currentUser }: { currentUser: Cur
                     }
                   }}
                 >
-                  <span className={styles.reportsListItemTitle}>{report.title}</span>
-                  <span className={styles.reportsListItemDescription}>{report.description}</span>
+                  <span className={styles.reportsListItemTitle}>
+                    {report.title}
+                  </span>
+                  <span className={styles.reportsListItemDescription}>
+                    {report.description}
+                  </span>
                 </button>
               ))}
             </div>
           </div>
         </section>
       </section>
+
+      {isOtherReportsDrawerOpen ? (
+        <aside className={styles.reportsDrawerOverlay} aria-hidden="true">
+          <section
+            className={styles.otherReportsDrawer}
+            role="dialog"
+            aria-modal="true"
+            aria-label="Outros Relatórios"
+          >
+            <header className={styles.otherReportsDrawerHeader}>
+              <div>
+                <h2>Outros Relatórios</h2>
+                <p>Relatórios disponíveis:</p>
+              </div>
+
+              <button
+                type="button"
+                className={styles.otherReportsDrawerClose}
+                onClick={() => setIsOtherReportsDrawerOpen(false)}
+              >
+                fechar
+                <span aria-hidden="true">×</span>
+              </button>
+            </header>
+
+            <div className={styles.otherReportsDrawerList}>
+              {otherReportsSections.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={styles.otherReportsDrawerItem}
+                  onClick={() => {
+                    setIsOtherReportsDrawerOpen(false);
+                    setActiveReportPage(item.id);
+                  }}
+                >
+                  <span className={styles.otherReportsDrawerItemIcon}>
+                    <ReportsDrawerSectionIcon kind={item.icon} />
+                  </span>
+
+                  <span className={styles.otherReportsDrawerItemText}>
+                    {item.title}
+                  </span>
+
+                  <span className={styles.otherReportsDrawerItemArrow}>
+                    <ReportsDrawerArrowIcon />
+                  </span>
+                </button>
+              ))}
+            </div>
+          </section>
+        </aside>
+      ) : null}
 
       {isCustomReportDrawerOpen ? (
         <aside className={styles.reportsDrawerOverlay} aria-hidden="true">
@@ -204,8 +525,9 @@ export function ReportsContent({ currentUser: _currentUser }: { currentUser: Cur
               <div>
                 <h2>Criar um novo relatório de contato personalizado</h2>
                 <p>
-                  Você está criando um novo relatório baseado nas informações de seus contatos.
-                  Defina um título que corresponda à análise que deseja realizar.
+                  Você está criando um novo relatório baseado nas informações de
+                  seus contatos. Defina um título que corresponda à análise que
+                  deseja realizar.
                 </p>
               </div>
 
@@ -241,7 +563,9 @@ export function ReportsContent({ currentUser: _currentUser }: { currentUser: Cur
                     type="text"
                     value={reportDescription}
                     maxLength={150}
-                    onChange={(event) => setReportDescription(event.target.value)}
+                    onChange={(event) =>
+                      setReportDescription(event.target.value)
+                    }
                   />
                   <span>{reportDescription.length}/150</span>
                 </div>
@@ -249,7 +573,10 @@ export function ReportsContent({ currentUser: _currentUser }: { currentUser: Cur
 
               <label className={styles.reportsDrawerField}>
                 <span>Tipo de relatório</span>
-                <select value={reportType} onChange={(event) => setReportType(event.target.value)}>
+                <select
+                  value={reportType}
+                  onChange={(event) => setReportType(event.target.value)}
+                >
                   <option value="contatos">contatos</option>
                   <option value="produtos">produtos</option>
                   <option value="vendas">vendas</option>
@@ -281,21 +608,31 @@ function ProductPricesReportContent({
   currentUser: CurrentUser;
   onBack: () => void;
 }) {
-  const [groupByTag, setGroupByTag] = useState("");
-  const [subGroupByTag, setSubGroupByTag] = useState("");
+  const [groupByTag, setGroupByTag] = useState("grupo");
+  const [subGroupByTag, setSubGroupByTag] = useState("grupo");
   const [category, setCategory] = useState("");
   const [priceList, setPriceList] = useState("padrao");
   const [showCost, setShowCost] = useState("nao");
+  const [supplier, setSupplier] = useState("");
+  const [brand, setBrand] = useState("");
+  const [product, setProduct] = useState("");
+  const [productTags, setProductTags] = useState("sem-filtro");
   const [onlyPromotionProducts, setOnlyPromotionProducts] = useState(false);
   const [showProductImage, setShowProductImage] = useState(false);
 
-  const handleGenerateReport = () => {
+  const handleGenerateReport = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     console.log({
       groupByTag,
       subGroupByTag,
       category,
       priceList,
       showCost,
+      supplier,
+      brand,
+      product,
+      productTags,
       onlyPromotionProducts,
       showProductImage,
     });
@@ -306,7 +643,11 @@ function ProductPricesReportContent({
       <section className={styles.reportsPage}>
         <header className={styles.reportsTopBar}>
           <div className={styles.reportsCrumbs}>
-            <button type="button" className={styles.reportsBackButton} onClick={onBack}>
+            <button
+              type="button"
+              className={styles.reportsBackButton}
+              onClick={onBack}
+            >
               <i className="fa fa-arrow-left" aria-hidden="true" />
               Voltar
             </button>
@@ -314,7 +655,11 @@ function ProductPricesReportContent({
             <span>início</span>
             <span>cadastros</span>
 
-            <button type="button" className={styles.reportsCrumbButton} onClick={onBack}>
+            <button
+              type="button"
+              className={styles.reportsCrumbButton}
+              onClick={onBack}
+            >
               relatórios
             </button>
 
@@ -326,7 +671,9 @@ function ProductPricesReportContent({
           <div className={styles.guideBannerLeft}>
             <span className={styles.guideBannerIcon}>✦</span>
             <span className={styles.guideBannerLabel}>Etapa atual</span>
-            <strong className={styles.guideBannerTitle}>Configure a emissão da nota fiscal</strong>
+            <strong className={styles.guideBannerTitle}>
+              Configure a emissão da nota fiscal
+            </strong>
           </div>
 
           <div className={styles.guideBannerRight}>
@@ -341,104 +688,206 @@ function ProductPricesReportContent({
         </section>
 
         <section className={styles.reportDetailHeader}>
-          <h1>Relatório de Preços de Produtos</h1>
+          <h2>Relatório de Preços de Produtos</h2>
         </section>
 
         <section className={styles.reportDetailBody}>
-          <form className={styles.reportFiltersForm}>
+          <form
+            className={styles.reportProductPriceForm}
+            onSubmit={handleGenerateReport}
+          >
             <div className={styles.reportFiltersGrid}>
-              <label className={styles.reportField}>
-                <span>Agrupar por tag de produtos</span>
-                <select value={groupByTag} onChange={(event) => setGroupByTag(event.target.value)}>
-                  <option value="">Selecione</option>
-                  <option value="grupo">Grupo</option>
-                  <option value="marca">Marca</option>
-                  <option value="colecao">Coleção</option>
-                </select>
-              </label>
-
-              <label className={styles.reportField}>
-                <span>Subagrupar por tag de produtos</span>
+              <div className={styles.reportField}>
+                <label htmlFor="groupByTag">Agrupar por tag de produtos</label>
                 <select
+                  id="groupByTag"
+                  className={styles.reportSelect}
+                  value={groupByTag}
+                  onChange={(event) => setGroupByTag(event.target.value)}
+                >
+                  <option value="S">Selecione</option>
+                  <option value="G">Grupo</option>
+                  <option value="M">Marca</option>
+                </select>
+              </div>
+
+              <div className={styles.reportField}>
+                <label htmlFor="subGroupByTag">
+                  Subagrupar por tag de produtos
+                </label>
+                <select
+                  id="subGroupByTag"
+                  className={styles.reportSelect}
                   value={subGroupByTag}
                   onChange={(event) => setSubGroupByTag(event.target.value)}
                 >
-                  <option value="">Selecione</option>
-                  <option value="grupo">Grupo</option>
-                  <option value="marca">Marca</option>
-                  <option value="colecao">Coleção</option>
+                  <option value="S">Selecione</option>
+                  <option value="G">Grupo</option>
+                  <option value="M">Marca</option>
                 </select>
-              </label>
+              </div>
 
-              <label className={styles.reportField}>
-                <span>Categoria</span>
+              <div
+                className={`${styles.reportField} ${styles.reportSearchField}`}
+              >
+                <label htmlFor="category">Categoria</label>
+                <input
+                  id="category"
+                  className={styles.reportInput}
+                  type="text"
+                  value={category}
+                  onChange={(event) => setCategory(event.target.value)}
+                />
 
-                <div className={styles.reportCategoryInputGroup}>
-                  <input type="text" value={category} readOnly />
-
+                <div className={styles.reportSearchActions}>
                   <button
                     type="button"
-                    title="Buscar categorias"
-                    onClick={() => setCategory("Categoria selecionada")}
+                    className={styles.reportIconButton}
+                    aria-label="Pesquisar categoria"
                   >
-                    <i className="fa fa-search" aria-hidden="true" />
+                    <svg width="16" height="16" viewBox="0 0 20 20" aria-hidden="true">
+                      <circle
+                        cx="8.5"
+                        cy="8.5"
+                        r="5.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                      />
+                      <path
+                        d="M12.8 12.8 16.5 16.5"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
                   </button>
 
-                  <button type="button" title="Limpar categoria" onClick={() => setCategory("")}>
-                    <i className="fa fa-remove" aria-hidden="true" />
-                  </button>
+                  <span
+                    className={styles.packagingDrawerCloseIcon}
+                    aria-hidden="true"
+                  >
+                    <svg viewBox="0 0 16 16" fill="none" focusable="false">
+                      <path
+                        d="M4 4l8 8M12 4l-8 8"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                      />
+                    </svg>
+                  </span>
                 </div>
-              </label>
+              </div>
 
-              <label className={styles.reportField}>
-                <span>Lista de preços</span>
-                <select value={priceList} onChange={(event) => setPriceList(event.target.value)}>
-                  <option value="padrao">Padrão</option>
-                  <option value="varejo">Varejo</option>
-                  <option value="atacado">Atacado</option>
-                </select>
-              </label>
+              <div className={styles.reportGridEmptyCell} aria-hidden="true" />
 
-              <label className={styles.reportField}>
-                <span>Exibir custo</span>
-                <select value={showCost} onChange={(event) => setShowCost(event.target.value)}>
+              <div className={styles.reportField}>
+                <label htmlFor="priceList">Lista de preços</label>
+                <div className={styles.reportSelectWrap}>
+                  <select
+                    id="priceList"
+                    className={styles.reportSelect}
+                    value={priceList}
+                    onChange={(event) => setPriceList(event.target.value)}
+                  >
+                    <option value="padrao">Padrão</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className={styles.reportField}>
+                <label htmlFor="showCost">Exibir custo</label>
+                <select
+                  id="showCost"
+                  className={styles.reportSelect}
+                  value={showCost}
+                  onChange={(event) => setShowCost(event.target.value)}
+                >
                   <option value="nao">Não</option>
-                  <option value="sim">Sim</option>
+                  <option value="compra">Custo de compra</option>
+                  <option value="medio">Custo Médio</option>
                 </select>
-              </label>
+              </div>
+
+              <div className={styles.reportField}>
+                <label htmlFor="supplier">Fornecedor</label>
+                <input
+                  id="supplier"
+                  className={styles.reportInput}
+                  type="text"
+                  placeholder="Razão social ou o nome fantasia"
+                  value={supplier}
+                  onChange={(event) => setSupplier(event.target.value)}
+                />
+              </div>
+
+              <div className={styles.reportField}>
+                <label htmlFor="brand">Marca</label>
+                <input
+                  id="brand"
+                  className={styles.reportInput}
+                  type="text"
+                  placeholder="Pesquise pelo nome da marca"
+                  value={brand}
+                  onChange={(event) => setBrand(event.target.value)}
+                />
+              </div>
+
+              <div className={styles.reportField}>
+                <label htmlFor="product">Produto</label>
+                <input
+                  id="product"
+                  className={styles.reportInput}
+                  type="text"
+                  placeholder="Parte da descrição ou código (SKU)"
+                  value={product}
+                  onChange={(event) => setProduct(event.target.value)}
+                />
+              </div>
+
+              <div className={styles.reportField}>
+                <label htmlFor="productTags">Tags dos produtos</label>
+                <div className={styles.reportSelectWrap}>
+                  <select
+                    id="productTags"
+                    className={styles.reportSelect}
+                    value={productTags}
+                    onChange={(event) => setProductTags(event.target.value)}
+                  >
+                    <option value="sem-filtro">Sem filtro por tags</option>
+                  </select>
+                </div>
+              </div>
             </div>
 
-            <div className={styles.reportCheckboxGroup}>
-              <label className={styles.reportCheckbox}>
+            <div className={styles.reportChecks}>
+              <label className={styles.reportCheckLabel}>
                 <input
                   type="checkbox"
                   checked={onlyPromotionProducts}
-                  onChange={(event) => setOnlyPromotionProducts(event.target.checked)}
+                  onChange={(event) =>
+                    setOnlyPromotionProducts(event.target.checked)
+                  }
                 />
-                <span className={styles.reportCheckboxBox} />
                 <span>Exibir apenas produtos em promoção</span>
               </label>
 
-              <label className={styles.reportCheckbox}>
+              <label className={styles.reportCheckLabel}>
                 <input
                   type="checkbox"
                   checked={showProductImage}
-                  onChange={(event) => setShowProductImage(event.target.checked)}
+                  onChange={(event) =>
+                    setShowProductImage(event.target.checked)
+                  }
                 />
-                <span className={styles.reportCheckboxBox} />
                 <span>Exibir imagem dos produtos</span>
               </label>
             </div>
 
-            <footer className={styles.reportControls}>
-              <button
-                type="button"
-                className={styles.reportsPrimaryButton}
-                onClick={handleGenerateReport}
-              >
-                Gerar
-              </button>
-            </footer>
+            <button type="submit" className={styles.reportGenerateButton}>
+              gerar
+            </button>
           </form>
         </section>
       </section>

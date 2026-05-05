@@ -13153,7 +13153,7 @@ select.vendorsFieldInput {
   margin: 0;
   color: #ffffff;
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.1;
 }
 
@@ -13168,9 +13168,9 @@ select.vendorsFieldInput {
   display: grid;
   grid-template-columns: 210px 1fr auto;
   align-items: center;
-  min-height: 122px;
+  min-height: 169px;
   border: 1px solid #424242;
-  border-radius: 5px;
+  border-radius: 10px;
   overflow: hidden;
   background: #222222;
 }
@@ -13178,69 +13178,16 @@ select.vendorsFieldInput {
 .reportsCustomIllustration {
   position: relative;
   align-self: stretch;
-  min-height: 122px;
+  min-height: 169px;
   overflow: hidden;
   background: #f3f5fb;
 }
 
-.reportsIllustrationPerson {
-  position: absolute;
-  left: 28px;
-  bottom: 0;
-  width: 86px;
-  height: 88px;
-  border-radius: 42px 42px 8px 8px;
-  background: #0a4ee4;
-}
-
-.reportsIllustrationPerson::before {
-  content: "";
-  position: absolute;
-  left: 20px;
-  top: -26px;
-  width: 34px;
-  height: 42px;
-  border-radius: 45% 45% 48% 48%;
-  background: #ff8a72;
-}
-
-.reportsIllustrationPerson::after {
-  content: "";
-  position: absolute;
-  left: 12px;
-  top: -34px;
-  width: 36px;
-  height: 25px;
-  border-radius: 20px 20px 8px 12px;
-  background: #101010;
-}
-
-.reportsIllustrationPanel {
-  position: absolute;
-  right: -18px;
-  top: 32px;
-  display: flex;
-  gap: 8px;
-  padding: 10px 14px;
-  border: 1px solid #9bc0ff;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #626262;
-  font-size: 11px;
-  box-shadow: 0 12px 25px rgba(10, 78, 228, 0.12);
-}
-
-.reportsIllustrationPanel span {
-  position: relative;
-  padding-left: 14px;
-}
-
-.reportsIllustrationPanel span::before {
-  content: "⋮⋮";
-  position: absolute;
-  left: 0;
-  color: #b1b1b1;
-  font-size: 10px;
+.reportsCustomIllustrationImage {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
 }
 
 .reportsCustomText {
@@ -13248,12 +13195,12 @@ select.vendorsFieldInput {
 }
 
 .reportsCustomText h2 {
-  max-width: 430px;
+  max-width: 500px;
   margin: 0;
   color: #ffffff;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 1.05;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.3;
 }
 
 .reportsCustomButton {
@@ -13561,30 +13508,17 @@ select.vendorsFieldInput {
   gap: 22px;
 }
 
-.reportFiltersGrid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 18px 24px;
-}
-
-.reportField {
-  display: flex;
-  flex-direction: column;
-  gap: 7px;
-  color: #c8c8c8;
-  font-size: 14px;
-}
-
 .reportField select,
 .reportField input {
   width: 100%;
-  height: 38px;
+  height: 43px;
   border: 1px solid #444444;
-  border-radius: 5px;
+  border-radius: 6px;
   outline: none;
   background: #191919;
   color: #ffffff;
   font-size: 15px;
+  padding: 0 16px;
 }
 
 .reportField select {
@@ -13593,6 +13527,11 @@ select.vendorsFieldInput {
 
 .reportField input {
   padding: 0 10px;
+}
+.reportField label {
+  color: #a9a9a9;
+  font-size: 15px;
+  font-weight: 400;
 }
 
 .reportField select:focus,
@@ -13693,10 +13632,6 @@ select.vendorsFieldInput {
     grid-template-columns: 1fr;
   }
 
-  .reportsCustomIllustration {
-    min-height: 120px;
-  }
-
   .reportsCustomText {
     padding: 20px;
   }
@@ -13712,11 +13647,676 @@ select.vendorsFieldInput {
     gap: 20px;
   }
 
-  .reportFiltersGrid {
-    grid-template-columns: 1fr;
-  }
 
   .reportsDrawer {
     width: 100vw;
   }
 }
+
+.reportProductPricePage {
+  min-height: 100%;
+  padding: 38px 56px;
+  background: var(--workspace-bg, #1f1f1f);
+  color: #f5f5f5;
+}
+
+.reportProductPricePage h1 {
+  margin: 0 0 42px;
+  color: #f5f5f5;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.reportProductPriceForm {
+  width: 100%;
+}
+
+.reportFiltersGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px 30px;
+  align-items: end;
+}
+
+.reportGridEmptyCell {
+  display: block;
+}
+
+.reportField {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.reportField label {
+  color: #aaa;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.reportInput,
+.reportSelect,
+.reportSearchInput {
+  width: 100%;
+  height: 43px;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  background-color: #151515;
+  color: #f5f5f5;
+  font-size: 16px;
+  outline: none;
+}
+
+.reportInput {
+  padding: 0 16px;
+}
+
+.reportInput::placeholder,
+.reportSearchInput::placeholder {
+  color: #a5a5a5;
+}
+
+.reportSelect {
+  cursor: pointer;
+  padding: 0 44px 0 16px;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: #151515;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5 10 12l4.5-4.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 20px 20px;
+}
+
+.reportSelect::-ms-expand {
+  display: none;
+}
+
+.reportSearchInput {
+  padding: 0 44px 0 16px;
+
+  background-color: #151515;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20'%3E%3Ccircle cx='8.5' cy='8.5' r='5.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.75' stroke-width='2'/%3E%3Cpath d='M12.8 12.8 16.5 16.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.75' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px 18px;
+}
+
+.reportSearchInput::-webkit-search-cancel-button {
+  display: none;
+}
+
+.reportInput:focus,
+.reportSelect:focus,
+.reportSearchInput:focus {
+  border-color: rgba(59, 130, 246, 0.65);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
+}
+
+.reportSearchField {
+  position: relative;
+}
+
+.reportSearchField .reportInput {
+  padding-right: 82px;
+}
+
+.reportSearchActions {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reportIconButton {
+  width: 31px;
+  height: 31px;
+  border: 1px solid #444;
+  border-radius: 999px;
+  background: transparent;
+  color: #f5f5f5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.reportIconButton:hover {
+  border-color: #666;
+  background: #242424;
+}
+
+.reportChecks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.reportCheckLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f5f5f5;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.reportCheckLabel input {
+  width: 15px;
+  height: 15px;
+  accent-color: #0a4ee4;
+}
+
+.reportGenerateButton {
+  margin-top: 32px;
+  width: fit-content;
+  min-width: 78px;
+  height: 34px;
+  border: 0;
+  border-radius: 999px;
+  background: #0a4ee4;
+  color: #fff;
+  padding: 0 22px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reportGenerateButton:hover {
+  background: #0d5cff;
+}
+
+@media (max-width: 1280px) {
+  .reportFiltersGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .reportGridEmptyCell {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .reportProductPricePage {
+    padding: 28px 20px;
+  }
+
+  .reportFiltersGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reportSelectWrap {
+  width: 100%;
+  position: relative;
+}
+
+.reportSelectWrap i {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  color: #aaa;
+  font-size: 14px;
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.reportSelect {
+  width: 100%;
+  height: 42px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 10px;
+  color: #f3f7fb;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  padding: 0 44px 0 14px;
+
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: rgba(15, 23, 42, 0.72);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5 10 12l4.5-4.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 20px 20px;
+}
+
+.reportSearchField {
+  position: relative;
+}
+
+.reportSearchField .reportInput {
+  padding-right: 82px;
+}
+
+.reportSearchActions {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reportIconButton {
+  width: 31px;
+  height: 31px;
+  border: 1px solid #444;
+  border-radius: 999px;
+  background: transparent;
+  color: #f5f5f5;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.reportIconButton:hover {
+  border-color: #666;
+  background: #242424;
+}
+
+.reportChecks {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.reportCheckLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f5f5f5;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.reportCheckLabel input {
+  width: 15px;
+  height: 15px;
+  accent-color: #0a4ee4;
+}
+
+.reportGenerateButton {
+  margin-top: 32px;
+  width: fit-content;
+  min-width: 78px;
+  height: 34px;
+  border: 0;
+  border-radius: 999px;
+  background: #0a4ee4;
+  color: #fff;
+  padding: 0 22px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reportGenerateButton:hover {
+  background: #0d5cff;
+}
+
+@media (max-width: 1280px) {
+  .reportFiltersGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .reportGridEmptyCell {
+    display: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .reportProductPricePage {
+    padding: 28px 20px;
+  }
+
+  .reportFiltersGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.reportSearchInput {
+  width: 100%;
+  height: 42px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 10px;
+  background-color: rgba(15, 23, 42, 0.72);
+  color: #f3f7fb;
+  font-size: 14px;
+  outline: none;
+  padding: 0 44px 0 14px;
+
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 20 20'%3E%3Ccircle cx='8.5' cy='8.5' r='5.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.62' stroke-width='2'/%3E%3Cpath d='M12.8 12.8 16.5 16.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.62' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 18px 18px;
+}
+
+.reportSearchInput::placeholder {
+  color: rgba(243, 247, 251, 0.48);
+}
+
+.reportSearchInput:focus {
+  border-color: rgba(59, 130, 246, 0.65);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
+}
+
+/* Correção: inputs e selects do relatório */
+.reportField .reportInput,
+.reportField .reportSelect {
+  width: 100%;
+  height: 43px;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  background-color: #151515;
+  color: #f5f5f5;
+  font-size: 16px;
+  outline: none;
+}
+
+.reportField .reportInput {
+  padding: 0 16px;
+}
+
+.reportField .reportSelect {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  cursor: pointer;
+  padding: 0 44px 0 16px;
+
+  background-color: #151515;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5 10 12l4.5-4.5' fill='none' stroke='%23f3f7fb' stroke-opacity='0.9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 20px 20px;
+}
+
+.reportField .reportInput:focus,
+.reportField .reportSelect:focus {
+  border-color: rgba(59, 130, 246, 0.65);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.16);
+}
+
+.reportField .reportSelect::-ms-expand {
+  display: none;
+}
+
+.page[data-theme="light"] .reportField .reportSelect {
+  background-color: #ffffff;
+  border-color: rgba(15, 23, 42, 0.18);
+  color: #0f172a;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5 10 12l4.5-4.5' fill='none' stroke='%230f172a' stroke-opacity='0.78' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+/* =========================================================
+   Reports - light theme
+   ========================================================= */
+
+.page[data-theme="light"] .reportsRoot,
+.page[data-theme="light"] .reportsPage {
+  background: #fcfbf8;
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportsCrumbs,
+.page[data-theme="light"] .reportsBackButton,
+.page[data-theme="light"] .reportsCrumbButton {
+  color: #64748b;
+}
+
+.page[data-theme="light"] .reportsCrumbs strong,
+.page[data-theme="light"] .reportsHeader h1,
+.page[data-theme="light"] .reportsListContent h2,
+.page[data-theme="light"] .reportDetailHeader h1,
+.page[data-theme="light"] .reportDetailHeader h2 {
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportsHeader p,
+.page[data-theme="light"] .reportsListItemDescription,
+.page[data-theme="light"] .reportField label {
+  color: #475569;
+}
+
+.page[data-theme="light"] .reportsCustomCard,
+.page[data-theme="light"] .reportsSidebarItemActive,
+.page[data-theme="light"] .reportsDrawer,
+.page[data-theme="light"] .reportDetailBody {
+  background: #fcfbf8;
+  border-color: rgba(15, 23, 42, 0.14);
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportsCustomText h2,
+.page[data-theme="light"] .reportsListItemTitle,
+.page[data-theme="light"] .reportCheckLabel {
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportsSidebarItem {
+  color: #475569;
+}
+
+.page[data-theme="light"] .reportsSidebarItemActive {
+  color: #0f5cff;
+}
+
+.page[data-theme="light"] .reportsGhostButton,
+.page[data-theme="light"] .reportsCustomButton,
+.page[data-theme="light"] .reportIconButton {
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportsGhostButton i,
+.page[data-theme="light"] .reportsCustomButtonIcon {
+  background: #e7edf8;
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportField .reportInput,
+.page[data-theme="light"] .reportField .reportSelect,
+.page[data-theme="light"] .reportSearchInput {
+  background-color: #ffffff;
+  border-color: rgba(15, 23, 42, 0.18);
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportField .reportInput::placeholder,
+.page[data-theme="light"] .reportSearchInput::placeholder {
+  color: #64748b;
+}
+
+.page[data-theme="light"] .reportField .reportSelect {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 7.5 10 12l4.5-4.5' fill='none' stroke='%230f172a' stroke-opacity='0.78' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+.page[data-theme="light"] .reportIconButton:hover {
+  background: #f1f5f9;
+  border-color: rgba(15, 23, 42, 0.26);
+}
+
+.page[data-theme="light"] .reportsDrawerHeader h2,
+.page[data-theme="light"] .reportsDrawerHeader p,
+.page[data-theme="light"] .reportsDrawerClose,
+.page[data-theme="light"] .reportsDrawerField {
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportsDrawerInputWrap,
+.page[data-theme="light"] .reportsDrawerField select {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.18);
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportsDrawerInputWrap input {
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .reportsDrawerInputWrap span,
+.page[data-theme="light"] .reportsDrawerClose span {
+  background: #e7edf8;
+  color: #0f172a;
+}
+
+.otherReportsDrawer {
+  width: 650px;
+  max-width: 100vw;
+  min-height: 100vh;
+  background: #202020;
+  border-left: 1px solid rgba(149, 177, 214, 0.2);
+  box-shadow: -12px 0 40px rgba(0, 0, 0, 0.32);
+  display: flex;
+  flex-direction: column;
+  padding: 34px 38px 28px;
+  color: #ffffff;
+}
+
+.otherReportsDrawerHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 26px;
+}
+
+.otherReportsDrawerHeader h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.otherReportsDrawerHeader p {
+  margin: 6px 0 0;
+  color: #ffffff;
+  font-size: 15px;
+  line-height: 1.2;
+}
+
+.otherReportsDrawerClose {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.otherReportsDrawerClose span {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #3a3a3a;
+  color: #e6e6e6;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.otherReportsDrawerList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.otherReportsDrawerItem {
+  width: 100%;
+  min-height: 58px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: transparent;
+  color: #ffffff;
+  display: grid;
+  grid-template-columns: 40px 1fr 24px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px 0 6px;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.2s ease;
+}
+
+.otherReportsDrawerItem:hover {
+  border-color: rgba(15, 92, 255, 0.9);
+  background: rgba(15, 92, 255, 0.06);
+}
+
+.otherReportsDrawerItemIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #343434;
+  color: #d9d9d9;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.otherReportsDrawerItemIcon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.otherReportsDrawerItemText {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.otherReportsDrawerItemArrow {
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.otherReportsDrawerItemArrow svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.reportPlaceholderText {
+  color: rgba(243, 247, 251, 0.82);
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+@media (max-width: 900px) {
+  .otherReportsDrawer {
+    width: 100vw;
+    padding: 24px 20px 24px;
+  }
+}
+

@@ -11,6 +11,7 @@ import { IndiceContent } from "../../indice-content";
 import { IntegrationsContent } from "../../integrations-content";
 import { MyAccountContent } from "../../my-account-content";
 import { PackagingContent } from "../../packaging";
+import { ReportsContent } from "../../reports/reports-content";
 import { ProductsContent } from "../../products";
 import { PromotionalCampaignsContent } from "../../promotional-campaigns-content";
 import { ServicesContent } from "../../services-content";
@@ -96,6 +97,10 @@ export function ShellContentRouter({
   if (activeMenuItem === "Embalagens") {
     return <PackagingContent currentUser={currentUser} />;
   }
+
+  if (activeMenuItem === "Relatórios") {
+  return <ReportsContent currentUser={currentUser} />;
+}
 
   if (activeMenuItem === "Vendedores") {
     return <VendorsContent currentUser={currentUser} />;
