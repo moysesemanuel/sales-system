@@ -7,6 +7,7 @@ const mockCurrentUser: CurrentUser = {
     email: "moyses@example.com",
     role: "admin" as CurrentUser["role"],
     createdAt: new Date().toISOString(),
+    applications: [],
 };
 
 export default function ControleDeEstoquesPage() {
