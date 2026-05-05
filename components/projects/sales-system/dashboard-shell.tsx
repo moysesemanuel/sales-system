@@ -22,6 +22,7 @@ import {
   supportLinks,
 } from "./shell/navigation/navigation-config";
 import type { NavigationGroupId } from "./shell/navigation/navigation-config";
+import { StockControlContent } from "./stock-control-content";
 
 function formatCurrency(valueInCents: number) {
   return new Intl.NumberFormat("pt-BR", {
@@ -346,6 +347,7 @@ export function SalesSystemDashboard({
     Vendedores: "briefcase",
     Embalagens: "gift",
     Relatórios: "file",
+    "Controle de Estoques": "bag",
     Índice: "book",
     Dashboard: "gauge",
     Agenda: "calendar",

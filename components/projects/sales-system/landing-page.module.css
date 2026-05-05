@@ -14320,3 +14320,470 @@ select.vendorsFieldInput {
   }
 }
 
+/* Controle de Estoques */
+
+.stockControlRoot {
+  color: var(--text);
+  min-height: 100%;
+  padding: 0 0 28px;
+}
+
+.stockControlPage {
+  display: grid;
+  gap: 0;
+  margin: 0 auto;
+  max-width: 1360px;
+  min-height: 100%;
+}
+
+.stockControlTopBar {
+  align-items: center;
+  border-bottom: 1px solid rgba(149, 177, 214, 0.14);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 60px;
+  padding: 0 24px;
+}
+
+.stockControlCrumbs {
+  align-items: center;
+  color: rgba(243, 247, 251, 0.72);
+  display: flex;
+  gap: 10px;
+  font-size: 0.92rem;
+  text-transform: lowercase;
+}
+
+.stockControlCrumbs strong {
+  color: var(--text);
+  font-weight: 400;
+}
+
+.stockControlCrumbs span + strong::before {
+  color: rgba(243, 247, 251, 0.3);
+  content: "≡";
+  margin-right: 10px;
+}
+
+.stockControlActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.stockControlPrimaryButton,
+.stockControlGhostButton {
+  align-items: center;
+  appearance: none;
+  border-radius: 999px;
+  cursor: pointer;
+  display: inline-flex;
+  font: inherit;
+  height: 34px;
+  justify-content: center;
+  padding: 0 16px;
+}
+
+.stockControlPrimaryButton {
+  background: #0f5cff;
+  border: 0;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.stockControlPrimaryButton:hover {
+  background: #2a6dff;
+}
+
+.stockControlGhostButton {
+  background: transparent;
+  border: 1px solid rgba(149, 177, 214, 0.22);
+  color: rgba(243, 247, 251, 0.92);
+  gap: 8px;
+  padding-right: 10px;
+}
+
+.stockControlGhostButtonIcon {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: #0f5cff;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  letter-spacing: -1px;
+}
+
+.stockControlToolbar {
+  display: grid;
+  gap: 14px;
+  padding: 10px 24px 0;
+}
+
+.stockControlToolbar h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.stockControlSearchRow {
+  display: flex;
+  align-items: center;
+}
+
+.stockControlSearchWrap {
+  position: relative;
+  width: min(100%, 640px);
+}
+
+.stockControlSearchInput {
+  width: 100%;
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(149, 177, 214, 0.18);
+  background: rgba(255, 255, 255, 0.02);
+  color: #f5f7fa;
+  padding: 0 98px 0 16px;
+  font-size: 15px;
+  outline: none;
+}
+
+.stockControlSearchInput::placeholder {
+  color: rgba(243, 247, 251, 0.52);
+}
+
+.stockControlSearchInput:focus {
+  border-color: rgba(47, 124, 255, 0.72);
+  box-shadow: 0 0 0 3px rgba(47, 124, 255, 0.18);
+}
+
+.stockControlSearchIcon {
+  position: absolute;
+  top: 50%;
+  right: 58px;
+  transform: translateY(-50%);
+  color: rgba(243, 247, 251, 0.78);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stockControlSearchIcon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
+}
+
+.stockControlSearchActionButton {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  height: 30px;
+  min-width: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(149, 177, 214, 0.24);
+  background: rgba(255, 255, 255, 0.04);
+  color: #f5f7fa;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 0 8px;
+  cursor: pointer;
+}
+
+.stockControlSearchActionButton svg {
+  width: 15px;
+  height: 15px;
+  display: block;
+}
+
+.stockControlSearchActionChevron {
+  font-size: 11px;
+  line-height: 1;
+  transform: translateY(-1px);
+}
+
+.stockControlFiltersRow {
+  display: flex;
+  align-items: center;
+}
+
+.stockControlFilterButton {
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(149, 177, 214, 0.22);
+  background: transparent;
+  color: rgba(243, 247, 251, 0.92);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 14px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.stockControlFilterButtonIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stockControlFilterButtonIcon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.stockControlTabs {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  border-bottom: 1px solid rgba(149, 177, 214, 0.14);
+  padding-top: 10px;
+}
+
+.stockControlTab,
+.stockControlTabActive {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.58);
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  min-height: 42px;
+  padding: 0 0 10px;
+  position: relative;
+  text-transform: lowercase;
+}
+
+.stockControlTabActive {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.stockControlTabActive::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 999px;
+  background: #ffffff;
+}
+
+.stockControlEmptyState {
+  display: grid;
+  place-items: start center;
+  min-height: 680px;
+  padding: 88px 24px 24px;
+}
+
+.stockControlEmptyCard {
+  width: min(100%, 560px);
+  min-height: 265px;
+  border: 2px solid #f2a11f;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 24px 22px 24px;
+}
+
+.stockControlEmptyContent {
+  display: grid;
+  gap: 18px;
+}
+
+.stockControlEmptyContent h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.stockControlEmptyContent p {
+  margin: 0;
+  color: rgba(243, 247, 251, 0.84);
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+.stockControlEmptyActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.stockControlTextButton {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.92);
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+
+.stockControlEmptyIllustration {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.stockControlEmptyIllustrationImage {
+  display: block;
+  width: 160px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.page[data-theme="light"] .stockControlTopBar {
+  border-bottom-color: rgba(15, 23, 42, 0.12);
+}
+
+.page[data-theme="light"] .stockControlCrumbs {
+  color: #64748b;
+}
+
+.page[data-theme="light"] .stockControlCrumbs span + strong::before {
+  color: rgba(15, 23, 42, 0.35);
+}
+
+.page[data-theme="light"] .stockControlCrumbs strong,
+.page[data-theme="light"] .stockControlToolbar h1 {
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .stockControlGhostButton {
+  border-color: rgba(15, 23, 42, 0.18);
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .stockControlSearchInput {
+  background: #ffffff;
+  border-color: rgba(15, 23, 42, 0.16);
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .stockControlSearchInput::placeholder {
+  color: #64748b;
+}
+
+.page[data-theme="light"] .stockControlSearchIcon,
+.page[data-theme="light"] .stockControlSearchActionButton,
+.page[data-theme="light"] .stockControlFilterButton,
+.page[data-theme="light"] .stockControlTab {
+  color: #334155;
+}
+
+.page[data-theme="light"] .stockControlSearchActionButton,
+.page[data-theme="light"] .stockControlFilterButton {
+  border-color: rgba(15, 23, 42, 0.18);
+  background: #ffffff;
+}
+
+.page[data-theme="light"] .stockControlTabActive {
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .stockControlTabActive::after {
+  background: #0f172a;
+}
+
+.page[data-theme="light"] .stockControlTabs {
+  border-bottom-color: rgba(15, 23, 42, 0.12);
+}
+
+.page[data-theme="light"] .stockControlEmptyCard {
+  background: #ffffff;
+}
+
+.page[data-theme="light"] .stockControlEmptyContent h2 {
+  color: #0f172a;
+}
+
+.page[data-theme="light"] .stockControlEmptyContent p,
+.page[data-theme="light"] .stockControlTextButton {
+  color: #334155;
+}
+
+@media (max-width: 980px) {
+  .stockControlTopBar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 12px 18px;
+  }
+
+  .stockControlToolbar {
+    padding: 12px 18px 0;
+  }
+
+  .stockControlActions {
+    flex-wrap: wrap;
+  }
+
+  .stockControlEmptyCard {
+    grid-template-columns: 1fr;
+    width: min(100%, 560px);
+  }
+
+  .stockControlEmptyIllustration {
+    justify-content: flex-end;
+  }
+
+  .stockControlEmptyState {
+    padding: 48px 18px 24px;
+  }
+}
+
+.stockControlInventoryButton {
+  align-items: center;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: rgba(243, 247, 251, 0.92);
+  cursor: pointer;
+  display: inline-flex;
+  gap: 8px;
+  font: inherit;
+  font-size: 15px;
+  height: 34px;
+  padding: 0;
+  white-space: nowrap;
+}
+
+.stockControlInventoryButton:hover {
+  color: #ffffff;
+}
+
+.stockControlInventoryButtonIcon {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(149, 177, 214, 0.18);
+  border-radius: 999px;
+  color: rgba(243, 247, 251, 0.86);
+  display: inline-flex;
+  font-size: 12px;
+  height: 22px;
+  justify-content: center;
+  width: 22px;
+}
+
+.stockControlInventoryButtonIcon i {
+  font-size: 11px;
+  line-height: 1;
+}
+

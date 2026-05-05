@@ -15,11 +15,13 @@ import { ReportsContent } from "../../reports/reports-content";
 import { ProductsContent } from "../../products";
 import { PromotionalCampaignsContent } from "../../promotional-campaigns-content";
 import { ServicesContent } from "../../services-content";
+import { StockControlContent } from "../../stock-control-content";
 import type { CurrentUser } from "../../types";
 import { ToolsContent } from "../../tools-content";
 import { UpgradePlanContent } from "../../upgrade-plan-content";
 import { VendorsContent } from "../../vendors";
 import { VersionContent } from "../../version-content";
+
 
 type ShellContentRouterProps = {
   activeMenuItem: string;
@@ -108,6 +110,10 @@ export function ShellContentRouter({
 
   if (activeMenuItem === "Serviços") {
     return <ServicesContent currentUser={currentUser} />;
+  }
+
+  if (activeMenuItem === "Controle de Estoques") {
+    return <StockControlContent currentUser={currentUser} />;
   }
 
   return <>{fallback}</>;
